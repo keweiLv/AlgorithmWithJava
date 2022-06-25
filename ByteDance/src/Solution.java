@@ -149,6 +149,47 @@ public class Solution {
                 return new int[]{i + 1, j + 1};
             }
         }
-        return new int[]{-1,-1};
+        return new int[]{-1, -1};
+    }
+
+    // 粉刷房子
+    public int minCost(int[][] cs) {
+        int n = cs.length;
+        int a = cs[0][0], b = cs[0][1], c = cs[0][2];
+        for (int i = 1; i < n; i++) {
+            int d = Math.min(b, c) + cs[i][0];
+            int e = Math.min(a, c) + cs[i][1];
+            int f = Math.min(a, b) + cs[i][2];
+            a = d;
+            b = e;
+            c = f;
+        }
+        return Math.min(a, Math.min(b, c));
+    }
+
+    // 对称的二叉树
+    public boolean isSymmetric(TreeNode root) {
+        return root == null ? true : recur(root.left, root.right);
+    }
+
+    private boolean recur(TreeNode left, TreeNode right) {
+        if (left == null && right == null) {
+            return true;
+        }
+        if (left == null || right == null || left.val != right.val) {
+            return false;
+        }
+        return recur(left.left, right.right) && recur(left.right, right.left);
+    }
+
+    // 斐波那契数列
+    public int fib(int n) {
+        int a = 0, b = 1, sum;
+        for (int i = 0; i < n; i++) {
+            sum = (a + b) % 1000000007;
+            a = b;
+            b = sum;
+        }
+        return a;
     }
 }
