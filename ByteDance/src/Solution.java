@@ -211,6 +211,7 @@ public class Solution {
 		}
 		return ans;
 	}
+
 	public boolean isSubseq(String s, String t) {
 		int ptS = 0, psT = 0;
 		while (ptS < s.length() && psT < t.length()) {
@@ -220,5 +221,38 @@ public class Solution {
 			++psT;
 		}
 		return ptS == s.length();
+	}
+
+	/**
+	 * 质数排列
+	 * 解题点:质数的放置方案数为 a!a!，而非质数的放置方案数为 b!b!，根据「乘法原理」总的放置方案数为 a! \times b!a!×b!
+ 	 */
+	static int MOD = (int) 1e9 + 7;
+	static int[] cnts = new int[110];
+	static {
+		List<Integer> list = new ArrayList<>();
+		for (int i = 2; i <= 100; i++) {
+			boolean ok = true;
+			for (int j = 2; j * j <= i; j++) {
+				if (i % j == 0) {
+					ok = false;
+				}
+			}
+			if (ok) {
+				list.add(i);
+			}
+			cnts[i] = list.size();
+		}
+	}
+	public int numPrimeArrangements(int n) {
+		int a = cnts[n], b = n - a;
+		long ans = 1;
+		for (int i = b; i > 1; i--) {
+			ans = ans * i % MOD;
+		}
+		for (int i = a; i > 1; i--) {
+			ans = ans * i % MOD;
+		}
+		return (int) ans;
 	}
 }

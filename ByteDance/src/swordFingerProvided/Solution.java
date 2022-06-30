@@ -42,7 +42,7 @@ public class Solution {
 	/**
 	 * 礼物的最大价值
 	 * 根据题目说明，易得某单元格只可能从上边单元格或左边单元格到达
- 	 */
+	 */
 	public int maxValue(int[][] grid) {
 		int m = grid.length, n = grid[0].length;
 		// 初始化第一行、第一列,用于优化
@@ -61,8 +61,8 @@ public class Solution {
 	}
 
 	/**
-	 * 	数组组成最小的数
-	 * 	若拼接字符串x+y>y+x ，则 x “大于” y ；
+	 * 数组组成最小的数
+	 * 若拼接字符串x+y>y+x ，则 x “大于” y ；
 	 * 反之，若 x + y < y + x ，则 x “小于” y ；
 	 */
 	public String minNumber(int[] nums) {
@@ -70,11 +70,20 @@ public class Solution {
 		for (int i = 0; i < nums.length; i++) {
 			strs[i] = String.valueOf(nums[i]);
 		}
-		Arrays.sort(strs,(x,y) -> (x+y).compareTo(y+x));
+		Arrays.sort(strs, (x, y) -> (x + y).compareTo(y + x));
 		StringBuilder res = new StringBuilder();
-		for (String s:strs){
+		for (String s : strs) {
 			res.append(s);
 		}
 		return res.toString();
+	}
+
+	/**
+	 * 求1+2+3+。。。+n
+	 * 要求不能使用乘除法、for、while、if、else、switch、case等关键字及条件判断语句（A?B:C）
+ 	 */
+	public int sumNums(int n) {
+		boolean x = n > 1 && (n += sumNums((n - 1))) > 0;
+		return n;
 	}
 }
