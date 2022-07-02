@@ -81,9 +81,55 @@ public class Solution {
 	/**
 	 * 求1+2+3+。。。+n
 	 * 要求不能使用乘除法、for、while、if、else、switch、case等关键字及条件判断语句（A?B:C）
- 	 */
+	 */
 	public int sumNums(int n) {
 		boolean x = n > 1 && (n += sumNums((n - 1))) > 0;
 		return n;
+	}
+
+	// 链表中倒数第K个节点
+	public ListNode getKthFromEnd(ListNode head, int k) {
+		ListNode fast = head, slow = head;
+		for (int i = 0; i < k; i++) {
+			fast = fast.next;
+		}
+		while (fast != null) {
+			fast = fast.next;
+			slow = slow.next;
+		}
+		return slow;
+	}
+
+	/**
+	 * 把字符串转换为整数
+	 * border=2147483647(Integer.MAX_VALUE)//10=214748364
+ 	 */
+	public int strToInt(String str) {
+		int res = 0, border = Integer.MAX_VALUE / 10;
+		int i = 0, sign = 1, length = str.length();
+		if (length == 0) {
+			return 0;
+		}
+		while (str.charAt(i) == ' ') {
+			if (++i == length) {
+				return 0;
+			}
+		}
+		if (str.charAt(i) == '-') {
+			sign = -1;
+		}
+		if (str.charAt(i) == '-' || str.charAt(i) == '+') {
+			i++;
+		}
+		for (int j = i; j < length; j++) {
+			if (str.charAt(j) < '0' || str.charAt(j) > '9') {
+				break;
+			}
+			if (res > border || res == border && str.charAt(j) > '7') {
+				return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+			}
+			res = res * 10 + (str.charAt(j) - '0');
+		}
+		return sign * res;
 	}
 }
