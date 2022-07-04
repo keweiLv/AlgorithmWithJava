@@ -1,3 +1,5 @@
+package daily;
+
 /**
  * @Author: Kezi
  * @Date: 2022/5/11 21:40

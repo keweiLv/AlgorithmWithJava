@@ -1,7 +1,6 @@
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
+package daily;
+
+import java.util.*;
 
 /**
  * @Author: Kezi
@@ -260,38 +259,100 @@ public class Solution {
 
 	// 为运算表达式设计优先级--有点难，理解解法但没掌握
 	char[] cs;
+
 	public List<Integer> diffWaysToCompute(String s) {
 		cs = s.toCharArray();
 		return dfs(0, cs.length - 1);
 	}
+
 	List<Integer> dfs(int l, int r) {
 		List<Integer> ans = new ArrayList<>();
 		for (int i = l; i <= r; i++) {
-			if (cs[i] >= '0' && cs[i] <= '9'){
+			if (cs[i] >= '0' && cs[i] <= '9') {
 				continue;
 			}
-			List<Integer> l1 = dfs(l,i-1),l2 = dfs(i+1,r);
-			for (int a : l1){
-				for (int b :l2){
+			List<Integer> l1 = dfs(l, i - 1), l2 = dfs(i + 1, r);
+			for (int a : l1) {
+				for (int b : l2) {
 					int cur = 0;
-					if (cs[i] == '+'){
+					if (cs[i] == '+') {
 						cur = a + b;
-					}else if (cs[i] == '-'){
+					} else if (cs[i] == '-') {
 						cur = a - b;
-					}else {
+					} else {
 						cur = a * b;
 					}
 					ans.add(cur);
 				}
 			}
 		}
-		if (ans.isEmpty()){
+		if (ans.isEmpty()) {
 			int cur = 0;
-			for (int i = l;i<=r;i++){
+			for (int i = l; i <= r; i++) {
 				cur = cur * 10 + (cs[i] - '0');
 			}
 			ans.add(cur);
 		}
 		return ans;
 	}
+
+	// 下一个最大元素Ⅲ
+	public int nextGreaterElement(int x) {
+		List<Integer> nums = new ArrayList<>();
+		while (x != 0) {
+			nums.add(x % 10);
+			x /= 10;
+		}
+		int n = nums.size(), idx = -1;
+		for (int i = 0; i < n - 1 && idx == -1; i++) {
+			if (nums.get(i + 1) < nums.get(i)) {
+				idx = i + 1;
+			}
+		}
+		if (idx == -1) {
+			return -1;
+		}
+		for (int i = 0; i < idx; i++) {
+			if (nums.get(i) > nums.get(idx)) {
+				swap(nums, i, idx);
+				break;
+			}
+		}
+		for (int l = 0, r = idx - 1; l < r; l++, r--) {
+			swap(nums, l, r);
+		}
+		long ans = 0;
+		for (int i = n - 1; i >= 0; i--) {
+			ans = ans * 10 + nums.get(i);
+		}
+		return ans > Integer.MAX_VALUE ? -1 : (int) ans;
+	}
+
+	void swap(List<Integer> nums, int a, int b) {
+		int c = nums.get(a);
+		nums.set(a, nums.get(b));
+		nums.set(b, c);
+	}
+
+	// 最小绝对差
+	public List<List<Integer>> minimumAbsDifference(int[] arr) {
+		Arrays.sort(arr);
+		List<List<Integer>> ans = new ArrayList<>();
+		int n = arr.length,min = arr[1] - arr[0];
+		for (int i = 0; i < n-1; i++) {
+			int cur = arr[i+1] - arr[i];
+			if (cur < min){
+				ans.clear();;
+				min = cur;
+			}
+			if (cur == min){
+				List<Integer> tmp = new ArrayList<>();
+				tmp.add(arr[i]);
+				tmp.add(arr[i+1]);
+				ans.add(tmp);
+			}
+		}
+		return ans;
+	}
+
 }
