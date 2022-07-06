@@ -135,7 +135,7 @@ public class Solution {
 	}
 
 	// 两数之和Ⅱ
-	public int[] twoSum(int[] numbers, int target) {
+	public int[] twoSumTwo(int[] numbers, int target) {
 		int i = 0;
 		int j = numbers.length - 1;
 		while (i < j) {
@@ -355,4 +355,19 @@ public class Solution {
 		return ans;
 	}
 
+	// 排序数组中两个数字的和
+	public int[] twoSum(int[] numbers, int target) {
+		int low = 0,high = numbers.length-1;
+		while (low < high){
+			int sum = numbers[low] + numbers[high];
+			if (sum == target){
+				return new int[]{low,high};
+			} else if (sum < target){
+				low++;
+			}else {
+				high--;
+			}
+		}
+		return new int[]{-1,-1};
+	}
 }
