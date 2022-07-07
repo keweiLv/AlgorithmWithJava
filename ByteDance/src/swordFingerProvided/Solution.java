@@ -149,7 +149,7 @@ public class Solution {
 			sum = sum >= 2 ? sum - 2 : sum;
 			res.append(sum);
 		}
-		if (carry == 1){
+		if (carry == 1) {
 			res.append(1);
 		}
 		return res.reverse().toString();
@@ -179,23 +179,53 @@ public class Solution {
 	 * 空间复杂度：O(n)
 	 */
 	public int maxProduct(String[] words) {
-		Map<Integer,Integer> map = new HashMap<>();
+		Map<Integer, Integer> map = new HashMap<>();
 		int n = words.length;
-		for (int i = 0; i < n;i++){
+		for (int i = 0; i < n; i++) {
 			int bitMask = 0;
-			for (char c : words[i].toCharArray()){
+			for (char c : words[i].toCharArray()) {
 				bitMask |= (1 << c - 'a');
 			}
-			map.put(bitMask,Math.max(map.getOrDefault(bitMask,0),words[i].length()));
+			map.put(bitMask, Math.max(map.getOrDefault(bitMask, 0), words[i].length()));
 		}
 		int ans = 0;
-		for (int x:map.keySet()){
-			for (int y : map.keySet()){
-				if ((x & y) == 0){
-					ans = Math.max(ans,map.get(x) * map.get(y));
+		for (int x : map.keySet()) {
+			for (int y : map.keySet()) {
+				if ((x & y) == 0) {
+					ans = Math.max(ans, map.get(x) * map.get(y));
 				}
 			}
 		}
 		return ans;
+	}
+
+	/**
+	 * 左右两边子数组的和相等
+	 * 总和为total,左侧元素之和为sum，则 2 * sum + nums[i] = total
+	 */
+	public int pivotIndex(int[] nums) {
+		int total = Arrays.stream(nums).sum();
+		int sum = 0;
+		for (int i = 0; i < nums.length; i++) {
+			if (2 * sum + nums[i] == total) {
+				return i;
+			}
+			sum += nums[i];
+		}
+		return -1;
+	}
+
+	// 和为k的子数组
+	public int subarraySum(int[] nums, int k) {
+		int pre_sum = 0;
+		int res = 0;
+		HashMap<Integer,Integer> map = new HashMap<>(16);
+		map.put(0, 1);
+		for (int i : nums) {
+			pre_sum += i;
+			res += map.getOrDefault(pre_sum - k, 0);
+			map.put(pre_sum, map.getOrDefault(pre_sum, 0) + 1);
+		}
+		return res;
 	}
 }

@@ -338,17 +338,18 @@ public class Solution {
 	public List<List<Integer>> minimumAbsDifference(int[] arr) {
 		Arrays.sort(arr);
 		List<List<Integer>> ans = new ArrayList<>();
-		int n = arr.length,min = arr[1] - arr[0];
-		for (int i = 0; i < n-1; i++) {
-			int cur = arr[i+1] - arr[i];
-			if (cur < min){
-				ans.clear();;
+		int n = arr.length, min = arr[1] - arr[0];
+		for (int i = 0; i < n - 1; i++) {
+			int cur = arr[i + 1] - arr[i];
+			if (cur < min) {
+				ans.clear();
+				;
 				min = cur;
 			}
-			if (cur == min){
+			if (cur == min) {
 				List<Integer> tmp = new ArrayList<>();
 				tmp.add(arr[i]);
-				tmp.add(arr[i+1]);
+				tmp.add(arr[i + 1]);
 				ans.add(tmp);
 			}
 		}
@@ -357,17 +358,64 @@ public class Solution {
 
 	// 排序数组中两个数字的和
 	public int[] twoSum(int[] numbers, int target) {
-		int low = 0,high = numbers.length-1;
-		while (low < high){
+		int low = 0, high = numbers.length - 1;
+		while (low < high) {
 			int sum = numbers[low] + numbers[high];
-			if (sum == target){
-				return new int[]{low,high};
-			} else if (sum < target){
+			if (sum == target) {
+				return new int[]{low, high};
+			} else if (sum < target) {
 				low++;
-			}else {
+			} else {
 				high--;
 			}
 		}
-		return new int[]{-1,-1};
+		return new int[]{-1, -1};
+	}
+
+	// 单词替换
+	static int N = 100000, M = 26;
+	static int[][] tr = new int[N][M];
+	static boolean[] isEnd = new boolean[N * M];
+	static int idx;
+
+	void add(String s) {
+		int p = 0;
+		for (int i = 0; i < s.length(); i++) {
+			int u = s.charAt(i) - 'a';
+			if (tr[p][u] == 0) {
+				tr[p][u] = ++idx;
+			}
+			p = tr[p][u];
+		}
+		isEnd[p] = true;
+	}
+
+	String query(String s) {
+		for (int i = 0, p = 0; i < s.length(); i++) {
+			int u = s.charAt(i) - 'a';
+			if (tr[p][u] == 0) {
+				break;
+			}
+			if (isEnd[tr[p][u]]) {
+				return s.substring(0, i + 1);
+			}
+			p = tr[p][u];
+		}
+		return s;
+	}
+
+	public String replaceWords(List<String> ds, String s) {
+		for (int i = 0; i <= idx; i++) {
+			Arrays.fill(tr[i],0);
+			isEnd[i] = false;
+		}
+		for (String d:ds){
+			add(d);
+		}
+		StringBuilder sb = new StringBuilder();
+		for (String str:s.split(" ")){
+			sb.append(query(str)).append(" ");
+		}
+		return sb.substring(0,sb.length()-1);
 	}
 }
