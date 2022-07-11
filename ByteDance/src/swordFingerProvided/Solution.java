@@ -1,8 +1,6 @@
 package swordFingerProvided;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Kezi
@@ -227,5 +225,45 @@ public class Solution {
 			map.put(pre_sum, map.getOrDefault(pre_sum, 0) + 1);
 		}
 		return res;
+	}
+
+	// 翻转链表
+	public ListNode reverseList(ListNode head) {
+		ListNode prev = null;
+		ListNode cur = head;
+		while (cur != null){
+			ListNode next = cur.next;
+			cur.next = prev;
+			prev = cur;
+			cur = next;
+		}
+		return prev;
+	}
+
+	// 链表中的两数相加
+	public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+		Deque<Integer> stack1 = new ArrayDeque<>();
+		Deque<Integer> stack2 = new ArrayDeque<>();
+		while (l1 != null) {
+			stack1.push(l1.val);
+			l1 = l1.next;
+		}
+		while (l2 != null) {
+			stack2.push(l2.val);
+			l2 = l2.next;
+		}
+		int carry = 0;
+		ListNode ans = null;
+		while (!stack1.isEmpty() || !stack2.isEmpty() || carry != 0) {
+			int a = stack1.isEmpty() ? 0 : stack1.pop();
+			int b = stack2.isEmpty() ? 0 : stack2.pop();
+			int cur = a + b + carry;
+			carry = cur / 10;
+			cur %= 10;
+			ListNode curNode = new ListNode(cur);
+			curNode.next = ans;
+			ans = curNode;
+		}
+		return ans;
 	}
 }
