@@ -406,16 +406,38 @@ public class Solution {
 
 	public String replaceWords(List<String> ds, String s) {
 		for (int i = 0; i <= idx; i++) {
-			Arrays.fill(tr[i],0);
+			Arrays.fill(tr[i], 0);
 			isEnd[i] = false;
 		}
-		for (String d:ds){
+		for (String d : ds) {
 			add(d);
 		}
 		StringBuilder sb = new StringBuilder();
-		for (String str:s.split(" ")){
+		for (String str : s.split(" ")) {
 			sb.append(query(str)).append(" ");
 		}
-		return sb.substring(0,sb.length()-1);
+		return sb.substring(0, sb.length() - 1);
+	}
+
+	// 奇数值单元格的数目
+	// & 1 为判断奇偶
+	public int oddCells(int m, int n, int[][] ins) {
+		int[] rows = new int[m], cols = new int[n];
+		for (int[] index : ins) {
+			rows[index[0]]++;
+			cols[index[1]]++;
+		}
+		int oddx = 0, oddy = 0;
+		for (int i = 0; i < m; i++) {
+			if ((rows[i] & 1) != 0) {
+				oddx++;
+			}
+		}
+		for (int i = 0; i < n; i++) {
+			if ((cols[i] & 1) != 0) {
+				oddy++;
+			}
+		}
+		return oddx * (n - oddy) + oddy * (m - oddx);
 	}
 }
