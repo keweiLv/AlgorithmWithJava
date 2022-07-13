@@ -440,4 +440,30 @@ public class Solution {
 		}
 		return oddx * (n - oddy) + oddy * (m - oddx);
 	}
+
+	// 行星碰撞
+	public int[] asteroidCollision(int[] asteroids ) {
+		Deque<Integer> deque = new ArrayDeque<>();
+		for (int item : asteroids){
+			boolean ok = true;
+			while (ok && !deque.isEmpty() && deque.peekLast() > 0 && item < 0){
+				int a = deque.peekLast(),b = -item;
+				if (a <= b){
+					deque.pollLast();
+				}
+				if (a >= b){
+					ok = false;
+				}
+			}
+			if (ok){
+				deque.addLast(item);
+			}
+		}
+		int size = deque.size();
+		int[] ans = new int[size];
+		while (!deque.isEmpty()){
+			ans[--size] = deque.pollLast();
+		}
+		return ans;
+	}
 }

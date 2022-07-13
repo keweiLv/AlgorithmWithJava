@@ -217,7 +217,7 @@ public class Solution {
 	public int subarraySum(int[] nums, int k) {
 		int pre_sum = 0;
 		int res = 0;
-		HashMap<Integer,Integer> map = new HashMap<>(16);
+		HashMap<Integer, Integer> map = new HashMap<>(16);
 		map.put(0, 1);
 		for (int i : nums) {
 			pre_sum += i;
@@ -231,7 +231,7 @@ public class Solution {
 	public ListNode reverseList(ListNode head) {
 		ListNode prev = null;
 		ListNode cur = head;
-		while (cur != null){
+		while (cur != null) {
 			ListNode next = cur.next;
 			cur.next = prev;
 			prev = cur;
@@ -271,17 +271,35 @@ public class Solution {
 	public ListNode removeNthFromEnd(ListNode head, int n) {
 		ListNode slow = head;
 		ListNode fast = head;
-		for (int i = 0;i < n;i++){
+		for (int i = 0; i < n; i++) {
 			fast = fast.next;
 		}
-		if (fast == null){
+		if (fast == null) {
 			return head;
 		}
-		while (fast.next != null){
+		while (fast.next != null) {
 			slow = slow.next;
 			fast = fast.next;
 		}
 		slow.next = slow.next.next;
 		return head;
+	}
+
+	// 有效的变位词
+	public boolean isAnagram(String s, String t) {
+		if (s.length() != t.length() || s.equals(t)) {
+			return false;
+		}
+		int[] table = new int[26];
+		for (int i = 0; i < s.length(); i++) {
+			table[s.charAt(i) - 'a']++;
+		}
+		for (int i = 0; i < t.length(); i++) {
+			table[t.charAt(i) - 'a']--;
+			if (table[t.charAt(i) - 'a'] < 0){
+				return false;
+			}
+		}
+		return true;
 	}
 }
