@@ -296,10 +296,39 @@ public class Solution {
 		}
 		for (int i = 0; i < t.length(); i++) {
 			table[t.charAt(i) - 'a']--;
-			if (table[t.charAt(i) - 'a'] < 0){
+			if (table[t.charAt(i) - 'a'] < 0) {
 				return false;
 			}
 		}
 		return true;
 	}
+
+	// 变位词组
+	public List<List<String>> groupAnagrams(String[] strs) {
+		HashMap<String, ArrayList<String>> map = new HashMap<>();
+		for (String str : strs) {
+			char[] chars = str.toCharArray();
+			Arrays.sort(chars);
+			String key = new String(chars);
+			ArrayList<String> tmp = map.getOrDefault(key, new ArrayList<>());
+			tmp.add(str);
+			map.put(key, tmp);
+		}
+		return new ArrayList<>(map.values());
+	}
+
+	// 每日温度
+	public int[] dailyTemperatures(int[] temperatures) {
+		Deque<Integer> deque = new ArrayDeque<>();
+		int[] res = new int[temperatures.length];
+		for (int i = 0; i < temperatures.length; i++) {
+			while (!deque.isEmpty() && temperatures[deque.peekLast()] < temperatures[i]){
+				int index = deque.pollLast();
+				res[index] = i - index;
+			}
+			deque.addLast(i);
+		}
+		return res;
+	}
+
 }
