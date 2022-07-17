@@ -466,4 +466,20 @@ public class Solution {
 		}
 		return ans;
 	}
+
+	// 数组嵌套
+	public int arrayNesting(int[] nums) {
+		int n = nums.length,ans = 0;
+		for (int i = 0;i<n;i++){
+			int cur = i,cnt = 0;
+			while (nums[cur] != -1){
+				cnt++;
+				int c = cur;
+				cur = nums[cur];
+				nums[c] = -1;
+			}
+			ans = Math.max(ans,cnt);
+		}
+		return ans;
+	}
 }

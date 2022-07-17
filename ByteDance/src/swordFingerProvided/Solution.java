@@ -322,7 +322,7 @@ public class Solution {
 		Deque<Integer> deque = new ArrayDeque<>();
 		int[] res = new int[temperatures.length];
 		for (int i = 0; i < temperatures.length; i++) {
-			while (!deque.isEmpty() && temperatures[deque.peekLast()] < temperatures[i]){
+			while (!deque.isEmpty() && temperatures[deque.peekLast()] < temperatures[i]) {
 				int index = deque.pollLast();
 				res[index] = i - index;
 			}
@@ -331,4 +331,25 @@ public class Solution {
 		return res;
 	}
 
+	// 回文链表
+	public boolean isPalindrome(ListNode head) {
+		List<Integer> vals = new ArrayList<>();
+		// 将链表复制到数组
+		ListNode current = head;
+		while (current != null) {
+			vals.add(current.val);
+			current = current.next;
+		}
+		// 双指针判断
+		int front = 0;
+		int back = vals.size() - 1;
+		while (front < back) {
+			if (!vals.get(front).equals(vals.get(back))){
+				return false;
+			}
+			front++;
+			back--;
+		}
+		return true;
+	}
 }
