@@ -1,5 +1,6 @@
 package swordFingerProvided;
 
+
 import java.util.*;
 
 /**
@@ -344,7 +345,7 @@ public class Solution {
 		int front = 0;
 		int back = vals.size() - 1;
 		while (front < back) {
-			if (!vals.get(front).equals(vals.get(back))){
+			if (!vals.get(front).equals(vals.get(back))) {
 				return false;
 			}
 			front++;
@@ -352,4 +353,41 @@ public class Solution {
 		}
 		return true;
 	}
+
+	// 二叉树中最底层最左边的值
+	public int findBottomLeftValue(TreeNode root) {
+		Queue<TreeNode> queue = new ArrayDeque<>();
+		queue.add(root);
+		int ret = root.val;
+		while (!queue.isEmpty()) {
+			int lg = queue.size();
+			for (int i = 0; i < lg; i++) {
+				TreeNode q = queue.poll();
+				if (i == 0){
+					ret = q.val;
+				}
+				if (q.left != null){
+					queue.add(q.left);
+				}
+				if (q.right != null){
+					queue.add(q.right);
+				}
+			}
+		}
+		return ret;
+	}
+
+	// 两个链表的第一个重合点
+	public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+		if (headA == null || headB == null){
+			return null;
+		}
+		ListNode pa = headA,pb = headB;
+		while (pa != pb){
+			pa = pa == null?headB:pa.next;
+			pb = pb == null?headA:pb.next;
+		}
+		return pa;
+	}
+
 }
