@@ -442,26 +442,26 @@ public class Solution {
 	}
 
 	// 行星碰撞
-	public int[] asteroidCollision(int[] asteroids ) {
+	public int[] asteroidCollision(int[] asteroids) {
 		Deque<Integer> deque = new ArrayDeque<>();
-		for (int item : asteroids){
+		for (int item : asteroids) {
 			boolean ok = true;
-			while (ok && !deque.isEmpty() && deque.peekLast() > 0 && item < 0){
-				int a = deque.peekLast(),b = -item;
-				if (a <= b){
+			while (ok && !deque.isEmpty() && deque.peekLast() > 0 && item < 0) {
+				int a = deque.peekLast(), b = -item;
+				if (a <= b) {
 					deque.pollLast();
 				}
-				if (a >= b){
+				if (a >= b) {
 					ok = false;
 				}
 			}
-			if (ok){
+			if (ok) {
 				deque.addLast(item);
 			}
 		}
 		int size = deque.size();
 		int[] ans = new int[size];
-		while (!deque.isEmpty()){
+		while (!deque.isEmpty()) {
 			ans[--size] = deque.pollLast();
 		}
 		return ans;
@@ -469,16 +469,37 @@ public class Solution {
 
 	// 数组嵌套
 	public int arrayNesting(int[] nums) {
-		int n = nums.length,ans = 0;
-		for (int i = 0;i<n;i++){
-			int cur = i,cnt = 0;
-			while (nums[cur] != -1){
+		int n = nums.length, ans = 0;
+		for (int i = 0; i < n; i++) {
+			int cur = i, cnt = 0;
+			while (nums[cur] != -1) {
 				cnt++;
 				int c = cur;
 				cur = nums[cur];
 				nums[c] = -1;
 			}
-			ans = Math.max(ans,cnt);
+			ans = Math.max(ans, cnt);
+		}
+		return ans;
+	}
+
+	// 二维网格迁移
+	public List<List<Integer>> shiftGrid(int[][] grid, int k) {
+		int n = grid.length, m = grid[0].length;
+		int[][] mnt = new int[n][m];
+		for (int i = 0; i < m; i++) {
+			int tcol = (i + k) % m, trow = ((i + k) / m) % n, idx = 0;
+			while (idx != n) {
+				mnt[(trow++) % n][tcol] = grid[idx++][i];
+			}
+		}
+		List<List<Integer>> ans = new ArrayList<>();
+		for (int i = 0; i < n; i++) {
+			List<Integer> alist = new ArrayList<>();
+			for (int j = 0; j < m; j++) {
+				alist.add(mnt[i][j]);
+			}
+			ans.add(alist);
 		}
 		return ans;
 	}

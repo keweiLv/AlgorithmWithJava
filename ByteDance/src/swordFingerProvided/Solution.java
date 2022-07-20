@@ -363,13 +363,13 @@ public class Solution {
 			int lg = queue.size();
 			for (int i = 0; i < lg; i++) {
 				TreeNode q = queue.poll();
-				if (i == 0){
+				if (i == 0) {
 					ret = q.val;
 				}
-				if (q.left != null){
+				if (q.left != null) {
 					queue.add(q.left);
 				}
-				if (q.right != null){
+				if (q.right != null) {
 					queue.add(q.right);
 				}
 			}
@@ -379,15 +379,40 @@ public class Solution {
 
 	// 两个链表的第一个重合点
 	public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-		if (headA == null || headB == null){
+		if (headA == null || headB == null) {
 			return null;
 		}
-		ListNode pa = headA,pb = headB;
-		while (pa != pb){
-			pa = pa == null?headB:pa.next;
-			pb = pb == null?headA:pb.next;
+		ListNode pa = headA, pb = headB;
+		while (pa != pb) {
+			pa = pa == null ? headB : pa.next;
+			pb = pb == null ? headA : pb.next;
 		}
 		return pa;
 	}
 
+
+	// 二叉树每层的最大值
+	public List<Integer> largestValues(TreeNode root) {
+		Queue<TreeNode> queue = new ArrayDeque<>();
+		List<Integer> ret = new ArrayList<>();
+		if (root != null) {
+			queue.add(root);
+		}
+		while (!queue.isEmpty()) {
+			int num = Integer.MIN_VALUE;
+			int lg = queue.size();
+			for (int i = 0; i < lg; i++) {
+				TreeNode p = queue.poll();
+				num = Math.max(num, p.val);
+				if (p.left != null) {
+					queue.add(p.left);
+				}
+				if (p.right != null) {
+					queue.add(p.right);
+				}
+			}
+			ret.add(num);
+		}
+		return ret;
+	}
 }
