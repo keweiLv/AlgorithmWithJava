@@ -84,13 +84,14 @@ public class SolutionTwo {
 				} else {
 					l = mid + 1;
 				}
-			}else {
+			} else {
 				ans = nums[mid];
 				break;
 			}
 		}
 		return ans;
 	}
+
 
 
 }
