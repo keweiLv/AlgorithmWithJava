@@ -92,6 +92,62 @@ public class SolutionTwo {
 		return ans;
 	}
 
+	/**
+	 * 有效的正方形
+	 * 该图形是正方形，那么任意三点组成的一定是等腰直角三角形，用此条件作为判断
+	 */
+	long len = -1;
+
+	public boolean validSquare(int[] p1, int[] p2, int[] p3, int[] p4) {
+		return calc(p1, p2, p3) && calc(p1, p2, p4) && calc(p1, p3, p4) && calc(p2, p3, p4);
+	}
+
+	boolean calc(int[] a, int[] b, int[] c) {
+		long l1 = (a[0] - b[0]) * (a[0] - b[0]) + (a[1] - b[1]) * (a[1] - b[1]);
+		long l2 = (a[0] - c[0]) * (a[0] - c[0]) + (a[1] - c[1]) * (a[1] - c[1]);
+		long l3 = (b[0] - c[0]) * (b[0] - c[0]) + (b[1] - c[1]) * (b[1] - c[1]);
+		boolean ok = (l1 == l2 && l1 + l2 == l3) || (l1 == l3 && l1 + l3 == l2) || (l2 == l3 && l2 + l3 == l1);
+		if (!ok) {
+			return false;
+		}
+		if (len == -1) {
+			len = Math.min(l1, l2);
+		} else if (len == 0 || len != Math.min(l1, l2)) {
+			return false;
+		}
+		return true;
+	}
+
+	// 链表的中间节点
+	public ListNode middleNode(ListNode head) {
+		ListNode slow = head, fast = head;
+		while (fast != null && fast.next != null) {
+			slow = slow.next;
+			fast = fast.next.next;
+		}
+		return slow;
+	}
+
+	// 环形链表Ⅱ
+	public ListNode detectCycle(ListNode head) {
+		ListNode fast = head, slow = head;
+		while (true) {
+			if (fast == null || fast.next == null) {
+				return null;
+			}
+			fast = fast.next.next;
+			slow = slow.next;
+			if (fast == slow) {
+				break;
+			}
+		}
+		fast = head;
+		while (slow != fast) {
+			slow = slow.next;
+			fast = fast.next;
+		}
+		return fast;
+	}
 
 
 }
