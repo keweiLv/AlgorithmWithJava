@@ -475,4 +475,53 @@ public class Solution {
 		}
 		return time;
 	}
+
+	/**
+	 * 合并区间
+	 * 如果我们按照区间的左端点排序，那么在排完序的列表中，可以合并的区间一定是连续的
+	 */
+	public int[][] merge(int[][] intervals) {
+		if (intervals.length == 0) {
+			return new int[0][2];
+		}
+		Arrays.sort(intervals, new Comparator<int[]>() {
+			@Override
+			public int compare(int[] o1, int[] o2) {
+				return o1[0] - o2[0];
+			}
+		});
+		List<int[]> merged = new ArrayList<>();
+		for (int i = 0; i < intervals.length; i++) {
+			int L = intervals[i][0], R = intervals[i][1];
+			if (merged.size() == 0 || merged.get(merged.size() - 1)[1] < L) {
+				merged.add(new int[]{L, R});
+			} else {
+				merged.get(merged.size() - 1)[1] = Math.max(merged.get(merged.size() - 1)[1], R);
+			}
+		}
+		return merged.toArray(new int[merged.size()][]);
+	}
+
+	/**
+	 * 数组相对排序
+	 * 方法返回值大于0的话就是前一个数和后一个数交换，如果b在map里面，a不在就换一下
+ 	 */
+	public int[] relativeSortArray(int[] arr1, int[] arr2) {
+		Map<Integer, Integer> map = new HashMap<>();
+		int len = arr2.length;
+		for (int i = 0; i < len; i++) {
+			map.put(arr2[i], i);
+		}
+		return Arrays.stream(arr1).boxed().sorted((i1, i2) -> {
+			if (map.containsKey(i1) && map.containsKey(i2)) {
+				return map.get(i1) - map.get(i2);
+			} else if (map.containsKey(i1)) {
+				return -1;
+			} else if (map.containsKey(i2)) {
+				return 1;
+			} else {
+				return i1 - i2;
+			}
+		}).mapToInt(Integer::valueOf).toArray();
+	}
 }

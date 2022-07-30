@@ -85,4 +85,36 @@ public class Solution {
 		}
 		return pre;
 	}
+
+	// 买卖股票的最佳时机
+	public int maxProfit(int prices[]) {
+		int minPrice = Integer.MAX_VALUE;
+		int maxPrice = 0;
+		for (int i = 0; i < prices.length; i++) {
+			if (prices[i] < minPrice) {
+				minPrice = prices[i];
+			} else if (prices[i] - minPrice > maxPrice) {
+				maxPrice = prices[i] - minPrice;
+			}
+		}
+		return maxPrice;
+	}
+
+	// 最长回文串
+	public int longestPalindrome(String s) {
+		int[] count = new int[128];
+		int len = s.length();
+		for (int i = 0; i < len; i++) {
+			char c = s.charAt(i);
+			count[c]++;
+		}
+		int ans = 0;
+		for (int v : count) {
+			ans += v / 2 * 2;
+			if (v % 2 == 1 && ans % 2 == 0) {
+				ans++;
+			}
+		}
+		return ans;
+	}
 }
