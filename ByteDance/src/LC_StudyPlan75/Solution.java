@@ -1,8 +1,7 @@
 package LC_StudyPlan75;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+
+import java.util.*;
 
 /**
  * @author Kezi
@@ -60,15 +59,15 @@ public class Solution {
 
 	// 合并两个有序链表
 	public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-		if (l1 == null){
+		if (l1 == null) {
 			return l2;
-		}else if (l2 == null){
+		} else if (l2 == null) {
 			return l1;
-		}else if (l1.val < l2.val){
-			l1.next = mergeTwoLists(l1.next,l2);
+		} else if (l1.val < l2.val) {
+			l1.next = mergeTwoLists(l1.next, l2);
 			return l1;
-		}else {
-			l2.next = mergeTwoLists(l1,l2.next);
+		} else {
+			l2.next = mergeTwoLists(l1, l2.next);
 			return l2;
 		}
 	}
@@ -77,7 +76,7 @@ public class Solution {
 	public ListNode reverseList(ListNode head) {
 		ListNode pre = null;
 		ListNode cur = head;
-		while (cur != null){
+		while (cur != null) {
 			ListNode next = cur.next;
 			cur.next = pre;
 			pre = cur;
@@ -114,6 +113,49 @@ public class Solution {
 			if (v % 2 == 1 && ans % 2 == 0) {
 				ans++;
 			}
+		}
+		return ans;
+	}
+
+	// N叉树的前序遍历
+	public List<Integer> preorder(Node root) {
+		List<Integer> res = new ArrayList<>();
+		helper(root, res);
+		return res;
+	}
+
+	private void helper(Node root, List<Integer> res) {
+		if (root == null) {
+			return;
+		}
+		res.add(root.val);
+		for (Node ch : root.children) {
+			helper(ch, res);
+		}
+	}
+
+	// 二叉树的层序遍历
+	public List<List<Integer>> levelOrder(TreeNode root) {
+		List<List<Integer>> ans = new ArrayList<>();
+		if (root == null) {
+			return ans;
+		}
+		Queue<TreeNode> queue = new LinkedList<>();
+		queue.offer(root);
+		while (!queue.isEmpty()) {
+			int len = queue.size();
+			List<Integer> list = new ArrayList<>();
+			for (int i = 0; i < len; i++) {
+				TreeNode node = queue.poll();
+				list.add(node.val);
+				if (node.left != null) {
+					queue.offer(node.left);
+				}
+				if (node.right != null) {
+					queue.offer(node.right);
+				}
+			}
+			ans.add(list);
 		}
 		return ans;
 	}

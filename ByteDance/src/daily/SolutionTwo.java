@@ -1,8 +1,6 @@
 package daily;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
  * @author Kezi
@@ -149,5 +147,29 @@ public class SolutionTwo {
 		return fast;
 	}
 
-
+	// 层内元素之和
+	public int maxLevelSum(TreeNode root) {
+		int ans = 1, maxSum = root.val;
+		List<TreeNode> q = new ArrayList<>();
+		q.add(root);
+		for (int lev = 1; !q.isEmpty(); ++lev) {
+			List<TreeNode> nq = new ArrayList<>();
+			int sum = 0;
+			for (TreeNode node:q){
+				sum += node.val;
+				if (node.left != null){
+					nq.add(node.left);
+				}
+				if (node.right != null){
+					nq.add(node.right);
+				}
+			}
+			if (sum > maxSum){
+				maxSum = sum;
+				ans = lev;
+			}
+			q = nq;
+		}
+		return ans;
+	}
 }
