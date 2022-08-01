@@ -155,21 +155,33 @@ public class SolutionTwo {
 		for (int lev = 1; !q.isEmpty(); ++lev) {
 			List<TreeNode> nq = new ArrayList<>();
 			int sum = 0;
-			for (TreeNode node:q){
+			for (TreeNode node : q) {
 				sum += node.val;
-				if (node.left != null){
+				if (node.left != null) {
 					nq.add(node.left);
 				}
-				if (node.right != null){
+				if (node.right != null) {
 					nq.add(node.right);
 				}
 			}
-			if (sum > maxSum){
+			if (sum > maxSum) {
 				maxSum = sum;
 				ans = lev;
 			}
 			q = nq;
 		}
 		return ans;
+	}
+
+	// 生成每种字符串都是奇数个的字符串
+	public String generateTheString(int n) {
+		StringBuilder sb = new StringBuilder();
+		if (n % 2 == 0 && --n >= 0) {
+			sb.append("a");
+		}
+		while (n-- > 0) {
+			sb.append("b");
+		}
+		return sb.toString();
 	}
 }

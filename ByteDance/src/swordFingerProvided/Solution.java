@@ -505,7 +505,7 @@ public class Solution {
 	/**
 	 * 数组相对排序
 	 * 方法返回值大于0的话就是前一个数和后一个数交换，如果b在map里面，a不在就换一下
- 	 */
+	 */
 	public int[] relativeSortArray(int[] arr1, int[] arr2) {
 		Map<Integer, Integer> map = new HashMap<>();
 		int len = arr2.length;
@@ -523,5 +523,37 @@ public class Solution {
 				return i1 - i2;
 			}
 		}).mapToInt(Integer::valueOf).toArray();
+	}
+
+	// 数组中的第K大的数字
+	public int findKthLargest(int[] nums, int k) {
+		PriorityQueue<Integer> pq = new PriorityQueue<>();
+		for (int i = 0; i < nums.length; i++) {
+			pq.offer(nums[i]);
+			if (pq.size() > k) {
+				pq.poll();
+			}
+		}
+		return pq.poll();
+	}
+
+	// 所有子集
+	List<List<Integer>> res = new ArrayList<>();
+	List<Integer> tmp = new ArrayList<>();
+
+	public List<List<Integer>> subsets(int[] nums) {
+		dfs(0, nums);
+		return res;
+	}
+
+	private void dfs(int i, int[] nums) {
+		if (i == nums.length) {
+			res.add(new ArrayList<>(tmp));
+			return;
+		}
+		tmp.add(nums[i]);
+		dfs(i + 1, nums);
+		tmp.remove(tmp.size() - 1);
+		dfs(i + 1, nums);
 	}
 }
