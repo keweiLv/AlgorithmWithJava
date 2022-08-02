@@ -176,4 +176,41 @@ public class Solution {
 		}
 		return -1;
 	}
+
+	// 验证二查搜索树
+	// 中序遍历
+	public boolean isValidBST(TreeNode root) {
+		Deque<TreeNode> deque = new LinkedList<>();
+		double inorder = -Double.MAX_VALUE;
+		while (!deque.isEmpty() || root != null) {
+			while (root != null) {
+				deque.push(root);
+				root = root.left;
+			}
+			root = deque.pop();
+			if (root.val <= inorder) {
+				return false;
+			}
+			inorder = root.val;
+			root = root.right;
+		}
+		return true;
+	}
+
+	// 二叉树的最近公共祖先
+	public TreeNode lowestCommonAncestor(TreeNode cur, TreeNode p, TreeNode q) {
+		if (cur == null || cur == p || cur == q) {
+			return cur;
+		}
+		TreeNode left = lowestCommonAncestor(cur.left, p, q);
+		TreeNode right = lowestCommonAncestor(cur.right, p, q);
+		if (left == null) {
+			return right;
+		}
+		if (right == null) {
+			return left;
+		}
+		return cur;
+	}
+
 }
