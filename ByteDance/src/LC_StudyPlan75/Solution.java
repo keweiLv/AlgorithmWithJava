@@ -213,4 +213,53 @@ public class Solution {
 		return cur;
 	}
 
+	// 图像渲染
+	int[] dx = {1, 0, 0, -1};
+	int[] dy = {0, 1, -1, 0};
+
+	public int[][] floodFill(int[][] image, int sr, int sc, int newColor) {
+		int curColor = image[sr][sc];
+		if (curColor != newColor) {
+			dfs(image, sr, sc, curColor, newColor);
+		}
+		return image;
+	}
+
+	private void dfs(int[][] image, int x, int y, int curColor, int newColor) {
+		if (image[x][y] == curColor) {
+			image[x][y] = newColor;
+			for (int i = 0; i < 4; i++) {
+				int mx = x + dx[i], my = y + dy[i];
+				if (mx >= 0 && mx < image.length && my >= 0 && my < image[0].length) {
+					dfs(image, mx, my, curColor, newColor);
+				}
+			}
+		}
+	}
+
+	// 岛屿数量
+	public int numIslands(char[][] grid) {
+		int count = 0;
+		for (int i = 0; i < grid.length; i++) {
+			for (int j = 0; i < grid[0].length; j++) {
+				if (grid[i][j] == '1') {
+					dfs(grid, i, j);
+					count++;
+				}
+			}
+		}
+		return count;
+	}
+
+	private void dfs(char[][] grid, int i, int j) {
+		if (i < 0 || j < 0 || i > grid.length || j >= grid[0].length || grid[i][j] == '0') {
+			return;
+		}
+		grid[i][j] = '0';
+		dfs(grid, i + 1, j);
+		dfs(grid, i, j + 1);
+		dfs(grid, i - 1, j);
+		dfs(grid, i, j - 1);
+	}
+
 }
