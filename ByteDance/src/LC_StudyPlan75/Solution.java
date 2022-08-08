@@ -262,4 +262,37 @@ public class Solution {
 		dfs(grid, i, j - 1);
 	}
 
+	// 斐波那契数列
+	public int fib(int n) {
+		if (n < 2) {
+			return n;
+		}
+		int a = 0, b = 1, c = 0;
+		for (int i = 2; i <= n; i++) {
+			c = a + b;
+			a = b;
+			b = c;
+		}
+		return c;
+	}
+
+
+	// 爬楼梯
+	public int climbStairs(int n) {
+		int p = 0, q = 0, r = 1;
+		for (int i = 1; i <= n; i++) {
+			p = q;
+			q = r;
+			r = p + q;
+		}
+		return r;
+	}
+
+	// 使用最小花费爬楼梯
+	public int minCostClimbingStairs(int[] cost) {
+		for (int i = 2; i < cost.length; i++) {
+			cost[i] = Math.min(cost[i - 2], cost[i - 1]) + cost[i];
+		}
+		return Math.min(cost[cost.length - 2], cost[cost.length - 1]);
+	}
 }
