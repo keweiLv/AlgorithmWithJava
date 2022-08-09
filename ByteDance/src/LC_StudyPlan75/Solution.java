@@ -295,4 +295,53 @@ public class Solution {
 		}
 		return Math.min(cost[cost.length - 2], cost[cost.length - 1]);
 	}
+
+	// 替换后的最长重复字符
+	public int characterReplacement(String s, int k) {
+		if (s == null) {
+			return 0;
+		}
+		int[] map = new int[26];
+		char[] chars = s.toCharArray();
+		int left = 0;
+		int right = 0;
+		int max = 0;
+		for (right = 0; right < chars.length; right++) {
+			int index = chars[right] - 'A';
+			map[index]++;
+			max = Math.max(max, map[index]);
+			if (max + k < right - left + 1) {
+				map[chars[left] - 'A']--;
+				left++;
+			}
+		}
+		return chars.length - left;
+	}
+
+	// 前K个高频单词
+	public List<String> topKFrequent(String[] words, int k) {
+		Map<String, Integer> cnt = new HashMap<>();
+		for (String word : words) {
+			cnt.put(word, cnt.getOrDefault(word, 0) + 1);
+		}
+		PriorityQueue<Map.Entry<String, Integer>> pq = new PriorityQueue<>(new Comparator<Map.Entry<String, Integer>>() {
+			@Override
+			public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+				return o1.getValue().equals(o2.getValue()) ? o2.getKey().compareTo(o1.getKey()) : o1.getValue() - o2.getValue();
+			}
+		});
+		for (Map.Entry<String, Integer> entry : cnt.entrySet()) {
+			pq.offer(entry);
+			if (pq.size() > k) {
+				pq.poll();
+			}
+		}
+		List<String> ret = new ArrayList<>();
+		while (!pq.isEmpty()) {
+			ret.add(pq.poll().getKey());
+		}
+		Collections.reverse(ret);
+		return ret;
+	}
+
 }

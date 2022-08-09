@@ -516,4 +516,14 @@ public class Solution {
 		}
 		return root.val == 0 ? null : root;
 	}
+
+	// 逐步求和得到正数的最小值
+	public int minStartValue(int[] nums) {
+		int sum = 0, sumMin = 0;
+		for (int num : nums) {
+			sum += num;
+			sumMin = Math.min(sumMin,sum);
+		}
+		return 1 - sumMin;
+	}
 }
