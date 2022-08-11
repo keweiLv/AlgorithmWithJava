@@ -522,8 +522,84 @@ public class Solution {
 		int sum = 0, sumMin = 0;
 		for (int num : nums) {
 			sum += num;
-			sumMin = Math.min(sumMin,sum);
+			sumMin = Math.min(sumMin, sum);
 		}
 		return 1 - sumMin;
+	}
+
+	// 求解方程
+	private static final String CHARS = "-+x=";
+
+	public String solveEquation(String equation) {
+		equation += "=";
+		int sign = 1, cur = 0, num = 0, k = 0;
+		boolean havVal = false, left = true;
+		for (int i = 0; i < equation.length(); i++) {
+			char c = equation.charAt(i);
+			if (CHARS.contains(String.valueOf(c))) {
+				if (c == 'x') {
+					if (!havVal && cur == 0) {
+						cur = 1;
+					}
+					k += left ? sign * cur : -sign * cur;
+				} else {
+					num -= left ? sign * cur : -sign * cur;
+				}
+				cur = 0;
+				havVal = false;
+			}
+			switch (c) {
+				case '-':
+					sign = -1;
+					break;
+				case '+':
+					sign = 1;
+					break;
+				case '=':
+					sign = 1;
+					left = false;
+					break;
+				case 'x':
+					break;
+				default:
+					cur = cur * 10 + (c - '0');
+					havVal = true;
+			}
+		}
+		if (k == 0) {
+			return num != 0 ? "No solution" : "Infinite solutions";
+		}
+		return num % k == 0 ? String.format("x=%d", num / k) : "No solution";
+	}
+
+	// 重新格式化字符串
+	public String reformat(String s) {
+		StringBuilder a = new StringBuilder(), b = new StringBuilder();
+		for (char c : s.toCharArray()) {
+			if (c >= 'a') {
+				a.append(c);
+			} else {
+				b.append(c);
+			}
+		}
+		int n = a.length(), m = b.length(), tot = n + m;
+		if (Math.abs(n - m) > 1) {
+			return "";
+		}
+		StringBuilder sb = new StringBuilder();
+		while (sb.length() != tot){
+			if (n>m){
+				sb.append(a.charAt(n--));
+			}else if (n < m){
+				sb.append(b.charAt(m--));
+			}else {
+				if (!"".equals(sb.toString()) && sb.charAt(sb.length() - 1) >= 'a') {
+					sb.append(b.charAt(m--));
+				}else{
+					sb.append(a.charAt(n--));
+				}
+			}
+		}
+		return sb.toString();
 	}
 }

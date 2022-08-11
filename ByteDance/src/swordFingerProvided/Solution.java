@@ -568,4 +568,88 @@ public class Solution {
 		}
 		return cur;
 	}
+
+	// 三角形中最小路径之和
+	public int minimumTotal(List<List<Integer>> triangle) {
+		int m = triangle.size();
+		int[] dp = new int[m + 1];
+		// 从底部开始
+		for (int i = m - 1; i >= 0; i--) {
+			// 行内顺序更新
+			for (int j = 0; j <= i; j++) {
+				dp[j] = triangle.get(i).get(j) + Math.min(dp[j], dp[j + 1]);
+			}
+		}
+		return dp[0];
+	}
+
+	// 分割等和子串
+	public boolean canPartition(int[] nums) {
+		int n = nums.length;
+		if (n < 2) {
+			return false;
+		}
+		int sum = 0, maxNum = 0;
+		for (int num : nums) {
+			sum += num;
+			maxNum = Math.max(maxNum, num);
+		}
+		if (sum % 2 != 0) {
+			return false;
+		}
+		int target = sum / 2;
+		if (maxNum > target) {
+			return false;
+		}
+		boolean[] dp = new boolean[target + 1];
+		dp[0] = true;
+		for (int i = 0; i < n; i++) {
+			int num = nums[i];
+			for (int j = target; j >= num; j--) {
+				dp[j] |= dp[j - num];
+			}
+		}
+		return dp[target];
+	}
+
+	// 岛屿的最大面积
+	public int maxAreaOfIsland(int[][] grid) {
+		int ans = 0;
+		for (int i = 0; i < grid.length; ++i) {
+			for (int j = 0; j < grid[0].length; ++j) {
+				ans = Math.max(ans, dfs(grid, i, j));
+			}
+		}
+		return ans;
+	}
+
+	private int dfs(int[][] grid, int i, int j) {
+		if (i < 0 || j < 0 || i >= grid.length || j >= grid[0].length || grid[i][j] != 1) {
+			return 0;
+		}
+		grid[i][j] = 0;
+		int[] di = {0, 0, -1, 1};
+		int[] dj = {1, -1, 0, 0};
+		int ans = 1;
+		for (int index = 0; index < 4; ++index) {
+			int next_i = i + di[index], next_j = j + dj[index];
+			ans += dfs(grid, next_i, next_j);
+		}
+		return ans;
+	}
+
+	// 粉刷房子--算easy题，要牢记
+	public int minCost(int[][] costs) {
+		int n = costs.length;
+		int a = costs[0][0], b = costs[0][1], c = costs[0][2];
+		for (int i = 1; i < n; i++) {
+			int d = Math.min(b, c) + costs[i][0];
+			int e = Math.min(a, c) + costs[i][1];
+			int f = Math.min(a, b) + costs[i][2];
+			a = d;
+			b = e;
+			c = f;
+		}
+		return Math.min(a,Math.min(b,c));
+	}
 }
