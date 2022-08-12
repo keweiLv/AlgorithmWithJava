@@ -587,19 +587,42 @@ public class Solution {
 			return "";
 		}
 		StringBuilder sb = new StringBuilder();
-		while (sb.length() != tot){
-			if (n>m){
+		while (sb.length() != tot) {
+			if (n > m) {
 				sb.append(a.charAt(n--));
-			}else if (n < m){
+			} else if (n < m) {
 				sb.append(b.charAt(m--));
-			}else {
+			} else {
 				if (!"".equals(sb.toString()) && sb.charAt(sb.length() - 1) >= 'a') {
 					sb.append(b.charAt(m--));
-				}else{
+				} else {
 					sb.append(a.charAt(n--));
 				}
 			}
 		}
 		return sb.toString();
+	}
+
+	// 用户分组
+	public List<List<Integer>> groupThePeople(int[] gs) {
+		Map<Integer, List<Integer>> map = new HashMap<>();
+		for (int i = 0; i < gs.length; i++) {
+			List<Integer> list = map.getOrDefault(gs[i], new ArrayList<>());
+			list.add(i);
+			map.put(gs[i], list);
+		}
+		List<List<Integer>> ans = new ArrayList<>();
+		for (int k : map.keySet()) {
+			List<Integer> integers = map.get(k);
+			List<Integer> cur = new ArrayList<>();
+			for (Integer integer : integers) {
+				cur.add(integer);
+				if (cur.size() == k) {
+					ans.add(cur);
+					cur = new ArrayList<>();
+				}
+			}
+		}
+		return ans;
 	}
 }
