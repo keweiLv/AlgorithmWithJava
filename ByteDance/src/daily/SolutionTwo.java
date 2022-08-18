@@ -185,6 +185,37 @@ public class SolutionTwo {
 		return sb.toString();
 	}
 
-	//
+	/**
+	 * 分割平衡字符串
+	 * 更好的方式是转换为数学判定，使用 1 来代指 L 得分，使用 -1 来代指 R 得分
+	 * 题目要求分割的 LR 子串尽可能多，直观上应该是尽可能让每个分割串尽可能短(归纳法证明该猜想的正确性)
+	 */
+	public int balancedStringSplit(String s) {
+		char[] cs = s.toCharArray();
+		int n = cs.length;
+		int ans = 0;
+		for (int i = 0; i < n; ) {
+			int j = i + 1, score = cs[i] == 'L' ? 1 : -1;
+			while (j < n && score != 0) {
+				score += cs[j++] == 'L' ? 1 : -1;
+			}
+			i = j;
+			ans++;
+		}
+		return ans;
+	}
+
+	// 数组中第K大的元素
+	public int findKthLargest(int[] nums, int k) {
+		PriorityQueue<Integer> pq = new PriorityQueue<>(k, Comparator.comparingInt(a -> a));
+		for (int num : nums) {
+			pq.offer(num);
+			if (pq.size() > k) {
+				pq.poll();
+			}
+		}
+		return pq.peek();
+	}
+
 
 }
