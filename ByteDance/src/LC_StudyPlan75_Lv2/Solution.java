@@ -19,6 +19,7 @@ public class Solution {
 		}
 		return slow == 1;
 	}
+
 	private int squareSum(int n) {
 		int sum = 0;
 		while (n > 0) {
@@ -27,5 +28,53 @@ public class Solution {
 			n /= 10;
 		}
 		return sum;
+	}
+
+	// 最长公共前缀
+	public String longestCommonPrefix(String[] strs) {
+		if (strs.length == 0) {
+			return "";
+		}
+		String ans = strs[0];
+		for (int i = 1; i < strs.length; i++) {
+			int j = 0;
+			for (; j < ans.length() && j < strs[i].length(); j++) {
+				if (ans.charAt(j) != strs[i].charAt(j)) {
+					break;
+				}
+			}
+			ans = ans.substring(0, j);
+			if (ans.equals("")) {
+				return ans;
+			}
+		}
+		return ans;
+	}
+
+	// 回文链表
+	public boolean isPalindrome(ListNode head) {
+		if (head == null || head.next == null) {
+			return true;
+		}
+		ListNode slow = head, fast = head;
+		ListNode pre = head, prePre = null;
+		while (fast != null && fast.next != null) {
+			pre = slow;
+			slow = slow.next;
+			fast = fast.next.next;
+			pre.next = prePre;
+			prePre = pre;
+		}
+		if (fast != null) {
+			slow = slow.next;
+		}
+		while (pre != null && slow != null) {
+			if (pre.val != slow.val) {
+				return false;
+			}
+			pre = pre.next;
+			slow = slow.next;
+		}
+		return true;
 	}
 }
