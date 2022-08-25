@@ -185,46 +185,47 @@ public class SolutionTwo {
 		return sb.toString();
 	}
 
-    // 分割字符串的最大得分
-    public int maxScore(String s) {
-        int n = s.length(), cur = s.charAt(0) == '0' ? 1 : 0;
-        for (int i = 1; i < n; i++) {
-            cur += s.charAt(i) - '0';
-        }
-        int ans = cur;
-        for (int i = 1; i < n - 1; i++) {
-            cur += s.charAt(i) == '0' ? 1 : -1;
-            ans = Math.max(ans, cur);
-        }
-        return ans;
-    }
+	// 分割字符串的最大得分
+	public int maxScore(String s) {
+		int n = s.length(), cur = s.charAt(0) == '0' ? 1 : 0;
+		for (int i = 1; i < n; i++) {
+			cur += s.charAt(i) - '0';
+		}
+		int ans = cur;
+		for (int i = 1; i < n - 1; i++) {
+			cur += s.charAt(i) == '0' ? 1 : -1;
+			ans = Math.max(ans, cur);
+		}
+		return ans;
+	}
 
-    // 反转链表
-    public ListNode reverseList(ListNode head) {
-        ListNode pre = null;
-        ListNode cur = head;
-        while (cur != null) {
-            ListNode next = cur.next;
-            cur.next = pre;
-            pre = cur;
-            cur = next;
-        }
-        return pre;
-    }
+	// 反转链表
+	public ListNode reverseList(ListNode head) {
+		ListNode pre = null;
+		ListNode cur = head;
+		while (cur != null) {
+			ListNode next = cur.next;
+			cur.next = pre;
+			pre = cur;
+			cur = next;
+		}
+		return pre;
+	}
 
 
-    // 回文数字
-    public boolean isPalindrome(int x) {
-        if (x < 0 || (x % 10 == 0 && x != 0)) {
-            return false;
-        }
-        int rev = 0;
-        while (x > rev) {
-            rev = rev * 10 + x % 10;
-            x /= 10;
-        }
-        return x == rev || x == rev / 10;
-    }
+	// 回文数字
+	public boolean isPalindrome(int x) {
+		if (x < 0 || (x % 10 == 0 && x != 0)) {
+			return false;
+		}
+		int rev = 0;
+		while (x > rev) {
+			rev = rev * 10 + x % 10;
+			x /= 10;
+		}
+		return x == rev || x == rev / 10;
+	}
+
 	/**
 	 * 分割平衡字符串
 	 * 更好的方式是转换为数学判定，使用 1 来代指 L 得分，使用 -1 来代指 R 得分
@@ -258,41 +259,75 @@ public class SolutionTwo {
 	}
 
 
-    // 一年中的第几天
-    static int[] nums = new int[]{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    static int[] f = new int[13];
-    static {
-        for (int i = 1; i <= 12; i++) {
-            f[i] = f[i - 1] + nums[i - 1];
-        }
-    }
-    public int dayOfYear(String date) {
-        String[] ss = date.split("-");
-        int y = Integer.parseInt(ss[0]), m = Integer.parseInt(ss[1]), d = Integer.parseInt(ss[2]);
-        boolean isLeap = (y % 4 == 0 && y % 100 != 0) || y % 400 == 0;
-        int ans = m > 2 && isLeap ? f[m - 1] + 1 : f[m - 1];
-        return ans + d;
-    }
+	// 一年中的第几天
+	static int[] nums = new int[]{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+	static int[] f = new int[13];
 
-    // 含有k个元素的组合
-    List<List<Integer>> ans;
-    public List<List<Integer>> combine(int n,int k){
-        ans = new ArrayList<>();
-        dfs(n,1,k,new ArrayList<>());
-        return ans;
-    }
-    private void dfs(int n, int i, int k, List<Integer> list) {
-        // 剪枝
-        if (n - i + 1 < k){
-            return;
-        }
-        if (k == 0){
-            ans.add(new ArrayList<>(list));
-            return;
-        }
-        list.add(i);
-        dfs(n,i+1,k-1,list);
-        list.remove(list.size()-1);
-        dfs(n,i+1,k,list);
-    }
+	static {
+		for (int i = 1; i <= 12; i++) {
+			f[i] = f[i - 1] + nums[i - 1];
+		}
+	}
+
+	public int dayOfYear(String date) {
+		String[] ss = date.split("-");
+		int y = Integer.parseInt(ss[0]), m = Integer.parseInt(ss[1]), d = Integer.parseInt(ss[2]);
+		boolean isLeap = (y % 4 == 0 && y % 100 != 0) || y % 400 == 0;
+		int ans = m > 2 && isLeap ? f[m - 1] + 1 : f[m - 1];
+		return ans + d;
+	}
+
+	// 含有k个元素的组合
+	List<List<Integer>> ans;
+
+	public List<List<Integer>> combine(int n, int k) {
+		ans = new ArrayList<>();
+		dfs(n, 1, k, new ArrayList<>());
+		return ans;
+	}
+
+	private void dfs(int n, int i, int k, List<Integer> list) {
+		// 剪枝
+		if (n - i + 1 < k) {
+			return;
+		}
+		if (k == 0) {
+			ans.add(new ArrayList<>(list));
+			return;
+		}
+		list.add(i);
+		dfs(n, i + 1, k - 1, list);
+		list.remove(list.size() - 1);
+		dfs(n, i + 1, k, list);
+	}
+
+	// 找到K个最接近的元素
+	public List<Integer> findClosestElements(int[] arr, int k, int x) {
+		int n = arr.length, l = 0, r = n - 1;
+		while (l < r) {
+			int mid = l + r + 1 >> 1;
+			if (arr[mid] <= x) l = mid;
+			else r = mid - 1;
+		}
+		r = r + 1 < n && Math.abs(arr[r + 1] - x) < Math.abs(arr[r] - x) ? r + 1 : r;
+		int i = r - 1, j = r + 1;
+		while (j - i - 1 < k) {
+			if (i >= 0 && j < n) {
+				if (Math.abs(arr[j] - x) < Math.abs(arr[i] - x)) {
+					j++;
+				} else {
+					i--;
+				}
+			} else if (i >= 0) {
+				i--;
+			} else {
+				j++;
+			}
+		}
+		List<Integer> ans = new ArrayList<>();
+		for (int p = i + 1; p <= j - 1; p++) {
+			ans.add(arr[p]);
+		}
+		return ans;
+	}
 }
