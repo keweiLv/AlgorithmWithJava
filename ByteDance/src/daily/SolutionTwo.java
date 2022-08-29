@@ -258,24 +258,23 @@ public class SolutionTwo {
 		return pq.peek();
 	}
 
+    // 一年中的第几天
+    static int[] nums = new int[]{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    static int[] f = new int[13];
 
-	// 一年中的第几天
-	static int[] nums = new int[]{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-	static int[] f = new int[13];
+    static {
+        for (int i = 1; i <= 12; i++) {
+            f[i] = f[i - 1] + nums[i - 1];
+        }
+    }
 
-	static {
-		for (int i = 1; i <= 12; i++) {
-			f[i] = f[i - 1] + nums[i - 1];
-		}
-	}
-
-	public int dayOfYear(String date) {
-		String[] ss = date.split("-");
-		int y = Integer.parseInt(ss[0]), m = Integer.parseInt(ss[1]), d = Integer.parseInt(ss[2]);
-		boolean isLeap = (y % 4 == 0 && y % 100 != 0) || y % 400 == 0;
-		int ans = m > 2 && isLeap ? f[m - 1] + 1 : f[m - 1];
-		return ans + d;
-	}
+    public int dayOfYear(String date) {
+        String[] ss = date.split("-");
+        int y = Integer.parseInt(ss[0]), m = Integer.parseInt(ss[1]), d = Integer.parseInt(ss[2]);
+        boolean isLeap = (y % 4 == 0 && y % 100 != 0) || y % 400 == 0;
+        int ans = m > 2 && isLeap ? f[m - 1] + 1 : f[m - 1];
+        return ans + d;
+    }
 
 	// 含有k个元素的组合
 	List<List<Integer>> ans;
@@ -306,8 +305,11 @@ public class SolutionTwo {
 		int n = arr.length, l = 0, r = n - 1;
 		while (l < r) {
 			int mid = l + r + 1 >> 1;
-			if (arr[mid] <= x) l = mid;
-			else r = mid - 1;
+			if (arr[mid] <= x) {
+				l = mid;
+			} else {
+				r = mid - 1;
+			}
 		}
 		r = r + 1 < n && Math.abs(arr[r + 1] - x) < Math.abs(arr[r] - x) ? r + 1 : r;
 		int i = r - 1, j = r + 1;
@@ -330,4 +332,13 @@ public class SolutionTwo {
 		}
 		return ans;
 	}
+
+    // 重新排列数组
+    public int[] shuffle(int[] nums, int n) {
+        int[] ans = new int[2 * n];
+        for (int i = 0, j = n, k = 0; k < 2 * n; n++) {
+            ans[k] = k % 2 == 0 ? nums[i++] : nums[j++];
+        }
+        return ans;
+    }
 }
