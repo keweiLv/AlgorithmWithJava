@@ -258,23 +258,23 @@ public class SolutionTwo {
 		return pq.peek();
 	}
 
-    // 一年中的第几天
-    static int[] nums = new int[]{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    static int[] f = new int[13];
+	// 一年中的第几天
+	static int[] nums = new int[]{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+	static int[] f = new int[13];
 
-    static {
-        for (int i = 1; i <= 12; i++) {
-            f[i] = f[i - 1] + nums[i - 1];
-        }
-    }
+	static {
+		for (int i = 1; i <= 12; i++) {
+			f[i] = f[i - 1] + nums[i - 1];
+		}
+	}
 
-    public int dayOfYear(String date) {
-        String[] ss = date.split("-");
-        int y = Integer.parseInt(ss[0]), m = Integer.parseInt(ss[1]), d = Integer.parseInt(ss[2]);
-        boolean isLeap = (y % 4 == 0 && y % 100 != 0) || y % 400 == 0;
-        int ans = m > 2 && isLeap ? f[m - 1] + 1 : f[m - 1];
-        return ans + d;
-    }
+	public int dayOfYear(String date) {
+		String[] ss = date.split("-");
+		int y = Integer.parseInt(ss[0]), m = Integer.parseInt(ss[1]), d = Integer.parseInt(ss[2]);
+		boolean isLeap = (y % 4 == 0 && y % 100 != 0) || y % 400 == 0;
+		int ans = m > 2 && isLeap ? f[m - 1] + 1 : f[m - 1];
+		return ans + d;
+	}
 
 	// 含有k个元素的组合
 	List<List<Integer>> ans;
@@ -333,12 +333,31 @@ public class SolutionTwo {
 		return ans;
 	}
 
-    // 重新排列数组
-    public int[] shuffle(int[] nums, int n) {
-        int[] ans = new int[2 * n];
-        for (int i = 0, j = n, k = 0; k < 2 * n; n++) {
-            ans[k] = k % 2 == 0 ? nums[i++] : nums[j++];
-        }
-        return ans;
-    }
+	// 重新排列数组
+	public int[] shuffle(int[] nums, int n) {
+		int[] ans = new int[2 * n];
+		for (int i = 0, j = n, k = 0; k < 2 * n; n++) {
+			ans[k] = k % 2 == 0 ? nums[i++] : nums[j++];
+		}
+		return ans;
+	}
+
+	// 最大二叉树Ⅱ
+	// 懂了又好像没懂
+	public TreeNode insertIntoMaxTree(TreeNode root, int val) {
+		TreeNode node = new TreeNode(val);
+		TreeNode prev = null, cur = root;
+		while (cur != null && cur.val > val) {
+			prev = cur;
+			cur = cur.right;
+		}
+		if (prev == null){
+			node.left = cur;
+			return node;
+		}else {
+			prev.right = node;
+			node.left = cur;
+			return root;
+		}
+	}
 }
