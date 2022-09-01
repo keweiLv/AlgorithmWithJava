@@ -80,12 +80,12 @@ public class Solution {
 
 	// 奇偶链表
 	public ListNode oddEvenList(ListNode head) {
-		if (head == null){
+		if (head == null) {
 			return head;
 		}
 		ListNode evenHead = head.next;
-		ListNode odd = head,even = evenHead;
-		while (even != null && even.next != null){
+		ListNode odd = head, even = evenHead;
+		while (even != null && even.next != null) {
 			odd.next = even.next;
 			odd = odd.next;
 			even.next = odd.next;
@@ -95,4 +95,15 @@ public class Solution {
 		return head;
 	}
 
+	// 打家劫舍
+	public int rob(int[] nums) {
+		int pre = 0;
+		int cur = 0;
+		for (int num : nums) {
+			int tmp = Math.max(cur, pre + num);
+			pre = cur;
+			cur = tmp;
+		}
+		return cur;
+	}
 }
