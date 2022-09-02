@@ -390,4 +390,20 @@ public class SolutionTwo {
 		}
 		return ans;
 	}
+
+    // 最长同值路径
+    int result = 0;
+    public int longestUnivaluePath(TreeNode root) {
+        calculate(root);
+        return result;
+    }
+    public int calculate(TreeNode node) {
+        if (node == null) return 0;
+        int leftValue = calculate(node.left);
+        int rightValue = calculate(node.right);
+        leftValue = (node.left != null && node.val == node.left.val) ? ++leftValue : 0;
+        rightValue = (node.right != null && node.val == node.right.val) ? ++rightValue : 0;
+        result = Math.max(result, leftValue + rightValue);
+        return Math.max(leftValue, rightValue);
+    }
 }
