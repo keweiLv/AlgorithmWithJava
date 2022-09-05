@@ -415,16 +415,37 @@ public class SolutionTwo {
         int[] r = new int[n], c = new int[m];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-				r[i] += mat[i][j];c[j] += mat[i][j];
+                r[i] += mat[i][j];
+                c[j] += mat[i][j];
             }
         }
-        for (int i = 0;i<n;i++){
-            for (int j = 0;j<m;j++){
-                if (mat[i][j] == 1 && r[i] == 1 && c[j] == 1){
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (mat[i][j] == 1 && r[i] == 1 && c[j] == 1) {
                     ans++;
                 }
             }
         }
         return ans;
     }
+
+    // 寻找重复的子树
+    Map<String, Integer> map = new HashMap<>();
+    List<TreeNode> res = new ArrayList<>();
+    public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+        dfs(root);
+        return res;
+    }
+    private String dfs(TreeNode root) {
+        if (root == null) {
+            return "";
+        }
+        String key = new StringBuilder().append(root.val).append(",").append(dfs(root.left)).append(",").append(dfs(root.right)).toString();
+        if (map.getOrDefault(key, 0) == 1) {
+            res.add(root);
+        }
+        map.put(key, map.getOrDefault(key, 0) + 1);
+        return key;
+    }
+
 }

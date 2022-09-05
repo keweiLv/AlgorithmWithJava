@@ -1,6 +1,8 @@
 package LC_StudyPlan75_Lv2;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Kezi
@@ -138,4 +140,25 @@ public class Solution {
         }
         return dp[amount] > amount?-1:dp[amount];
     }
+
+    // 二叉树的右视图--DFS，很妙
+    List<Integer> res = new ArrayList<>();
+    public List<Integer> rightSideView(TreeNode root) {
+        dfs(root,0);
+        return res;
+    }
+    private void dfs(TreeNode root, int depth) {
+        if (root == null){
+            return;
+        }
+        // 先访问当前节点，再递归访问右子树和左子树
+        if (depth == res.size()){
+            // 如果当前节点所在深度没在res出现，则代表当前节点是该深度下第一个被访问的节点，因此加入res
+            res.add(root.val);
+        }
+        depth++;
+        dfs(root.right,depth);
+        dfs(root.left,depth);
+    }
+
 }
