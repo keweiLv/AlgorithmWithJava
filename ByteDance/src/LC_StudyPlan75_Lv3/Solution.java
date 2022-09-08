@@ -1,5 +1,9 @@
 package LC_StudyPlan75_Lv3;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @author Kezi
  * @date 2022年09月08日 0:02
@@ -14,10 +18,46 @@ public class Solution {
 	 */
 	public int hammingWeight(int n) {
 		int count = 0;
-		while (n!=0){
+		while (n != 0) {
 			count += n & 1;
 			n >>>= 1;
 		}
 		return count;
+	}
+
+	// 只出现一次的数字
+	public int singleNumber(int[] nums) {
+		int ans = nums[0];
+		for (int i = 1; i < nums.length; i++) {
+			ans = ans ^ nums[i];
+		}
+		return ans;
+	}
+
+	// 子集Ⅱ
+	private List<List<Integer>> ans;
+	private List<Integer> path;
+	public List<List<Integer>> subsetsWithDup(int[] nums) {
+		ans = new ArrayList<>();
+		path = new ArrayList<>();
+		Arrays.sort(nums);
+		int n = nums.length;
+		boolean[] visited = new boolean[n];
+		// 开始回溯
+		backtrace(nums, 0, visited, n);
+		return ans;
+	}
+	private void backtrace(int[] nums, int start, boolean[] visited, int n) {
+		ans.add(new ArrayList<>(path));
+		for (int i = start; i < n; i++) {
+			if (i > 0 && nums[i - 1] == nums[i] && !visited[i - 1]) {
+				continue;
+			}
+			visited[i] = true;
+			path.add(nums[i]);
+			backtrace(nums, i + 1, visited, n);
+			visited[i] = false;
+			path.remove(path.size() - 1);
+		}
 	}
 }

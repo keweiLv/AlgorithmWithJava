@@ -454,7 +454,7 @@ public class SolutionTwo {
 	public String reorderSpaces(String s) {
 		int n = s.length(), cnt = 0;
 		List<String> list = new ArrayList<>();
-		for (int i = 0; i < n;) {
+		for (int i = 0; i < n; ) {
 			if (s.charAt(i) == ' ' && ++i >= 0 && ++cnt >= 0) {
 				continue;
 			}
@@ -466,22 +466,41 @@ public class SolutionTwo {
 			i = j;
 		}
 		StringBuilder sb = new StringBuilder();
-		int m = list.size(),t = cnt / Math.max(m-1,1);
+		int m = list.size(), t = cnt / Math.max(m - 1, 1);
 		String k = "";
-		while (t-- > 0){
+		while (t-- > 0) {
 			k += " ";
 		}
-		for (int i = 0;i<m;i++){
+		for (int i = 0; i < m; i++) {
 			sb.append(list.get(i));
-			if (i != m-1){
+			if (i != m - 1) {
 				sb.append(k);
 			}
 		}
-		while (sb.length() != n){
+		while (sb.length() != n) {
 			sb.append(" ");
 		}
 		return sb.toString();
 	}
 
+	/**
+	 * 优美的排列Ⅱ
+	 * 思路：我们需要 k + 1k+1 个数来构造出 kk 个差值。因此我们可以先从 11 开始，使用 n - (k + 1)n−(k+1) 个数来直接升序（通过方式一构造出若干个 11），
+	 * 然后从 n - kn−k 开始间隔升序排列，按照 nn 开始间隔降序排列，构造出剩下的序列
+	 */
+	public int[] constructArray(int n, int k) {
+		int[] ans = new int[n];
+		int t = n - k - 1;
+		for (int i = 0; i < t; i++) {
+			ans[i] = i + 1;
+		}
+		for (int i = t, a = n - k, b = n; i < n; ) {
+			ans[i++] = a++;
+			if (i < n) {
+				ans[i++] = b--;
+			}
+		}
+		return ans;
+	}
 
 }
