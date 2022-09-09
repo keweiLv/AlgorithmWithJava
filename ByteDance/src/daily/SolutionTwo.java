@@ -503,4 +503,16 @@ public class SolutionTwo {
 		return ans;
 	}
 
+	// 文件夹操作日志收集器
+	public int minOperations(String[] logs) {
+		int depth = 0;
+		for (String string:logs){
+			if (string.equals("../")){
+				depth = Math.max(0,depth-1);
+			}else if (!string.equals("./")){
+				depth++;
+			}
+		}
+		return depth;
+	}
 }

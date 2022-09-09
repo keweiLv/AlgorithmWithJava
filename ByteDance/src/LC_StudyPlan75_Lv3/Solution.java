@@ -3,6 +3,7 @@ package LC_StudyPlan75_Lv3;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Kezi
@@ -37,6 +38,7 @@ public class Solution {
 	// 子集Ⅱ
 	private List<List<Integer>> ans;
 	private List<Integer> path;
+
 	public List<List<Integer>> subsetsWithDup(int[] nums) {
 		ans = new ArrayList<>();
 		path = new ArrayList<>();
@@ -47,6 +49,7 @@ public class Solution {
 		backtrace(nums, 0, visited, n);
 		return ans;
 	}
+
 	private void backtrace(int[] nums, int start, boolean[] visited, int n) {
 		ans.add(new ArrayList<>(path));
 		for (int i = start; i < n; i++) {
@@ -59,5 +62,16 @@ public class Solution {
 			visited[i] = false;
 			path.remove(path.size() - 1);
 		}
+	}
+
+	// 字母异位词分组
+	public List<List<String>> groupAnagrams(String[] strs) {
+		return new ArrayList<>(Arrays.stream(strs)
+				.collect(Collectors.groupingBy(str -> {
+					char[] chars = str.toCharArray();
+					Arrays.sort(chars);
+					return new String(chars);
+				})).values()
+		);
 	}
 }
