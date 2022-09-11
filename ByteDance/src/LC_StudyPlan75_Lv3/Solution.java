@@ -1,8 +1,6 @@
 package LC_StudyPlan75_Lv3;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -73,5 +71,86 @@ public class Solution {
 					return new String(chars);
 				})).values()
 		);
+	}
+
+	// 实现strStr（）
+	public int strStr(String ss, String pp) {
+		int n = ss.length(), m = pp.length();
+		char[] s = ss.toCharArray(), p = pp.toCharArray();
+		for (int i = 0; i <= n - m; i++) {
+			int a = i, b = 0;
+			while (b < m && s[a] == p[b]) {
+				a++;
+				b++;
+			}
+			if (b == m) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	// 账户合并
+	public List<List<String>> accountsMerge(List<List<String>> accounts) {
+		Map<String, Integer> emailToId = new HashMap<>();
+		int n = accounts.size();
+		UnionFind myUnion = new UnionFind(n);
+		for (int i =0;i<n;i++){
+			int num = accounts.get(i).size();
+			for (int j=1;j<num;j++){
+				String curEmail = accounts.get(i).get(j);
+				if (!emailToId.containsKey(curEmail)){
+					emailToId.put(curEmail,i);
+				}else {
+					myUnion.union(i,emailToId.get(curEmail));
+				}
+			}
+		}
+		Map<Integer,List<String>> idToEmail = new HashMap<>();
+		for (Map.Entry<String,Integer> entry:emailToId.entrySet()){
+			int id = myUnion.find(entry.getValue());
+			List<String> emails = idToEmail.getOrDefault(id,new ArrayList<>());
+			emails.add(entry.getKey());
+			idToEmail.put(id,emails);
+		}
+		List<List<String>> res = new ArrayList<>();
+		for (Map.Entry<Integer,List<String>> entry:idToEmail.entrySet()){
+			List<String> emails = entry.getValue();
+			Collections.sort(emails);
+			List<String> tmp = new ArrayList<>();
+			tmp.add(accounts.get(entry.getKey()).get(0));
+			tmp.addAll(emails);
+			res.add(tmp);
+		}
+		return res;
+	}
+	class UnionFind {
+		int[] parent;
+		public UnionFind(int n) {
+			parent = new int[n];
+			for (int i = 0; i < n; i++) {
+				parent[i] = i;
+			}
+		}
+		public void union(int index1,int index2){
+			parent[find(index2)] = find(index1);
+		}
+		public int find(int index){
+			if (parent[index] != index){
+				parent[index] = find(parent[index]);
+			}
+			return parent[index];
+		}
+	}
+
+	// 两两交换链表中的节点
+	public ListNode swapPairs(ListNode head) {
+		if (head == null || head.next == null){
+			return head;
+		}
+		ListNode next = head.next;
+		head.next = swapPairs(next.next);
+		next.next = head;
+		return next;
 	}
 }
