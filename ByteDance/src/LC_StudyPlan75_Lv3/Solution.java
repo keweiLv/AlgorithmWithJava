@@ -95,26 +95,26 @@ public class Solution {
 		Map<String, Integer> emailToId = new HashMap<>();
 		int n = accounts.size();
 		UnionFind myUnion = new UnionFind(n);
-		for (int i =0;i<n;i++){
+		for (int i = 0; i < n; i++) {
 			int num = accounts.get(i).size();
-			for (int j=1;j<num;j++){
+			for (int j = 1; j < num; j++) {
 				String curEmail = accounts.get(i).get(j);
-				if (!emailToId.containsKey(curEmail)){
-					emailToId.put(curEmail,i);
-				}else {
-					myUnion.union(i,emailToId.get(curEmail));
+				if (!emailToId.containsKey(curEmail)) {
+					emailToId.put(curEmail, i);
+				} else {
+					myUnion.union(i, emailToId.get(curEmail));
 				}
 			}
 		}
-		Map<Integer,List<String>> idToEmail = new HashMap<>();
-		for (Map.Entry<String,Integer> entry:emailToId.entrySet()){
+		Map<Integer, List<String>> idToEmail = new HashMap<>();
+		for (Map.Entry<String, Integer> entry : emailToId.entrySet()) {
 			int id = myUnion.find(entry.getValue());
-			List<String> emails = idToEmail.getOrDefault(id,new ArrayList<>());
+			List<String> emails = idToEmail.getOrDefault(id, new ArrayList<>());
 			emails.add(entry.getKey());
-			idToEmail.put(id,emails);
+			idToEmail.put(id, emails);
 		}
 		List<List<String>> res = new ArrayList<>();
-		for (Map.Entry<Integer,List<String>> entry:idToEmail.entrySet()){
+		for (Map.Entry<Integer, List<String>> entry : idToEmail.entrySet()) {
 			List<String> emails = entry.getValue();
 			Collections.sort(emails);
 			List<String> tmp = new ArrayList<>();
@@ -124,19 +124,23 @@ public class Solution {
 		}
 		return res;
 	}
+
 	class UnionFind {
 		int[] parent;
+
 		public UnionFind(int n) {
 			parent = new int[n];
 			for (int i = 0; i < n; i++) {
 				parent[i] = i;
 			}
 		}
-		public void union(int index1,int index2){
+
+		public void union(int index1, int index2) {
 			parent[find(index2)] = find(index1);
 		}
-		public int find(int index){
-			if (parent[index] != index){
+
+		public int find(int index) {
+			if (parent[index] != index) {
 				parent[index] = find(parent[index]);
 			}
 			return parent[index];
@@ -145,12 +149,26 @@ public class Solution {
 
 	// 两两交换链表中的节点
 	public ListNode swapPairs(ListNode head) {
-		if (head == null || head.next == null){
+		if (head == null || head.next == null) {
 			return head;
 		}
 		ListNode next = head.next;
 		head.next = swapPairs(next.next);
 		next.next = head;
 		return next;
+	}
+
+	// 特殊数组的特征值
+	public int specialArray(int[] nums) {
+		Arrays.sort(nums);
+		if (nums[0] >= nums.length) {
+			return nums.length;
+		}
+		for (int i = 1, res = 0; i < nums.length; i++) {
+			if (nums[i] >= (res = nums.length - i) && nums[i - 1] < res){
+				return res;
+			}
+		}
+		return -1;
 	}
 }
