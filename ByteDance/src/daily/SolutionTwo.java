@@ -506,13 +506,42 @@ public class SolutionTwo {
 	// 文件夹操作日志收集器
 	public int minOperations(String[] logs) {
 		int depth = 0;
-		for (String string:logs){
-			if (string.equals("../")){
-				depth = Math.max(0,depth-1);
-			}else if (!string.equals("./")){
+		for (String string : logs) {
+			if (string.equals("../")) {
+				depth = Math.max(0, depth - 1);
+			} else if (!string.equals("./")) {
 				depth++;
 			}
 		}
 		return depth;
+	}
+
+	// 最大交换
+	public int maximumSwap(int num) {
+		List<Integer> list = new ArrayList<>();
+		while (num != 0) {
+			list.add(num % 10);
+			num /= 10;
+		}
+		int n = list.size(), ans = 0;
+		int[] idx = new int[n];
+		for (int i = 0, j = 0; i < n; i++) {
+			if (list.get(i) > list.get(j)) {
+				j = i;
+			}
+			idx[i] = j;
+		}
+		for (int i = n-1;i>=0;i--){
+			if (!list.get(idx[i]).equals(list.get(i))){
+				int c = list.get(idx[i]);
+				list.set(idx[i],list.get(i));
+				list.set(i,c);
+				break;
+			}
+		}
+		for (int i = n-1;i>=0;i--){
+			ans = ans * 10 + list.get(i);
+		}
+		return ans;
 	}
 }
