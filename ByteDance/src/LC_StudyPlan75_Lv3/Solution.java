@@ -165,10 +165,39 @@ public class Solution {
 			return nums.length;
 		}
 		for (int i = 1, res = 0; i < nums.length; i++) {
-			if (nums[i] >= (res = nums.length - i) && nums[i - 1] < res){
+			if (nums[i] >= (res = nums.length - i) && nums[i - 1] < res) {
 				return res;
 			}
 		}
 		return -1;
+	}
+
+	// 罗马数字转整数
+	public int romanToInt(String s) {
+		int sum = 0;
+		int preNum = getValue(s.charAt(0));
+		for (int i = 1; i < s.length(); i++) {
+			int num = getValue(s.charAt(i));
+			if (preNum < num){
+				sum -= preNum;
+			}else {
+				sum += preNum;
+			}
+			preNum = num;
+		}
+		sum += preNum;
+		return sum;
+	}
+	private int getValue(char charAt) {
+		return switch (charAt) {
+			case 'I' -> 1;
+			case 'V' -> 5;
+			case 'X' -> 10;
+			case 'L' -> 50;
+			case 'C' -> 100;
+			case 'D' -> 500;
+			case 'M' -> 1000;
+			default -> 0;
+		};
 	}
 }

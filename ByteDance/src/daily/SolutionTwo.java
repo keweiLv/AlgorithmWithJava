@@ -578,4 +578,30 @@ public class SolutionTwo {
 		root.right = myBuildTree(preorder, inorder, preorder_left + size_left_subtree + 1, preorder_right, inorder_root + 1, inorder_right);
 		return root;
 	}
+
+	// 按照频率将数组升序排序
+	public int[] frequencySort(int[] nums) {
+		int n = nums.length;
+		Map<Integer, Integer> map = new HashMap<>();
+		for (int num : nums) {
+			map.put(num, map.getOrDefault(num, 0) + 1);
+		}
+		List<int[]> list = new ArrayList<>();
+		for (int key:map.keySet()){
+			list.add(new int[]{key,map.get(key)});
+		}
+		list.sort((a, b) -> {
+			return a[1] != b[1] ? a[1] - b[1] : b[0] - a[0];
+		});
+		int[] ans = new int[n];
+		int idx = 0;
+		for (int[] info:list){
+			while (info[1]-- > 0){
+				ans[idx++] = info[0];
+			}
+		}
+		return ans;
+	}
+
+
 } 
