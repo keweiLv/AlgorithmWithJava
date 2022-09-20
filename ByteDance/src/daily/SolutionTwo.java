@@ -603,5 +603,45 @@ public class SolutionTwo {
 		return ans;
 	}
 
+	// 划分为k个相等的子集
+	public boolean canPartitionKSubsets(int[] nums, int k) {
+		int sum = 0;
+		for (int i = 0; i < nums.length; i++) {
+			sum += nums[i];
+		}
+		if (sum % k != 0){
+			return false;
+		}
+		int target = sum / k;
+		Arrays.sort(nums);
+		int l =0,r=nums.length-1;
+		while (l < r){
+			int temp = nums[l];
+			nums[l] = nums[r];
+			nums[r] = temp;
+			l++;
+			r--;
+		}
+		return backTrace(nums,0,new int[k],k,target);
+	}
 
+	private boolean backTrace(int[] nums, int index, int[] bucket, int k, int target) {
+		if (index == nums.length) {
+			return true;
+		}
+		for (int i = 0;i<k;i++){
+			if (i > 0 && bucket[i] == bucket[i-1]){
+				continue;
+			}
+			if (bucket[i] + nums[index] > target){
+				continue;
+			}
+			bucket[i] += nums[index];
+			if (backTrace(nums,index+1,bucket,k,target)){
+				return true;
+			}
+			bucket[i] -= nums[index];
+		}
+		return false;
+	}
 } 
