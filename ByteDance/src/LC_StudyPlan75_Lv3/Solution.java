@@ -178,9 +178,9 @@ public class Solution {
 		int preNum = getValue(s.charAt(0));
 		for (int i = 1; i < s.length(); i++) {
 			int num = getValue(s.charAt(i));
-			if (preNum < num){
+			if (preNum < num) {
 				sum -= preNum;
-			}else {
+			} else {
 				sum += preNum;
 			}
 			preNum = num;
@@ -188,6 +188,7 @@ public class Solution {
 		sum += preNum;
 		return sum;
 	}
+
 	private int getValue(char charAt) {
 		return switch (charAt) {
 			case 'I' -> 1;
@@ -202,20 +203,37 @@ public class Solution {
 	}
 
 	// 克隆图
-	private HashMap <Node, Node> visited = new HashMap <> ();
+	private HashMap<Node, Node> visited = new HashMap<>();
+
 	public Node cloneGraph(Node node) {
-		if (node == null){
+		if (node == null) {
 			return node;
 		}
-		if (visited.containsKey(node)){
+		if (visited.containsKey(node)) {
 			return visited.get(node);
 		}
-		Node clone = new Node(node.val,new ArrayList<>());
-		visited.put(node,clone);
-		for (Node neighbor:node.neighbors){
+		Node clone = new Node(node.val, new ArrayList<>());
+		visited.put(node, clone);
+		for (Node neighbor : node.neighbors) {
 			clone.neighbors.add(cloneGraph(neighbor));
 		}
 		return clone;
+	}
+
+	// 每日温度-单调栈
+	public int[] dailyTemperatures(int[] T) {
+		Deque<Integer> stack = new LinkedList<>();
+		int length = T.length;
+		int[] ans = new int[length];
+		for (int i = 0; i < length; i++) {
+			int temp = T[i];
+			while (!stack.isEmpty() && temp > T[stack.peek()]){
+				int pre = stack.pop();
+				ans[pre] = i - pre;
+			}
+			stack.push(i);
+		}
+		return ans;
 	}
 }
 
