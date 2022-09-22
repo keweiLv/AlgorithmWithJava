@@ -173,7 +173,7 @@ public class Solution {
 	}
 
 	// 罗马数字转整数
-	public int romanToInt(String s) {
+	/*public int romanToInt(String s) {
 		int sum = 0;
 		int preNum = getValue(s.charAt(0));
 		for (int i = 1; i < s.length(); i++) {
@@ -200,7 +200,7 @@ public class Solution {
 			case 'M' -> 1000;
 			default -> 0;
 		};
-	}
+	}*/
 
 	// 克隆图
 	private HashMap<Node, Node> visited = new HashMap<>();
@@ -227,7 +227,7 @@ public class Solution {
 		int[] ans = new int[length];
 		for (int i = 0; i < length; i++) {
 			int temp = T[i];
-			while (!stack.isEmpty() && temp > T[stack.peek()]){
+			while (!stack.isEmpty() && temp > T[stack.peek()]) {
 				int pre = stack.pop();
 				ans[pre] = i - pre;
 			}
@@ -238,20 +238,20 @@ public class Solution {
 
 	/**
 	 * 逆波兰表达式求值
-	 *如果遇到操作数，则将操作数入栈；
+	 * 如果遇到操作数，则将操作数入栈；
 	 * 如果遇到运算符，则将两个操作数出栈，其中先出栈的是右操作数，后出栈的是左操作数，使用运算符对两个操作数进行运算，将运算得到的新操作数入栈。
- 	 */
+	 */
 	public int evalRPN(String[] tokens) {
 		Deque<Integer> stack = new LinkedList<>();
 		int n = tokens.length;
-		for (int i=0;i<n;i++){
+		for (int i = 0; i < n; i++) {
 			String token = tokens[i];
-			if (isNumber(token)){
+			if (isNumber(token)) {
 				stack.push(Integer.parseInt(token));
-			}else {
+			} else {
 				int num2 = stack.pop();
 				int num1 = stack.pop();
-				switch (token){
+				switch (token) {
 					case "+":
 						stack.push(num1 + num2);
 						break;
@@ -270,8 +270,30 @@ public class Solution {
 		}
 		return stack.pop();
 	}
+
 	private boolean isNumber(String token) {
 		return !("+".equals(token) || "-".equals(token) || "*".equals(token) || "/".equals(token));
+	}
+
+	// 单词拆分
+	public boolean wordBreak(String s, List<String> wordDict) {
+		int len = s.length(), maxw = 0;
+		boolean[] dp = new boolean[len + 1];
+		dp[0] = true;
+		Set<String> set = new HashSet<>();
+		for (String str : wordDict) {
+			set.add(str);
+			maxw = Math.max(maxw, str.length());
+		}
+		for (int i = 1; i < len + 1; i++) {
+			for (int j = i; j >= 0 && j >= i - maxw; j--) {
+				if (dp[j] && set.contains(s.substring(j,i))){
+					dp[i] = true;
+					break;
+				}
+			}
+		}
+		return dp[len];
 	}
 }
 

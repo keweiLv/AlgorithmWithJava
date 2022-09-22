@@ -587,16 +587,16 @@ public class SolutionTwo {
 			map.put(num, map.getOrDefault(num, 0) + 1);
 		}
 		List<int[]> list = new ArrayList<>();
-		for (int key:map.keySet()){
-			list.add(new int[]{key,map.get(key)});
+		for (int key : map.keySet()) {
+			list.add(new int[]{key, map.get(key)});
 		}
 		list.sort((a, b) -> {
 			return a[1] != b[1] ? a[1] - b[1] : b[0] - a[0];
 		});
 		int[] ans = new int[n];
 		int idx = 0;
-		for (int[] info:list){
-			while (info[1]-- > 0){
+		for (int[] info : list) {
+			while (info[1]-- > 0) {
 				ans[idx++] = info[0];
 			}
 		}
@@ -609,39 +609,61 @@ public class SolutionTwo {
 		for (int i = 0; i < nums.length; i++) {
 			sum += nums[i];
 		}
-		if (sum % k != 0){
+		if (sum % k != 0) {
 			return false;
 		}
 		int target = sum / k;
 		Arrays.sort(nums);
-		int l =0,r=nums.length-1;
-		while (l < r){
+		int l = 0, r = nums.length - 1;
+		while (l < r) {
 			int temp = nums[l];
 			nums[l] = nums[r];
 			nums[r] = temp;
 			l++;
 			r--;
 		}
-		return backTrace(nums,0,new int[k],k,target);
+		return backTrace(nums, 0, new int[k], k, target);
 	}
 
 	private boolean backTrace(int[] nums, int index, int[] bucket, int k, int target) {
 		if (index == nums.length) {
 			return true;
 		}
-		for (int i = 0;i<k;i++){
-			if (i > 0 && bucket[i] == bucket[i-1]){
+		for (int i = 0; i < k; i++) {
+			if (i > 0 && bucket[i] == bucket[i - 1]) {
 				continue;
 			}
-			if (bucket[i] + nums[index] > target){
+			if (bucket[i] + nums[index] > target) {
 				continue;
 			}
 			bucket[i] += nums[index];
-			if (backTrace(nums,index+1,bucket,k,target)){
+			if (backTrace(nums, index + 1, bucket, k, target)) {
 				return true;
 			}
 			bucket[i] -= nums[index];
 		}
 		return false;
+	}
+
+	// 能否连接形成数组
+	public boolean canFormArray(int[] arr, int[][] pieces) {
+		int n = arr.length, m = pieces.length;
+		int[] hash = new int[110];
+		for (int i = 0; i < m; i++) {
+			hash[pieces[i][0]] = i;
+		}
+		for (int i = 0; i < n; ) {
+			int[] cur = pieces[hash[arr[i]]];
+			int len = cur.length,idx = 0;
+			while (idx< len && cur[idx] == arr[i+idx]){
+				idx++;
+			}
+			if (idx == len){
+				i += len;
+			}else {
+				return false;
+			}
+		}
+		return true;
 	}
 } 
