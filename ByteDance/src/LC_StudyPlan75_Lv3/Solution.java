@@ -287,7 +287,7 @@ public class Solution {
 		}
 		for (int i = 1; i < len + 1; i++) {
 			for (int j = i; j >= 0 && j >= i - maxw; j--) {
-				if (dp[j] && set.contains(s.substring(j,i))){
+				if (dp[j] && set.contains(s.substring(j, i))) {
 					dp[i] = true;
 					break;
 				}
