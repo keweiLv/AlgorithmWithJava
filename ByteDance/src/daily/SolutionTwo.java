@@ -675,14 +675,14 @@ public class SolutionTwo {
 			return ans;
 		}
 		int[] sum = new int[n * 2 + 10];
-		for (int i = 1;i <= 2 * n;i++){
-			sum[i] += sum[i-1] + code[(i-1) % n];
+		for (int i = 1; i <= 2 * n; i++) {
+			sum[i] += sum[i - 1] + code[(i - 1) % n];
 		}
-		for (int i = 1;i<=n;i++){
-			if (k < 0){
-				ans[i-1] = sum[i+n-1] - sum[i + n + k -1];
-			}else {
-				ans[i-1] = sum[i+k] - sum[i];
+		for (int i = 1; i <= n; i++) {
+			if (k < 0) {
+				ans[i - 1] = sum[i + n - 1] - sum[i + n + k - 1];
+			} else {
+				ans[i - 1] = sum[i + k] - sum[i];
 			}
 		}
 		return ans;
@@ -691,21 +691,40 @@ public class SolutionTwo {
 	// 旋转数字
 	public int rotatedDigits(int n) {
 		int ans = 0;
-		out:for (int i = 1;i<=n;i++){
+		out:
+		for (int i = 1; i <= n; i++) {
 			boolean ok = false;
 			int x = i;
-			while (x != 0){
+			while (x != 0) {
 				int t = x % 10;
 				x /= 10;
-				if (t == 2 || t ==5 || t == 6 || t == 9){
+				if (t == 2 || t == 5 || t == 6 || t == 9) {
 					ok = true;
-				}else if (t != 0 && t != 1 && t != 8){
+				} else if (t != 0 && t != 1 && t != 8) {
 					continue out;
 				}
 			}
-			if (ok){
+			if (ok) {
 				ans++;
 			}
+		}
+		return ans;
+	}
+
+	// 全部开花的最早一天
+	public int earliestFullBloom(int[] plantTime, int[] growTime) {
+		int n = plantTime.length;
+		List<Integer> list = new ArrayList<>();
+		for (int i = 0; i < n; i++) {
+			list.add(i);
+		}
+		Collections.sort(list, (o1, o2) -> growTime[o2] - growTime[o1]);
+		int ans = 0;
+		int pt = 0, gt = 0;
+		for (int index : list) {
+			pt += plantTime[index];
+			gt = pt + growTime[index];
+			ans = Math.max(ans, gt);
 		}
 		return ans;
 	}
