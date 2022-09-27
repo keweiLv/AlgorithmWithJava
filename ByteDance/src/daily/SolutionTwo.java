@@ -728,4 +728,32 @@ public class SolutionTwo {
 		}
 		return ans;
 	}
+
+	// 判断是否互为字符重排
+	public boolean CheckPermutation(String s1, String s2) {
+		int n = s1.length(),m = s2.length(),tot = 0;
+		if (n != m){
+			return false;
+		}
+		int[] cnts = new int[256];
+		for (int i = 0; i < n; i++) {
+			if (++cnts[s1.charAt(i)] == 1){
+				System.out.println(cnts[s1.charAt(i)]);
+				tot++;
+			}
+			if(--cnts[s2.charAt(i)] == 0){
+				System.out.println(cnts[s2.charAt(i)]);
+				tot--;
+			}
+		}
+		return tot == 0;
+	}
+
+	public static void main(String[] args) {
+		int[] tt = new int[256];
+		tt[0] = 1;
+		System.out.println(++tt[0]);
+		String p = "abc";
+		System.out.println(tt[p.charAt(1)]);
+	}
 } 
