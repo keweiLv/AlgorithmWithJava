@@ -299,31 +299,52 @@ public class Solution {
 	// 子集
 	public List<List<Integer>> subsets(int[] nums) {
 		List<List<Integer>> res = new ArrayList<>();
-		backtrace(0,nums,res,new ArrayList<>());
+		backtrace(0, nums, res, new ArrayList<>());
 		return res;
 	}
-	private void backtrace(int i,int[] nums,List<List<Integer>> res,ArrayList<Integer> tmp){
+
+	private void backtrace(int i, int[] nums, List<List<Integer>> res, ArrayList<Integer> tmp) {
 		res.add(new ArrayList<>(tmp));
-		for (int j = i;j<nums.length;j++){
+		for (int j = i; j < nums.length; j++) {
 			tmp.add(nums[j]);
-			backtrace(j+1,nums,res,tmp);
-			tmp.remove(tmp.size()-1);
+			backtrace(j + 1, nums, res, tmp);
+			tmp.remove(tmp.size() - 1);
 		}
 	}
 
 	// 寻找旋转排序数组中的最小值
 	public int findMin(int[] nums) {
 		int left = 0;
-		int right = nums.length-1;
-		while (left < right){
-			int mid = left + (right - left)/2;
-			if (nums[mid] > nums[right]){
+		int right = nums.length - 1;
+		while (left < right) {
+			int mid = left + (right - left) / 2;
+			if (nums[mid] > nums[right]) {
 				left = mid + 1;
-			}else if (nums[mid] < nums[right]){
+			} else if (nums[mid] < nums[right]) {
 				right = mid;
 			}
 		}
 		return nums[left];
+	}
+
+	// 零矩阵
+	public void setZeroes(int[][] mat) {
+		int n = mat.length, m = mat[0].length;
+		boolean[] rows = new boolean[n], cols = new boolean[m];
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				if (mat[i][j] == 0) {
+					rows[i] = cols[j] = true;
+				}
+			}
+		}
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				if (rows[i] || cols[j]){
+					mat[i][j] = 0;
+				}
+			}
+		}
 	}
 }
 
