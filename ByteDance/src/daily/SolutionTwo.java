@@ -754,15 +754,15 @@ public class SolutionTwo {
 		int[] ans = new int[k + 1];
 		ans[1] = 1;
 		for (int i3 = 1, i5 = 1, i7 = 1, idx = 2; idx <= k; idx++) {
-			int a = ans[i3] * 3,b = ans[i5] * 5,c = ans[i7] * 7;
-			int min = Math.min(a, Math.min(b,c));
-			if (min == a){
+			int a = ans[i3] * 3, b = ans[i5] * 5, c = ans[i7] * 7;
+			int min = Math.min(a, Math.min(b, c));
+			if (min == a) {
 				i3++;
 			}
-			if (min == b){
+			if (min == b) {
 				i5++;
 			}
-			if (min == c){
+			if (min == c) {
 				i7++;
 			}
 			ans[idx] = min;
@@ -784,9 +784,21 @@ public class SolutionTwo {
 	public int[] runningSum(int[] nums) {
 		int n = nums.length;
 		for (int i = 1; i < n; i++) {
-			nums[i] = nums[i-1] + nums[i];
+			nums[i] = nums[i - 1] + nums[i];
 		}
 		return nums;
 	}
 
+	// 使括号有效的最少添加
+	public int minAddToMakeValid(String s) {
+		int score = 0, ans = 0;
+		for (char c : s.toCharArray()) {
+			score += c == '(' ? 1 : -1;
+			if (score < 0){
+				score = 0;
+				ans++;
+			}
+		}
+		return ans + score;
+	}
 } 
