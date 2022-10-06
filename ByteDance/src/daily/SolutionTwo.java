@@ -827,4 +827,20 @@ public class SolutionTwo {
 		}
 		return ans;
 	}
+
+	// 字符串的左右移
+	public String stringShift(String s, int[][] shift) {
+		int n = s.length();
+		int count = 0;
+		for (int i = 0; i < shift.length; i++) {
+			count = shift[i][1] % n;
+			if (shift[i][0] == 0 && shift[i][1] > 0){
+				s = s.substring(count) + s.substring(0,count);
+			}else {
+				s = s.substring(n - count) + s.substring(0,n-count);
+			}
+		}
+		return s;
+	}
+
 } 
