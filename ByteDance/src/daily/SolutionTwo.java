@@ -794,35 +794,36 @@ public class SolutionTwo {
 		int score = 0, ans = 0;
 		for (char c : s.toCharArray()) {
 			score += c == '(' ? 1 : -1;
-			if (score < 0){
+			if (score < 0) {
 				score = 0;
 				ans++;
 			}
 		}
 		return ans + score;
 	}
-	
+
 	// 子域名访问计数
 	public List<String> subdomainVisits(String[] ss) {
-		Map<String,Integer> map = new HashMap<>();
-		for (String s : ss){
-			int n = s.length(),idx = 0;
-			while (idx < n && s.charAt(idx) != ' '){
+		Map<String, Integer> map = new HashMap<>();
+		for (String s : ss) {
+			int n = s.length(), idx = 0;
+			while (idx < n && s.charAt(idx) != ' ') {
 				idx++;
 			}
-			int cnt = Integer.parseInt(s.substring(0,idx));
-			int start = idx + 1;idx = n-1;
-			while (idx >= start){
-				while (idx >= start && s.charAt(idx) != '.'){
+			int cnt = Integer.parseInt(s.substring(0, idx));
+			int start = idx + 1;
+			idx = n - 1;
+			while (idx >= start) {
+				while (idx >= start && s.charAt(idx) != '.') {
 					idx--;
 				}
-				String cur = s.substring(idx+1);
-				map.put(cur,map.getOrDefault(cur,0)+cnt);
+				String cur = s.substring(idx + 1);
+				map.put(cur, map.getOrDefault(cur, 0) + cnt);
 				idx--;
 			}
 		}
 		List<String> ans = new ArrayList<>();
-		for (String key:map.keySet()){
+		for (String key : map.keySet()) {
 			ans.add(map.get(key) + " " + key);
 		}
 		return ans;
@@ -834,10 +835,10 @@ public class SolutionTwo {
 		int count = 0;
 		for (int i = 0; i < shift.length; i++) {
 			count = shift[i][1] % n;
-			if (shift[i][0] == 0 && shift[i][1] > 0){
-				s = s.substring(count) + s.substring(0,count);
-			}else {
-				s = s.substring(n - count) + s.substring(0,n-count);
+			if (shift[i][0] == 0 && shift[i][1] > 0) {
+				s = s.substring(count) + s.substring(0, count);
+			} else {
+				s = s.substring(n - count) + s.substring(0, n - count);
 			}
 		}
 		return s;
@@ -846,14 +847,43 @@ public class SolutionTwo {
 
 	// 最大升序子数组和
 	public int maxAscendingSum(int[] nums) {
-		int n = nums.length,ans = nums[0];
-		for (int i = 1,cur = nums[0]; i < n; i++) {
-			if (nums[i] > nums[i-1]){
+		int n = nums.length, ans = nums[0];
+		for (int i = 1, cur = nums[0]; i < n; i++) {
+			if (nums[i] > nums[i - 1]) {
 				cur += nums[i];
-			}else {
+			} else {
 				cur = nums[i];
 			}
-			ans = Math.max(ans,cur);
+			ans = Math.max(ans, cur);
+		}
+		return ans;
+	}
+
+	/**
+	 * 优势洗牌
+	 * TreeSet ceiling方法：在方法调用返回比至少元素大于或等于e或null
+ 	 */
+	public int[] advantageCount(int[] nums1, int[] nums2) {
+		int len = nums1.length;
+		TreeSet<Integer> treeSet = new TreeSet<>();
+		Map<Integer, Integer> map = new HashMap<>();
+		for (int num : nums1) {
+			map.put(num, map.getOrDefault(num, 0) + 1);
+			if (map.get(num) == 1) {
+				treeSet.add(num);
+			}
+		}
+		int[] ans = new int[len];
+		for (int i = 0; i < len; i++) {
+			Integer cur = treeSet.ceiling(nums2[i] + 1);
+			if (cur == null){
+				cur = treeSet.ceiling(-1);
+			}
+			ans[i] = cur;
+			map.put(cur,map.get(cur) -1);
+			if (map.get(cur) == 0){
+				treeSet.remove(cur);
+			}
 		}
 		return ans;
 	}
