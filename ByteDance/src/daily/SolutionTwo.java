@@ -887,4 +887,19 @@ public class SolutionTwo {
 		}
 		return ans;
 	}
+
+	// 括号的分数
+	public int scoreOfParentheses(String s) {
+		Deque<Integer> stack = new ArrayDeque<>();
+		stack.addLast(0);
+		for (char c:s.toCharArray()){
+			if (c == '('){
+				stack.addLast(0);
+			}else {
+				int cur = stack.pollLast();
+				stack.addLast(stack.pollLast() + Math.max(cur*2,1));
+			}
+		}
+		return stack.peekLast();
+	}
 } 
