@@ -1,5 +1,7 @@
 package forjob;
 
+import java.util.*;
+
 /**
  * @author Kezi
  * @date 2022年10月10日 23:28
@@ -7,8 +9,8 @@ package forjob;
 public class Solution {
 	//上下翻转二叉树
 	public TreeNode upsideDownBinaryTree(TreeNode root) {
-		TreeNode parent = null,parent_right = null;
-		while (root != null){
+		TreeNode parent = null, parent_right = null;
+		while (root != null) {
 			TreeNode root_left = root.left;
 			TreeNode root_right = root.right;
 			root.left = parent_right;
@@ -22,25 +24,70 @@ public class Solution {
 
 	//  仅执行一次字符串交换能否使两个字符串相等
 	public boolean areAlmostEqual(String s1, String s2) {
-		int n = s1.length(),a=-1,b=-1;
-		for (int i = 0;i<n;i++){
-			if (s1.charAt(i) == s2.charAt(i)){
+		int n = s1.length(), a = -1, b = -1;
+		for (int i = 0; i < n; i++) {
+			if (s1.charAt(i) == s2.charAt(i)) {
 				continue;
 			}
-			if (a == -1){
+			if (a == -1) {
 				a = i;
-			}else if (b == -1){
+			} else if (b == -1) {
 				b = i;
-			}else {
+			} else {
 				return false;
 			}
 		}
-		if (a == -1){
+		if (a == -1) {
 			return true;
 		}
-		if (b == -1){
+		if (b == -1) {
 			return false;
 		}
 		return s1.charAt(a) == s2.charAt(b) && s1.charAt(b) == s2.charAt(a);
+	}
+
+	// 链表组件
+	public int numComponents(ListNode head, int[] nums) {
+		int ans = 0;
+		Set<Integer> set = new HashSet<>();
+		for (int num : nums) {
+			set.add(num);
+		}
+		while (head != null) {
+			if (set.contains(head.val)) {
+				while (head != null && set.contains(head.val)) {
+					head = head.next;
+				}
+				ans++;
+			} else {
+				head = head.next;
+			}
+		}
+		return ans;
+	}
+
+	// 二叉树的层序遍历
+	public List<List<Integer>> levelOrder(TreeNode root) {
+		List<List<Integer>> res = new ArrayList<>();
+		Queue<TreeNode> queue = new ArrayDeque<>();
+		if (root != null) {
+			queue.add(root);
+		}
+		while (!queue.isEmpty()) {
+			int n = queue.size();
+			List<Integer> level = new ArrayList<>();
+			for (int i = 0; i < n; i++) {
+				TreeNode node = queue.poll();
+				level.add(node.val);
+				if (node.left != null) {
+					queue.add(node.left);
+				}
+				if (node.right != null) {
+					queue.add(node.right);
+				}
+			}
+			res.add(level);
+		}
+		return res;
 	}
 }
