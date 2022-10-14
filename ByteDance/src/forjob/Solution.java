@@ -113,24 +113,39 @@ public class Solution {
 		int len = nums.length;
 		boolean[] used = new boolean[len];
 		Deque<Integer> path = new ArrayDeque<>(len);
-		dfs(nums,len,0,path,used,res);
+		dfs(nums, len, 0, path, used, res);
 		return res;
 	}
 
 	private void dfs(int[] nums, int len, int depth, Deque<Integer> path, boolean[] used, List<List<Integer>> res) {
-		if (depth == len){
+		if (depth == len) {
 			res.add(new ArrayList<>(path));
 			return;
 		}
-		for (int i = 0;i<len;i++){
-			if (!used[i]){
+		for (int i = 0; i < len; i++) {
+			if (!used[i]) {
 				path.addLast(nums[i]);
 				used[i] = true;
-				dfs(nums,len,depth+1,path,used,res);
+				dfs(nums, len, depth + 1, path, used, res);
 				used[i] = false;
 				path.removeLast();
 			}
 		}
+	}
+
+	// 跳跃游戏Ⅱ
+	public int jump(int[] nums) {
+		int end = 0;
+		int maxPosition = 0;
+		int steps = 0;
+		for (int i = 0; i < nums.length - 1; i++) {
+			maxPosition = Math.max(maxPosition,nums[i] + i);
+			if (i == end){
+				end = maxPosition;
+				steps++;
+			}
+		}
+		return steps;
 	}
 
 }
