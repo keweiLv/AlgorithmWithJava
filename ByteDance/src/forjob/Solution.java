@@ -152,18 +152,57 @@ public class Solution {
 	// 链表随机节点
 	ListNode head;
 	Random random;
+
 	public Solution(ListNode head) {
 		this.head = head;
 		random = new Random();
 	}
-	public int getRandom(){
-		int i = 1,ans = 0;
-		for (ListNode node = head;node!=null;node = node.next){
-			if (random.nextInt(i) == 0){
+
+	public int getRandom() {
+		int i = 1, ans = 0;
+		for (ListNode node = head; node != null; node = node.next) {
+			if (random.nextInt(i) == 0) {
 				ans = node.val;
 			}
 			++i;
 		}
 		return ans;
+	}
+
+	// 水果成篮
+	public int totalFruit(int[] fs) {
+		int n = fs.length, ans = 0;
+		int[] cnts = new int[n + 10];
+		for (int i = 0, j = 0, tot = 0; i < n; i++) {
+			if (++cnts[fs[i]] == 1) {
+				tot++;
+			}
+			while (tot > 2) {
+				if (--cnts[fs[j++]] == 0) {
+					tot--;
+				}
+			}
+			ans = Math.max(ans, i - j + 1);
+		}
+		return ans;
+	}
+
+	// 寻找二叉树的叶子节点
+	private Map<Integer, List<Integer>> map = new HashMap<>();
+
+	public List<List<Integer>> findLeaves(TreeNode root) {
+		dfs(root);
+		return new LinkedList<>(map.values());
+	}
+
+	private int dfs(TreeNode root) {
+		if (root == null) {
+			return 0;
+		}
+		int leftDistance = dfs(root.left);
+		int rightDistance = dfs(root.right);
+		int currentDistance = Math.max(leftDistance, rightDistance) + 1;
+		map.computeIfAbsent(currentDistance, i -> new LinkedList<>()).add(root.val);
+		return currentDistance;
 	}
 }
