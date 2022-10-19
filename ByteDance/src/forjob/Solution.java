@@ -205,4 +205,37 @@ public class Solution {
 		map.computeIfAbsent(currentDistance, i -> new LinkedList<>()).add(root.val);
 		return currentDistance;
 	}
+
+
+	// 无法吃午餐的学生数量
+	public int countStudents(int[] a, int[] b) {
+		int[] cnts = new int[2];
+		for (int x : a) {
+			cnts[x]++;
+		}
+		for (int i = 0; i < b.length; i++) {
+			if (--cnts[b[i]] == -1) {
+				return b.length - i;
+			}
+		}
+		return 0;
+	}
+
+	// 两个数组的交集
+	public int[] intersection(int[] nums1, int[] nums2) {
+		if (nums1 == null || nums2.length == 0 || nums2 == null || nums2.length == 0){
+			return new int[0];
+		}
+		Set<Integer> set1 = new HashSet<>();
+		Set<Integer> resSet = new HashSet<>();
+		for (int num:nums1){
+			set1.add(num);
+		}
+		for (int num:nums2){
+			if (set1.contains(num)){
+				resSet.add(num);
+			}
+		}
+		return resSet.stream().mapToInt(x -> x).toArray();
+	}
 }
