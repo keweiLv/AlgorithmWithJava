@@ -139,8 +139,8 @@ public class Solution {
 		int maxPosition = 0;
 		int steps = 0;
 		for (int i = 0; i < nums.length - 1; i++) {
-			maxPosition = Math.max(maxPosition,nums[i] + i);
-			if (i == end){
+			maxPosition = Math.max(maxPosition, nums[i] + i);
+			if (i == end) {
 				end = maxPosition;
 				steps++;
 			}
@@ -148,4 +148,22 @@ public class Solution {
 		return steps;
 	}
 
+
+	// 链表随机节点
+	ListNode head;
+	Random random;
+	public Solution(ListNode head) {
+		this.head = head;
+		random = new Random();
+	}
+	public int getRandom(){
+		int i = 1,ans = 0;
+		for (ListNode node = head;node!=null;node = node.next){
+			if (random.nextInt(i) == 0){
+				ans = node.val;
+			}
+			++i;
+		}
+		return ans;
+	}
 }
