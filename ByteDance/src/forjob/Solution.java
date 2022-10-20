@@ -223,19 +223,57 @@ public class Solution {
 
 	// 两个数组的交集
 	public int[] intersection(int[] nums1, int[] nums2) {
-		if (nums1 == null || nums2.length == 0 || nums2 == null || nums2.length == 0){
+		if (nums1 == null || nums2.length == 0 || nums2 == null || nums2.length == 0) {
 			return new int[0];
 		}
 		Set<Integer> set1 = new HashSet<>();
 		Set<Integer> resSet = new HashSet<>();
-		for (int num:nums1){
+		for (int num : nums1) {
 			set1.add(num);
 		}
-		for (int num:nums2){
-			if (set1.contains(num)){
+		for (int num : nums2) {
+			if (set1.contains(num)) {
 				resSet.add(num);
 			}
 		}
 		return resSet.stream().mapToInt(x -> x).toArray();
+	}
+
+	// 第K个语法符号
+	public int kthGrammar(int n, int k) {
+		return dfs(n, k, 1) == 0 ? 1 : 0;
+	}
+
+	private int dfs(int n, int k, int cur) {
+		if (n == 1) {
+			return cur;
+		}
+		if ((k % 2 == 0 && cur == 0) || (k % 2 == 1 && cur == 1)) {
+			return dfs(n - 1, (k - 1) / 2 + 1, 1);
+		} else {
+			return dfs(n - 1, (k - 1) / 2 + 1, 0);
+		}
+	}
+
+	// 二叉树最大宽度
+	Map<Integer, Integer> widthOfBinaryTreeMap = new HashMap<>();
+	int ans;
+
+	public int widthOfBinaryTree(TreeNode root) {
+		dfs(root, 1, 0);
+		return ans;
+	}
+
+	private void dfs(TreeNode root, int u, int depth) {
+		if (root == null) {
+			return;
+		}
+		if (!widthOfBinaryTreeMap.containsKey(depth)) {
+			widthOfBinaryTreeMap.put(depth, u);
+		}
+		ans = Math.max(ans, u - widthOfBinaryTreeMap.get(depth) + 1);
+		u = u - widthOfBinaryTreeMap.get(depth) + 1;
+		dfs(root.left, u << 1, depth + 1);
+		dfs(root.right, u << 1 | 1, depth + 1);
 	}
 }
