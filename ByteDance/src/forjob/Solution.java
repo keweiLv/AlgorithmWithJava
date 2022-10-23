@@ -311,13 +311,33 @@ public class Solution {
 		int n = s1.length(), m = s2.length(), i = 0, j = 0;
 		StringBuilder sb = new StringBuilder();
 		while (i < n || j < m) {
-			if (i < n){
+			if (i < n) {
 				sb.append(s1.charAt(i++));
 			}
-			if (j < m){
+			if (j < m) {
 				sb.append(s2.charAt(j++));
 			}
 		}
 		return sb.toString();
+	}
+
+	// 链表相加
+	public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+		ListNode ans = new ListNode(-1), temp = ans;
+		int t = 0;
+		while (l1 != null || l2 != null || t != 0) {
+			if (l1 != null) {
+				t += l1.val;
+				l1 = l1.next;
+			}
+			if (l2 != null) {
+				t += l2.val;
+				l2 = l2.next;
+			}
+			temp.next = new ListNode(t % 10);
+			temp = temp.next;
+			t /= 10;
+		}
+		return ans.next;
 	}
 }
