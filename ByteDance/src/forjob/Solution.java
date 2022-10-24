@@ -358,7 +358,7 @@ public class Solution {
 		return -1;
 	}
 
-	// 将数字翻译成字符串]
+	// 将数字翻译成字符串
 	public int translateNum(int num) {
 		String s = String.valueOf(num);
 		int a = 1, b = 1;
