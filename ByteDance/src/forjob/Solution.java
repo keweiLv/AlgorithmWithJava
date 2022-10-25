@@ -242,6 +242,7 @@ public class Solution {
 	// 股票价格跨度
 	Deque<int[]> d = new ArrayDeque<>();
 	int cur = 0;
+
 	public int next(int price) {
 		while (!d.isEmpty() && d.peekLast()[1] <= price) d.pollLast();
 		int prev = d.isEmpty() ? -1 : d.peekLast()[0], ans = cur - prev;
@@ -379,5 +380,56 @@ public class Solution {
 			a = c;
 		}
 		return a;
+	}
+
+	// 最短的桥
+	int[][] grid, coordinates = {{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
+	Deque<int[]> edges;
+	public int shortestBridge(int[][] grid) {
+		int result = 0;
+		boolean findIsLand = false;
+		edges = new ArrayDeque<>();
+		this.grid = grid;
+		for (int i = 0; !findIsLand && i < grid.length; i++) {
+			for (int j = 0; !findIsLand && j < grid[0].length; j++) {
+				if (findIsLand = (grid[i][j] == 1)) {
+					markIsLand(i, j);
+				}
+			}
+		}
+		while (!edges.isEmpty()) {
+			result++;
+			int num = edges.size();
+			for (int i = 0; i < num; i++) {
+				int[] edge = edges.removeFirst();
+				for (int[] c : coordinates) {
+					int nex = edge[0] + c[0], ney = edge[1] + c[1];
+					if (isLegal(nex, ney) && grid[nex][ney] == 0) {
+						edges.addLast(new int[]{nex, ney});
+						grid[nex][ney] = 2;
+					}else if (isLegal(nex,ney) && grid[nex][ney] == 1){
+						return result;
+					}
+				}
+			}
+		}
+		return result;
+	}
+	private void markIsLand(int row, int column) {
+		if (!isLegal(row, column) || grid[row][column] == 2) {
+			return;
+		}
+		if (grid[row][column] == 0) {
+			grid[row][column] = 2;
+			edges.addLast(new int[]{row, column});
+			return;
+		}
+		grid[row][column] = 2;
+		for (int[] c : coordinates) {
+			markIsLand(row + c[0], column + c[1]);
+		}
+	}
+	private boolean isLegal(int row, int column) {
+		return row >= 0 && row < grid.length && column >= 0 && column < grid[0].length;
 	}
 }
