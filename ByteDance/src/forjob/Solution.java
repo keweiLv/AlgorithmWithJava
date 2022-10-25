@@ -239,6 +239,16 @@ public class Solution {
 		return resSet.stream().mapToInt(x -> x).toArray();
 	}
 
+	// 股票价格跨度
+	Deque<int[]> d = new ArrayDeque<>();
+	int cur = 0;
+	public int next(int price) {
+		while (!d.isEmpty() && d.peekLast()[1] <= price) d.pollLast();
+		int prev = d.isEmpty() ? -1 : d.peekLast()[0], ans = cur - prev;
+		d.addLast(new int[]{cur++, price});
+		return ans;
+	}
+
 	// 第K个语法符号
 	public int kthGrammar(int n, int k) {
 		return dfs(n, k, 1) == 0 ? 1 : 0;
