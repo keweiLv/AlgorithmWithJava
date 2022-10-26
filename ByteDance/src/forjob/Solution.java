@@ -445,12 +445,46 @@ public class Solution {
 		int can = 0;
 		for (int i = 0; i <= can; i++) {
 			int temp = i + nums[i];
-			can = Math.max(can,temp);
-			if (can >= nums.length-1){
+			can = Math.max(can, temp);
+			if (can >= nums.length - 1) {
 				return true;
 			}
 		}
 		return false;
 	}
 
+
+	// 合法二叉树
+	public boolean isValidBST(TreeNode root) {
+		Deque<TreeNode> stack = new LinkedList<>();
+		double inorder = -Double.MAX_VALUE;
+		while (!stack.isEmpty() || root != null) {
+			while (root != null) {
+				stack.push(root);
+				root = root.left;
+			}
+			root = stack.pop();
+			if (root.val <= inorder) {
+				return false;
+			}
+			inorder = root.val;
+			root = root.right;
+		}
+		return true;
+	}
+
+	// 区间加法--差分数组
+	public int[] getModifiedArray(int length, int[][] updates) {
+		int[] d = new int[length];
+		for (int[] update : updates) {
+			d[update[0]] += update[2];
+			if (update[1] < length - 1) {
+				d[update[1] + 1] -= update[2];
+			}
+		}
+		for (int i = 1; i < length; i++) {
+			d[i] += d[i-1];
+		}
+		return d;
+	}
 }
