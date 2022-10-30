@@ -1,5 +1,8 @@
 package AlgInterviewSummary;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Kezi
  * @date 2022年10月27日 23:01
@@ -31,4 +34,25 @@ public class Solution {
 			nums1[end--] = (i >= 0 && nums1[i] > nums2[j])?nums1[i--]:nums2[j--];
 		}
 	}
+
+	// 字母大小写全排列
+	public List<String> letterCasePermutation(String S) {
+		List<String> res = new ArrayList<>();
+		char[] chars = S.toCharArray();
+		dfs(chars,0,res);
+		return res;
+	}
+
+	private void dfs(char[] chars, int i, List<String> res) {
+		if (i == chars.length){
+			res.add(new String(chars));
+			return;
+		}
+		dfs(chars,i+1,res);
+		if (Character.isLetter(chars[i])){
+			chars[i] ^= 1 << 5;
+			dfs(chars,i+1,res);
+		}
+	}
+
 }
