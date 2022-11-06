@@ -152,4 +152,55 @@ public class Solution {
 		}
 		return ans;
 	}
+
+	// 设计goal解析器
+	public String interpret(String s) {
+		StringBuilder sb = new StringBuilder();
+		int n = s.length();
+		for (int i = 0; i < n;) {
+			if (s.charAt(i) == 'G'){
+				sb.append('G');
+				i++;
+			}else if (i + 1 < n && s.charAt(i+1) == ')'){
+				sb.append('o');
+				i += 2;
+			}else {
+				sb.append("al");
+				i += 4;
+			}
+		}
+		return sb.toString();
+	}
+
+	// 缺失的区间
+	public List<String> findMissingRanges(int[] nums, int lower, int upper) {
+		List<String> ans = new ArrayList<>();
+		int n = nums.length;
+		if (n == 0){
+			ans.add(missHelper(lower-1,upper+1));
+			return ans;
+		}
+		if (lower != nums[0]){
+			ans.add(missHelper(lower-1,nums[0]));
+		}
+		for (int i = 0;i<n-1;++i){
+			if (nums[i] + 1 != nums[i+1]){
+				ans.add(missHelper(nums[i],nums[i+1]));
+			}
+		}
+		if (upper != nums[n-1]){
+			ans.add(missHelper(nums[n-1],upper+1));
+		}
+		return ans;
+	}
+
+	private String missHelper(int left, int right) {
+		StringBuilder sb = new StringBuilder();
+		if (left + 2 == right){
+			sb.append(left+1);
+		}else {
+			sb.append(left+1).append("->").append(right-1);
+		}
+		return sb.toString();
+	}
 }
