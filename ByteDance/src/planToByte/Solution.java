@@ -1,9 +1,6 @@
 package planToByte;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
  * @author Kezi
@@ -62,12 +59,52 @@ public class Solution {
 			queue.offer(nums[i]);
 		}
 		for (int i = k; i < nums.length; i++) {
-			if (nums[i] > queue.peek()){
+			if (nums[i] > queue.peek()) {
 				queue.poll();
 				queue.offer(nums[i]);
 			}
 		}
 		return queue.peek();
+	}
+
+	// 三数之和
+	public List<List<Integer>> threeSum(int[] nums) {
+		List<List<Integer>> ans = new ArrayList<>();
+		Arrays.sort(nums);
+		int len = nums.length;
+		for (int i = 0; i < len; i++) {
+			if (nums[i] > 0	){
+				return ans;
+			}
+			if (i > 0 && nums[i] == nums[i-1]){
+				continue;
+			}
+			int cur = nums[i];
+			int l = i+1,r = len-1;
+			while (l < r){
+				int tmp = cur + nums[l] + nums[r];
+				if (tmp == 0){
+					List<Integer> list = new ArrayList<>();
+					list.add(cur);
+					list.add(nums[l]);
+					list.add(nums[r]);
+					ans.add(list);
+					while (l < r && nums[l+1] == nums[l]){
+						++l;
+					}
+					while (l < r && nums[r-1] == nums[r]){
+						--r;
+					}
+					++l;
+					--r;
+				}else if (tmp < 0){
+					++l;
+				}else {
+					--r;
+				}
+			}
+		}
+		return ans;
 	}
 
 }
