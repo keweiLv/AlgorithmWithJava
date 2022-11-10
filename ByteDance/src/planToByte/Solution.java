@@ -73,38 +73,79 @@ public class Solution {
 		Arrays.sort(nums);
 		int len = nums.length;
 		for (int i = 0; i < len; i++) {
-			if (nums[i] > 0	){
+			if (nums[i] > 0) {
 				return ans;
 			}
-			if (i > 0 && nums[i] == nums[i-1]){
+			if (i > 0 && nums[i] == nums[i - 1]) {
 				continue;
 			}
 			int cur = nums[i];
-			int l = i+1,r = len-1;
-			while (l < r){
+			int l = i + 1, r = len - 1;
+			while (l < r) {
 				int tmp = cur + nums[l] + nums[r];
-				if (tmp == 0){
+				if (tmp == 0) {
 					List<Integer> list = new ArrayList<>();
 					list.add(cur);
 					list.add(nums[l]);
 					list.add(nums[r]);
 					ans.add(list);
-					while (l < r && nums[l+1] == nums[l]){
+					while (l < r && nums[l + 1] == nums[l]) {
 						++l;
 					}
-					while (l < r && nums[r-1] == nums[r]){
+					while (l < r && nums[r - 1] == nums[r]) {
 						--r;
 					}
 					++l;
 					--r;
-				}else if (tmp < 0){
+				} else if (tmp < 0) {
 					++l;
-				}else {
+				} else {
 					--r;
 				}
 			}
 		}
 		return ans;
+	}
+
+	// 岛屿数量
+	public int numIslands(char[][] grid) {
+		int count = 0;
+		for (int i = 0; i < grid.length; i++) {
+			for (int j = 0; j < grid[0].length; j++) {
+				if (grid[i][j] == '1'){
+					dfs(grid,i,j);
+					count++;
+				}
+			}
+		}
+		return count;
+	}
+
+	private void dfs(char[][] grid, int i, int j) {
+		if ( i < 0 || j < 0 || i > grid.length || j > grid[0].length || grid[i][j] == '0'){
+			return;
+		}
+		grid[i][j] = '0';
+		dfs(grid,i+1,j);
+		dfs(grid,i,j+1);
+		dfs(grid,i-1,j);
+		dfs(grid,i,j-1);
+	}
+
+	// 二叉树的最近公共祖先
+	public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+		if (root == null || root == p || root == q){
+			return root;
+		}
+		TreeNode left = lowestCommonAncestor(root.left,p,q);
+		TreeNode right = lowestCommonAncestor(root.right,p,q);
+		if (left == null){
+			return right;
+		}
+		if (right == null){
+			return left;
+		}
+		return root;
 	}
 
 }
