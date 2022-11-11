@@ -112,8 +112,8 @@ public class Solution {
 		int count = 0;
 		for (int i = 0; i < grid.length; i++) {
 			for (int j = 0; j < grid[0].length; j++) {
-				if (grid[i][j] == '1'){
-					dfs(grid,i,j);
+				if (grid[i][j] == '1') {
+					dfs(grid, i, j);
 					count++;
 				}
 			}
@@ -122,30 +122,46 @@ public class Solution {
 	}
 
 	private void dfs(char[][] grid, int i, int j) {
-		if ( i < 0 || j < 0 || i > grid.length || j > grid[0].length || grid[i][j] == '0'){
+		if (i < 0 || j < 0 || i > grid.length || j > grid[0].length || grid[i][j] == '0') {
 			return;
 		}
 		grid[i][j] = '0';
-		dfs(grid,i+1,j);
-		dfs(grid,i,j+1);
-		dfs(grid,i-1,j);
-		dfs(grid,i,j-1);
+		dfs(grid, i + 1, j);
+		dfs(grid, i, j + 1);
+		dfs(grid, i - 1, j);
+		dfs(grid, i, j - 1);
 	}
 
 	// 二叉树的最近公共祖先
 	public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-		if (root == null || root == p || root == q){
+		if (root == null || root == p || root == q) {
 			return root;
 		}
-		TreeNode left = lowestCommonAncestor(root.left,p,q);
-		TreeNode right = lowestCommonAncestor(root.right,p,q);
-		if (left == null){
+		TreeNode left = lowestCommonAncestor(root.left, p, q);
+		TreeNode right = lowestCommonAncestor(root.right, p, q);
+		if (left == null) {
 			return right;
 		}
-		if (right == null){
+		if (right == null) {
 			return left;
 		}
 		return root;
+	}
+
+	// 判断字符串的两半是否相似
+	public boolean halvesAreAlike(String s) {
+		Set<Character> set = new HashSet<>();
+		for (char c : "aeiouAEIOU".toCharArray()) {
+			set.add(c);
+		}
+		int n = s.length(), count = 0;
+		for (int i = 0; i < n; i++) {
+			if (!set.contains(s.charAt(i))) {
+				continue;
+			}
+			count += i < n / 2 ? 1 : -1;
+		}
+		return count == 0;
 	}
 
 }
