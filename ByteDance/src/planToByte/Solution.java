@@ -211,10 +211,21 @@ public class Solution {
 	public int numWays(int n) {
 		int a = 1, b = 1, sum;
 		for (int i = 0; i < n; i++) {
-			sum = (a+b) % 1000000007;
+			sum = (a + b) % 1000000007;
 			a = b;
 			b = sum;
 		}
 		return a;
+	}
+
+	// 卡车上的最大单元数
+	public int maximumUnits(int[][] boxTypes, int truckSize) {
+		int n = boxTypes.length, ans = 0;
+		Arrays.sort(boxTypes, (a, b) -> b[1] - a[1]);
+		for (int i = 0, cnt = 0; i < n && cnt < truckSize; i++) {
+			int a = boxTypes[i][0], b = boxTypes[i][1], c = Math.min(a, truckSize - cnt);
+			cnt += c;ans += c * b;
+		}
+		return ans;
 	}
 }
