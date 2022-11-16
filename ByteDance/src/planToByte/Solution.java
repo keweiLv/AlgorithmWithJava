@@ -224,8 +224,42 @@ public class Solution {
 		Arrays.sort(boxTypes, (a, b) -> b[1] - a[1]);
 		for (int i = 0, cnt = 0; i < n && cnt < truckSize; i++) {
 			int a = boxTypes[i][0], b = boxTypes[i][1], c = Math.min(a, truckSize - cnt);
-			cnt += c;ans += c * b;
+			cnt += c;
+			ans += c * b;
 		}
 		return ans;
 	}
+
+	/**
+	 * 全局倒置与局部倒置
+	 * 核心:任意一个“局部倒置”均满足“全局倒置”的定义，因此要判定两者数量是否相同，可转换为统计是否存在「不满足“局部倒置”定义的“全局倒置”」
+	 */
+	public boolean isIdealPermutation(int[] nums) {
+		for (int i = 0; i < nums.length; i++) {
+			if (Math.abs(nums[i] - i ) >= 2){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	// 二叉树的右视图
+	List<Integer> res =  new ArrayList<>();
+	public List<Integer> rightSideView(TreeNode root) {
+		dfs(root,0);
+		return res;
+	}
+
+	private void dfs(TreeNode root, int depth) {
+		if (root == null){
+			return;
+		}
+		if (depth == res.size()) {
+			res.add(root.val);
+		}
+		depth++;
+		dfs(root.right,depth);
+		dfs(root.left,depth);
+	}
+
 }
