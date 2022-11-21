@@ -343,4 +343,40 @@ public class Solution {
 		}
 		return (int) Math.pow(3, a) * 2;
 	}
+
+	// 和为s的连续正数序列
+	public int[][] findContinuousSequence(int target) {
+		int i = 1, j = 2, s = 3;
+		List<int[]> res = new ArrayList<>();
+		while (i < j) {
+			if (s == target) {
+				int[] ans = new int[j - i + 1];
+				for (int k = i; k <= j; k++) {
+					ans[k - i] = k;
+				}
+				res.add(ans);
+			}
+			if (s >= target) {
+				s -= i;
+				i++;
+			} else {
+				j++;
+				s += j;
+			}
+		}
+		return res.toArray(new int[0][]);
+	}
+
+	// 数组中出现次数超过一半的数字--摩尔投票
+	public int majorityElement(int[] nums) {
+		int x = 0, votes = 0, count = 0;
+		for (int num : nums) {
+			if (votes == 0) {
+				x = num;
+			}
+			votes += num == x ? 1 : -1;
+		}
+		return x;
+	}
+
 }
