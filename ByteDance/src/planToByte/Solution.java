@@ -379,4 +379,29 @@ public class Solution {
 		return x;
 	}
 
+	/**
+	 * 数组中数字出现的次数
+ 	 * &:运算法则为遇0得0。也就是说只要有0，结果即为0。
+	 * ^:运算法则为相同取0，不同取1。异或运算，关键在异上面，异为1，否则为0
+	 */
+	public int[] singleNumbers(int[] nums) {
+		int z = 0;
+		for (int num : nums) {
+			z ^= num;
+		}
+		int m = 1;
+		while ((z & m) == 0) {
+			m <<= 1;
+		}
+		int x = 0, y = 0;
+		for (int num : nums) {
+			if ((num & m) == 0) {
+				x ^= num;
+			} else {
+				y ^= num;
+			}
+		}
+		return new int[]{x, y};
+	}
+
 }
