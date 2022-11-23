@@ -381,7 +381,7 @@ public class Solution {
 
 	/**
 	 * 数组中数字出现的次数
- 	 * &:运算法则为遇0得0。也就是说只要有0，结果即为0。
+	 * &:运算法则为遇0得0。也就是说只要有0，结果即为0。
 	 * ^:运算法则为相同取0，不同取1。异或运算，关键在异上面，异为1，否则为0
 	 */
 	public int[] singleNumbers(int[] nums) {
@@ -402,6 +402,23 @@ public class Solution {
 			}
 		}
 		return new int[]{x, y};
+	}
+
+	// 盒子中小球的最大数量
+	public int countBalls(int l, int r) {
+		int ans = 0;
+		int[] cnts = new int[50];
+		for (int i = 0; i <= r; i++) {
+			int j = i, cur = 0;
+			while (j != 0) {
+				cur += j % 10;
+				j /= 10;
+			}
+			if (++cnts[cur] > ans){
+				ans = cnts[cur];
+			}
+		}
+		return ans;
 	}
 
 }
