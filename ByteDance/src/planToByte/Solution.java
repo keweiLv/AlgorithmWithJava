@@ -414,11 +414,51 @@ public class Solution {
 				cur += j % 10;
 				j /= 10;
 			}
-			if (++cnts[cur] > ans){
+			if (++cnts[cur] > ans) {
 				ans = cnts[cur];
 			}
 		}
 		return ans;
 	}
 
+	// 区间子数组个数
+	public int numSubarrayBoundedMax(int[] nums, int left, int right) {
+		int n = nums.length, ans = 0, i0 = -1, i1 = -1;
+		for (int i = 0; i < n; ++i) {
+			if (nums[i] > right) {
+				i0 = i;
+			}
+			if (nums[i] >= left) {
+				i1 = i;
+			}
+			ans += i1 - i0;
+		}
+		return ans;
+	}
+
+	// 打印从1到n的最大n位数
+	int[] printNumbersRes;
+	int count = 0;
+
+	public int[] printNumbers(int n) {
+		printNumbersRes = new int[(int) Math.pow(10, n) - 1];
+		for (int digit = 1; digit < n + 1; digit++) {
+			for (char first = '1';first <= '9';first++){
+				char[] num = new char[digit];
+				num[0] = first;
+				dfs(1,num,digit);
+			}
+		}
+		return printNumbersRes;
+	}
+	private void dfs(int index, char[] num, int digit) {
+		if (index == digit){
+			printNumbersRes[count++] = Integer.parseInt(String.valueOf(num));
+			return;
+		}
+		for (char i = '0';i<='9';i++){
+			num[index] = i;
+			dfs(index+1,num,digit);
+		}
+	}
 }
