@@ -540,4 +540,47 @@ public class Solution {
 		return p + 1;
 	}
 
+	// 最后一个单词的长度
+	public int lengthOfLastWord(String s) {
+		if (s == null || s.length() == 0){
+			return 0;
+		}
+		int count = 0;
+		for (int i = s.length()-1;i>=0;i--){
+			if (s.charAt(i) == ' '){
+				if (count == 0){
+					continue;
+				}
+				break;
+			}
+			count++;
+		}
+		return count;
+	}
+
+	// 区间列表的交集
+	public int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
+		List<int[]> ans = new ArrayList<>();
+		int i = 0,j=0;
+		while (i < firstList.length && j < secondList.length){
+			int low = Math.max(firstList[i][0],secondList[j][0]);
+			int high = Math.min(firstList[i][1],secondList[j][1]);
+			if (low <= high){
+				ans.add(new int[]{low,high});
+			}
+			if (firstList[i][1] < secondList[j][1]){
+				i++;
+			}else {
+				j++;
+			}
+		}
+		return ans.toArray(new int[ans.size()][]);
+	}
+
+	// 等差数列划分
+//	public int numberOfArithmeticSlices(int[] nums) {
+//
+//	}
+
+
 }
