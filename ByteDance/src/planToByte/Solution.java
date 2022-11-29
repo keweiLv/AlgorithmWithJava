@@ -542,13 +542,13 @@ public class Solution {
 
 	// 最后一个单词的长度
 	public int lengthOfLastWord(String s) {
-		if (s == null || s.length() == 0){
+		if (s == null || s.length() == 0) {
 			return 0;
 		}
 		int count = 0;
-		for (int i = s.length()-1;i>=0;i--){
-			if (s.charAt(i) == ' '){
-				if (count == 0){
+		for (int i = s.length() - 1; i >= 0; i--) {
+			if (s.charAt(i) == ' ') {
+				if (count == 0) {
 					continue;
 				}
 				break;
@@ -561,26 +561,52 @@ public class Solution {
 	// 区间列表的交集
 	public int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
 		List<int[]> ans = new ArrayList<>();
-		int i = 0,j=0;
-		while (i < firstList.length && j < secondList.length){
-			int low = Math.max(firstList[i][0],secondList[j][0]);
-			int high = Math.min(firstList[i][1],secondList[j][1]);
-			if (low <= high){
-				ans.add(new int[]{low,high});
+		int i = 0, j = 0;
+		while (i < firstList.length && j < secondList.length) {
+			int low = Math.max(firstList[i][0], secondList[j][0]);
+			int high = Math.min(firstList[i][1], secondList[j][1]);
+			if (low <= high) {
+				ans.add(new int[]{low, high});
 			}
-			if (firstList[i][1] < secondList[j][1]){
+			if (firstList[i][1] < secondList[j][1]) {
 				i++;
-			}else {
+			} else {
 				j++;
 			}
 		}
 		return ans.toArray(new int[ans.size()][]);
 	}
 
-	// 等差数列划分
-//	public int numberOfArithmeticSlices(int[] nums) {
-//
-//	}
+	// 等差数列划分,n是等差数列的长度，子等差数列数等于 (n-2)(n-1)/2
+	public int numberOfArithmeticSlices(int[] nums) {
+		int len = nums.length;
+		if (len < 3) {
+			return 0;
+		}
+		int preDiff = nums[1] - nums[0];
+		int l = 2;
+		int res = 0;
+		for (int i = 2; i < len; i++) {
+			int diff = nums[i] - nums[i - 1];
+			if (diff == preDiff) {
+				l++;
+			} else {
+				res += (l - 1) * (l - 2) / 2;
+				l = 2;
+				preDiff = diff;
+			}
+		}
+		res += (l - 1) * (l - 2) / 2;
+		return res;
+	}
 
+	// 生成交替二进制字符串额最少操作数
+	public int minOperations(String s) {
+		int n = s.length(), count = 0;
+		for (int i = 0; i < n; i++) {
+			count += (s.charAt(i) - '0') ^ (i & 1);
+		}
+		return Math.min(count, n - count);
+	}
 
 }
