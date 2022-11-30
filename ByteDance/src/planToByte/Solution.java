@@ -609,4 +609,38 @@ public class Solution {
 		return Math.min(count, n - count);
 	}
 
+
+	// 删除排序链表中的重复元素Ⅱ
+	public ListNode deleteDuplicates(ListNode head) {
+		if (head == null || head.next == null){
+			return head;
+		}
+		if (head.val != head.next.val){
+			head.next = deleteDuplicates(head.next);
+			return head;
+		}else {
+			ListNode tmp = head.next.next;
+			while (tmp != null && tmp.val == head.val){
+				tmp = tmp.next;
+			}
+			return deleteDuplicates(tmp);
+		}
+	}
+
+
+	// 二叉树的前序遍历
+	public List<Integer> preorderTraversal(TreeNode root) {
+		List<Integer> res = new ArrayList<>();
+		preOrder(root,res);
+		return res;
+	}
+
+	private void preOrder(TreeNode root, List<Integer> res) {
+		if (root == null){
+			return;
+		}
+		res.add(root.val);
+		preOrder(root.left,res);
+		preOrder(root.right,res);
+	}
 }
