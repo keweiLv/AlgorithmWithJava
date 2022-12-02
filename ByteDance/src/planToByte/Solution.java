@@ -649,14 +649,57 @@ public class Solution {
         int n = nums.length;
         Set<Integer> set = new HashSet<>();
         for (int i = 0; i < n; i++) {
-            if (i > k){
-                set.remove(nums[i-k-1]);
+            if (i > k) {
+                set.remove(nums[i - k - 1]);
             }
-            if (set.contains(nums[i])){
+            if (set.contains(nums[i])) {
                 return true;
             }
             set.add(nums[i]);
         }
         return false;
+    }
+
+    // 旋转函数
+    public int maxRotateFunction(int[] nums) {
+        int n = nums.length;
+        int[] sum = new int[2 * n + 10];
+        for (int i = 1; i <= 2 * n; i++) {
+            sum[i] = sum[i - 1] + nums[(i - 1) % n];
+        }
+        int ans = 0;
+        for (int i = 1; i <= n; i++) {
+            ans += nums[i - 1] * (i - 1);
+        }
+        for (int i = n + 1, cur = ans; i < 2 * n; i++) {
+            cur += nums[(i-1)%n] * (n-1);
+            cur -= sum[i-1] - sum[i-n];
+            if (cur > ans){
+                ans = cur;
+            }
+        }
+        return ans;
+    }
+
+    // 替换后的最长重复子串
+    public int characterReplacement(String s, int k) {
+        if (s == null){
+            return 0;
+        }
+        int[] map = new int[26];
+        char[] chars = s.toCharArray();
+        int left = 0;
+        int right = 0;
+        int maxHis = 0;
+        for (right = 0;right<chars.length;right++){
+            int index = chars[right] - 'A';
+            map[index]++;
+            maxHis = Math.max(maxHis,map[index]);
+            if (right - left + 1 > maxHis + k) {
+                map[chars[left] - 'A']--;
+                left++;
+            }
+        }
+        return chars.length-left;
     }
 }
