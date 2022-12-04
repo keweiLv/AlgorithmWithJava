@@ -774,7 +774,7 @@ public class Solution {
 		int n = nums.length;
 		int[] lower = new int[n], upper = new int[n];
 		find(lower, nums, k);
-		find(upper, nums, k-1);
+		find(upper, nums, k - 1);
 		int ans = 0;
 		for (int i = 0; i < n; i++) {
 			ans += upper[i] - lower[i];
@@ -801,4 +801,53 @@ public class Solution {
 			arr[i] = j;
 		}
 	}
+
+	// 最接近目标的甜点成本
+	public int closestCost(int[] baseCosts, int[] toppingCosts, int target) {
+		int min = (Arrays.stream(baseCosts).min().getAsInt());
+		if (min >= target) {
+			return min;
+		}
+		int upper = 2 * target - min;
+		boolean[] dp = new boolean[upper];
+		for (int base : baseCosts) {
+			if (base < upper) {
+				dp[base] = true;
+			}
+		}
+		for (int top : toppingCosts) {
+			for (int j = upper - 1; j >= min; j--) {
+				if (dp[j] && (j + top) < upper) {
+					dp[j + top] = true;
+					7
+				}
+				if (dp[j] && (j + 2 * top) < upper) {
+					dp[j + 2 * top] = true;
+				}
+			}
+		}
+		int ans = min;
+		for (int i = min + 1; i < upper; ++i) {
+			if (dp[i]) {
+				if (Math.abs(i - target) < Math.abs(ans - target)) {
+					ans = i;
+				} else if (Math.abs(i - target) == Math.abs(ans - target)) {
+					ans = Math.min(ans, i);
+				}
+			}
+		}
+		return ans;
+	}
+
+	// 最大子数组和
+	public int maxSubArray(int[] nums) {
+		int pre = 0;
+		int res = nums[0];
+		for (int num:nums){
+			pre = Math.max(pre+num,num);
+			res = Math.max(res,pre);
+		}
+		return res;
+	}
+
 }
