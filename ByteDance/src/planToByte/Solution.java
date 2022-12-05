@@ -819,7 +819,6 @@ public class Solution {
 			for (int j = upper - 1; j >= min; j--) {
 				if (dp[j] && (j + top) < upper) {
 					dp[j + top] = true;
-					7
 				}
 				if (dp[j] && (j + 2 * top) < upper) {
 					dp[j + 2 * top] = true;
