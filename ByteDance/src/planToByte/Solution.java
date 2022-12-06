@@ -842,9 +842,9 @@ public class Solution {
 	public int maxSubArray(int[] nums) {
 		int pre = 0;
 		int res = nums[0];
-		for (int num:nums){
-			pre = Math.max(pre+num,num);
-			res = Math.max(res,pre);
+		for (int num : nums) {
+			pre = Math.max(pre + num, num);
+			res = Math.max(res, pre);
 		}
 		return res;
 	}
@@ -852,26 +852,83 @@ public class Solution {
 
 	// 串联所有单词的子串
 	public List<Integer> findSubstring(String s, String[] words) {
-		int n = s.length(),m = words.length,w = words[0].length();
-		Map<String,Integer> map = new HashMap<>();
-		for (String word:words){
-			map.put(word,map.getOrDefault(word,0)+1);
+		int n = s.length(), m = words.length, w = words[0].length();
+		Map<String, Integer> map = new HashMap<>();
+		for (String word : words) {
+			map.put(word, map.getOrDefault(word, 0) + 1);
 		}
 		List<Integer> ans = new ArrayList<>();
-		out:for (int i = 0;i+m*w <= n;i++){
-			Map<String,Integer> cur = new HashMap<>();
-			String sub = s.substring(i,i+m*w);
-			for (int j = 0;j < sub.length();j+=w){
-				String item = sub.substring(j,j+w);
-				if (!map.containsKey(item)){
+		out:
+		for (int i = 0; i + m * w <= n; i++) {
+			Map<String, Integer> cur = new HashMap<>();
+			String sub = s.substring(i, i + m * w);
+			for (int j = 0; j < sub.length(); j += w) {
+				String item = sub.substring(j, j + w);
+				if (!map.containsKey(item)) {
 					continue out;
 				}
-				cur.put(item,cur.getOrDefault(item,0)+1);
+				cur.put(item, cur.getOrDefault(item, 0) + 1);
 			}
-			if (cur.equals(map)){
+			if (cur.equals(map)) {
 				ans.add(i);
 			}
 		}
 		return ans;
 	}
+
+	// 分隔回文串
+	public List<List<String>> partition(String s) {
+		int len = s.length();
+		List<List<String>> res = new ArrayList<>();
+		if (len == 0) {
+			return res;
+		}
+		char[] chars = s.toCharArray();
+		boolean[][] dp = new boolean[len][len];
+		for (int right = 0; right < len; right++) {
+			for (int left = 0; left <= right; left++) {
+				if (chars[left] == chars[right] && (right-left <= 2 || dp[left+1][right-1])){
+					dp[left][right] = true;
+				}
+			}
+		}
+		Deque<String> deque = new ArrayDeque<>();
+		dfs(s,0,len,dp,deque,res);
+		return res;
+	}
+
+	private void dfs(String s, int index, int len, boolean[][] dp, Deque<String> deque, List<List<String>> res) {
+		if (index == len){
+			res.add(new ArrayList<>(deque));
+			return;
+		}
+		for (int i = index;i < len;i++){
+			if (dp[index][i]){
+				deque.addLast(s.substring(index,i+1));
+				dfs(s,i+1,len,dp,deque,res);
+				deque.removeLast();
+			}
+		}
+	}
+
+	// 字符串中不同整数的数目
+	public int numDifferentIntegers(String word) {
+		Set<String> set = new HashSet<>();
+		for (int i = 0;i<word.length();i++){
+			if (word.charAt(i) <= '9'){
+				int j = i;
+				while (j<word.length() && word.charAt(j) <= '9'){
+					j++;
+				}
+				while (i < j && word.charAt(i) == '0'){
+					i++;
+				}
+				set.add(word.substring(i,j));
+				i = j;
+			}
+		}
+		return set.size();
+	}
+
+
 }
