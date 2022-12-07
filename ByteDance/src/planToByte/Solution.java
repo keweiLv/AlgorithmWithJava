@@ -930,5 +930,78 @@ public class Solution {
 		return set.size();
 	}
 
+	// 复原IP地址
+	public List<String> restoreIpAddresses(String s) {
+		int len = s.length();
+		List<String> res = new ArrayList<>();
+		if (len > 12 || len < 4){
+			return res;
+		}
+		Deque<String> path = new ArrayDeque<>();
+		dfs(s,len,0,4,path,res);
+		return res;
+	}
+	private void dfs(String s, int len, int begin, int residue, Deque<String> path, List<String> res) {
+		if (begin == len){
+			if (residue == 0){
+				res.add(String.join(".",path));
+			}
+			return;
+		}
+		for (int i = begin;i < begin+3;i++){
+			if (i >= len){
+				break;
+			}
+			if (residue * 3 < len-i){
+				continue;
+			}
+			if (judgeIpSegment(s,begin,i)){
+				String cur = s.substring(begin,i+1);
+				path.addLast(cur);
+				dfs(s,len,i+1,residue-1,path,res);
+				path.removeLast();
+			}
+		}
+	}
+	private boolean judgeIpSegment(String s, int left, int right) {
+		int len = right-left+1;
+		if (len > 1 && s.charAt(left) == '0'){
+			return false;
+		}
+		int res = 0;
+		while (left <= right){
+			res = res*10+s.charAt(left) - '0';
+			left++;
+		}
+		return res >= 0 && res <= 255;
+	}
+
+	// 通过最少操作次数使数组的和相等
+	public int minOperations(int[] nums1, int[] nums2) {
+		if (6 * nums1.length < nums2.length || 6 * nums2.length < nums1.length){
+			return -1;
+		}
+		int d = Arrays.stream(nums2).sum() - Arrays.stream(nums1).sum();
+		if ( d < 0){
+			d = -d;
+			int[] tmp = nums1;
+			nums1 = nums2;
+			nums2 = tmp;
+		}
+		int[] cnt = new int[6];
+		for (int x : nums1){
+			++cnt[6-x];
+		}
+		for (int x : nums2){
+			++cnt[x-1];
+		}
+		for (int i = 5,ans = 0;;--i){
+			if (i * cnt[i] >= d){
+				return ans + (d+i-1)/i;
+			}
+			ans += cnt[i];
+			d -= i * cnt[i];
+		}
+	}
 
 }
