@@ -887,25 +887,25 @@ public class Solution {
 		boolean[][] dp = new boolean[len][len];
 		for (int right = 0; right < len; right++) {
 			for (int left = 0; left <= right; left++) {
-				if (chars[left] == chars[right] && (right-left <= 2 || dp[left+1][right-1])){
+				if (chars[left] == chars[right] && (right - left <= 2 || dp[left + 1][right - 1])) {
 					dp[left][right] = true;
 				}
 			}
 		}
 		Deque<String> deque = new ArrayDeque<>();
-		dfs(s,0,len,dp,deque,res);
+		dfs(s, 0, len, dp, deque, res);
 		return res;
 	}
 
 	private void dfs(String s, int index, int len, boolean[][] dp, Deque<String> deque, List<List<String>> res) {
-		if (index == len){
+		if (index == len) {
 			res.add(new ArrayList<>(deque));
 			return;
 		}
-		for (int i = index;i < len;i++){
-			if (dp[index][i]){
-				deque.addLast(s.substring(index,i+1));
-				dfs(s,i+1,len,dp,deque,res);
+		for (int i = index; i < len; i++) {
+			if (dp[index][i]) {
+				deque.addLast(s.substring(index, i + 1));
+				dfs(s, i + 1, len, dp, deque, res);
 				deque.removeLast();
 			}
 		}
@@ -914,16 +914,16 @@ public class Solution {
 	// 字符串中不同整数的数目
 	public int numDifferentIntegers(String word) {
 		Set<String> set = new HashSet<>();
-		for (int i = 0;i<word.length();i++){
-			if (word.charAt(i) <= '9'){
+		for (int i = 0; i < word.length(); i++) {
+			if (word.charAt(i) <= '9') {
 				int j = i;
-				while (j<word.length() && word.charAt(j) <= '9'){
+				while (j < word.length() && word.charAt(j) <= '9') {
 					j++;
 				}
-				while (i < j && word.charAt(i) == '0'){
+				while (i < j && word.charAt(i) == '0') {
 					i++;
 				}
-				set.add(word.substring(i,j));
+				set.add(word.substring(i, j));
 				i = j;
 			}
 		}
@@ -934,43 +934,45 @@ public class Solution {
 	public List<String> restoreIpAddresses(String s) {
 		int len = s.length();
 		List<String> res = new ArrayList<>();
-		if (len > 12 || len < 4){
+		if (len > 12 || len < 4) {
 			return res;
 		}
 		Deque<String> path = new ArrayDeque<>();
-		dfs(s,len,0,4,path,res);
+		dfs(s, len, 0, 4, path, res);
 		return res;
 	}
+
 	private void dfs(String s, int len, int begin, int residue, Deque<String> path, List<String> res) {
-		if (begin == len){
-			if (residue == 0){
-				res.add(String.join(".",path));
+		if (begin == len) {
+			if (residue == 0) {
+				res.add(String.join(".", path));
 			}
 			return;
 		}
-		for (int i = begin;i < begin+3;i++){
-			if (i >= len){
+		for (int i = begin; i < begin + 3; i++) {
+			if (i >= len) {
 				break;
 			}
-			if (residue * 3 < len-i){
+			if (residue * 3 < len - i) {
 				continue;
 			}
-			if (judgeIpSegment(s,begin,i)){
-				String cur = s.substring(begin,i+1);
+			if (judgeIpSegment(s, begin, i)) {
+				String cur = s.substring(begin, i + 1);
 				path.addLast(cur);
-				dfs(s,len,i+1,residue-1,path,res);
+				dfs(s, len, i + 1, residue - 1, path, res);
 				path.removeLast();
 			}
 		}
 	}
+
 	private boolean judgeIpSegment(String s, int left, int right) {
-		int len = right-left+1;
-		if (len > 1 && s.charAt(left) == '0'){
+		int len = right - left + 1;
+		if (len > 1 && s.charAt(left) == '0') {
 			return false;
 		}
 		int res = 0;
-		while (left <= right){
-			res = res*10+s.charAt(left) - '0';
+		while (left <= right) {
+			res = res * 10 + s.charAt(left) - '0';
 			left++;
 		}
 		return res >= 0 && res <= 255;
@@ -978,30 +980,77 @@ public class Solution {
 
 	// 通过最少操作次数使数组的和相等
 	public int minOperations(int[] nums1, int[] nums2) {
-		if (6 * nums1.length < nums2.length || 6 * nums2.length < nums1.length){
+		if (6 * nums1.length < nums2.length || 6 * nums2.length < nums1.length) {
 			return -1;
 		}
 		int d = Arrays.stream(nums2).sum() - Arrays.stream(nums1).sum();
-		if ( d < 0){
+		if (d < 0) {
 			d = -d;
 			int[] tmp = nums1;
 			nums1 = nums2;
 			nums2 = tmp;
 		}
 		int[] cnt = new int[6];
-		for (int x : nums1){
-			++cnt[6-x];
+		for (int x : nums1) {
+			++cnt[6 - x];
 		}
-		for (int x : nums2){
-			++cnt[x-1];
+		for (int x : nums2) {
+			++cnt[x - 1];
 		}
-		for (int i = 5,ans = 0;;--i){
-			if (i * cnt[i] >= d){
-				return ans + (d+i-1)/i;
+		for (int i = 5, ans = 0; ; --i) {
+			if (i * cnt[i] >= d) {
+				return ans + (d + i - 1) / i;
 			}
 			ans += cnt[i];
 			d -= i * cnt[i];
 		}
 	}
 
+
+	// 判断国际象棋棋盘中一个格子的颜色
+	public boolean squareIsWhite(String coordinates) {
+		return (coordinates.charAt(0) + coordinates.charAt(1)) % 2 == 1;
+	}
+
+	// 划分为k个相等的子集
+	public boolean canPartitionKSubsets(int[] nums, int k) {
+		int sum = 0;
+		for (int i = 0; i < nums.length; i++) {
+			sum += nums[i];
+		}
+		if (sum % k != 0) {
+			return false;
+		}
+		int target = sum / k;
+		Arrays.sort(nums);
+		int l = 0, r = nums.length - 1;
+		while (l <= r) {
+			int temp = nums[l];
+			nums[l] = nums[r];
+			nums[r] = temp;
+			l++;
+			r--;
+		}
+		return backTrace(nums, 0, new int[k], k, target);
+	}
+
+	private boolean backTrace(int[] nums, int index, int[] bucket, int k, int target) {
+		if (index == nums.length) {
+			return true;
+		}
+		for (int i = 0; i < k; i++) {
+			if (i > 0 && bucket[i] == bucket[i - 1]) {
+				continue;
+			}
+			if (bucket[i] + nums[index] > target) {
+				continue;
+			}
+			bucket[i] += nums[index];
+			if (backTrace(nums, index + 1, bucket, k, target)) {
+				return true;
+			}
+			bucket[i] -= nums[index];
+		}
+		return false;
+	}
 }
