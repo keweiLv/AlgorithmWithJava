@@ -1056,12 +1056,65 @@ public class Solution {
 
 	// 判断一个数字是否可以表示成三的幂的和
 	public boolean checkPowersOfThree(int n) {
-		while (n != 0){
-			if (n % 3 == 2){
+		while (n != 0) {
+			if (n % 3 == 2) {
 				return false;
 			}
 			n /= 3;
 		}
 		return true;
 	}
+
+	// 二维网格迁移
+	public List<List<Integer>> shiftGrid(int[][] grid, int k) {
+		int n = grid.length, m = grid[0].length;
+		int[][] mat = new int[n][m];
+		for (int i = 0; i < m; i++) {
+			int tcol = (i + k) % m, trow = ((i + k) / m) % n, idx = 0;
+			while (idx != n) {
+				mat[(trow++ % n)][tcol] = grid[idx++][i];
+			}
+		}
+		List<List<Integer>> ans = new ArrayList<>();
+		for (int i = 0; i < n; i++) {
+			List<Integer> alist = new ArrayList<>();
+			for (int j = 0; j < m; j++) {
+				alist.add(mat[i][j]);
+			}
+			ans.add(alist);
+		}
+		return ans;
+	}
+
+	// 找出缺失的观测数据
+	// 以sum/n为基数，sum%n为偏差diff，如果diff>0，则取1加到基数上，否则使用基数即可；
+	public int[] missingRolls(int[] rolls, int mean, int n) {
+		int m = rolls.length, cnt = m + n;
+		int t = mean * cnt;
+		for (int i : rolls) {
+			t -= i;
+		}
+		if (t < n || t > 6 * n) {
+			return new int[0];
+		}
+		int[] ans = new int[n];
+		Arrays.fill(ans, t / n);
+		int diff = t - (t / n * n), idx = 0;
+		while (diff-- > 0) {
+			ans[idx++]++;
+		}
+		return ans;
+	}
+
+	// 增减字符串匹配
+	public int[] diStringMatch(String s) {
+		int n = s.length(), l = 0, r = n, idx = 0;
+		int[] ans = new int[n + 1];
+		for (int i = 0; i < n; i++) {
+			ans[idx++] = s.charAt(i) == 'I' ? l++ : r--;
+		}
+		ans[idx] = l;
+		return ans;
+	}
+
 }
