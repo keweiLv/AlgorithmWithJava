@@ -1151,4 +1151,42 @@ public class Solution {
 		}
 		return Math.max(min1 * min2 * max1, max1 * max2 * max3);
 	}
+
+	// 优美的排列Ⅱ
+	public int[] constructArray(int n, int k) {
+		int[] ans = new int[n];
+		int t = n - k - 1;
+		for (int i = 0; i < t; i++) {
+			ans[i] = i + 1;
+		}
+		for (int i = t, a = n - k, b = n; i < n; ) {
+			ans[i++] = a++;
+			if (i < n) {
+				ans[i++] = b--;
+			}
+		}
+		return ans;
+	}
+
+	// 所有子字符串美丽值之和
+	public int beautySum(String s) {
+		int ans = 0;
+		int n = s.length();
+		for (int i = 0; i < n; ++i) {
+			 int[] cnt = new int[26];
+			 for (int j = i;j<n;j++){
+				 ++cnt[s.charAt(j) - 'a'];
+				 int min = 1000,max = 0;
+				 for (int v:cnt){
+					 if (v > 0 ){
+						 min = Math.min(min,v);
+						 max = Math.max(max,v);
+					 }
+
+				 }
+				 ans += max-min;
+			 }
+		}
+		return ans;
+	}
 }
