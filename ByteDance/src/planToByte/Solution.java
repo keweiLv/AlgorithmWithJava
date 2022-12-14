@@ -1274,4 +1274,103 @@ public class Solution {
 		}
 		return Math.max(tasks.length, (maxTask - 1) * (n + 1) + countMaxTask);
 	}
+
+	// 有效的括号字符串
+	public boolean checkValidString(String s) {
+		Deque<Integer> leftStack = new LinkedList<>();
+		Deque<Integer> starStack = new LinkedList<>();
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			if (c == '(') {
+				leftStack.push(i);
+			} else if (c == '*') {
+				starStack.push(i);
+			} else {
+				if (!leftStack.isEmpty()) {
+					leftStack.pop();
+				} else if (!starStack.isEmpty()) {
+					starStack.pop();
+				} else {
+					return false;
+				}
+			}
+		}
+		while (!leftStack.isEmpty() && !starStack.isEmpty()) {
+			int leftIndex = leftStack.pop();
+			int starIndex = starStack.pop();
+			if (leftIndex > starIndex) {
+				return false;
+			}
+		}
+		return leftStack.isEmpty();
+	}
+
+	// 骑士在棋盘上的概率
+	int[][] dirs = new int[][]{{-1, -2}, {-1, 2}, {1, -2}, {1, 2}, {-2, 1}, {-2, -1}, {2, 1}, {2, -1}};
+
+	public double knightProbability(int n, int k, int row, int column) {
+		double[][][] f = new double[n][n][k + 1];
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				f[i][j][0] = 1;
+			}
+		}
+		for (int p = 1; p <= k; p++) {
+			for (int i = 0; i < n; i++) {
+				for (int j = 0; j < n; j++) {
+					for (int[] d : dirs) {
+						int nx = i + d[0], ny = j + d[1];
+						if (nx < 0 || nx >= n || ny < 0 || ny >= n) {
+							continue;
+						}
+						f[i][j][p] += f[nx][ny][p - 1] / 8;
+					}
+				}
+			}
+		}
+		return f[row][column][k];
+	}
+
+	// 检查边长度限制的路径是否存在
+	static int N = 100010;
+	static int[] p = new int[N];
+
+	public boolean[] distanceLimitedPathsExist(int n, int[][] edgeList, int[][] queries) {
+		for (int i = 0; i < n; i++) {
+			p[i] = i;
+		}
+		int m = edgeList.length, k = queries.length;
+		int[][] qs = new int[k][4];
+		for (int i = 0; i < k; i++) {
+			qs[i] = new int[]{queries[i][0], queries[i][1], queries[i][2], i};
+		}
+		Arrays.sort(qs, (a, b) -> a[2] - b[2]);
+		Arrays.sort(edgeList, (a, b) -> a[2] - b[2]);
+		boolean[] ans = new boolean[k];
+		for (int i = 0, j = 0; i < k; i++) {
+			int a = qs[i][0], b = qs[i][1], t = qs[i][2], idx = qs[i][3];
+			while (j < m && edgeList[j][2] < k) {
+				union(edgeList[j][0], edgeList[j][1]);
+				j++;
+			}
+			ans[idx] = query(a, b);
+		}
+		return ans;
+	}
+
+	private boolean query(int a, int b) {
+		return find(a) == find(b);
+	}
+
+	private void union(int a, int b) {
+		p[find(a)] = p[find(b)];
+	}
+
+	private int find(int x) {
+		if (p[x] != x) {
+			p[x] = find(p[x]);
+		}
+		return p[x];
+	}
+
 }
