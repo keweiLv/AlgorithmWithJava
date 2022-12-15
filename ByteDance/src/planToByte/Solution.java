@@ -1373,4 +1373,64 @@ public class Solution {
 		return p[x];
 	}
 
+	// 最多可以参加的会议Ⅱ
+	public int maxValue(int[][] es, int k) {
+		int n = es.length;
+		Arrays.sort(es, (a, b) -> a[1] - b[1]);
+		int[][] f = new int[n + 1][k + 1];
+		for (int i = 1; i <= n; i++) {
+			int[] item = es[i - 1];
+			int s = item[0], e = item[1], v = item[2];
+			int last = 0;
+			for (int p = i - 1; p >= 1; p--) {
+				int[] pre = es[p - 1];
+				if (pre[1] < s) {
+					last = p;
+					break;
+				}
+			}
+			for (int j = 1; j <= k; j++) {
+				f[i][j] = Math.max(f[i - 1][j], f[last][j - 1] + v);
+			}
+		}
+		return f[n][k];
+	}
+
+	// 字符转换后的各位数字之和
+	public int getLucky(String s, int k) {
+		int ans = 0;
+		for (int i = 0; i < s.length(); i++) {
+			ans += sum(s.charAt(i) - 'a' + 1);
+		}
+		while (k > 1) {
+			ans = sum(ans);
+			k--;
+		}
+		return ans;
+	}
+
+	private int sum(int i) {
+		int sum = 0;
+		while (i > 0) {
+			sum += i % 10;
+			i /= 10;
+		}
+		return sum;
+	}
+
+	// 一年中的第几天
+	static int[] nums = new int[]{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+	static int[] f = new int[13];
+	static {
+		for (int i = 1; i <= 12; i++) {
+			f[i] = f[i - 1] + nums[i - 1];
+		}
+	}
+	public int dayOfYear(String date) {
+		String[] ss = date.split("-");
+		int y = Integer.parseInt(ss[0]), m = Integer.parseInt(ss[1]), d = Integer.parseInt(ss[2]);
+		boolean isLeap = (y % 4 == 0 && y % 100 != 0) || y % 400 == 0;
+		int ans = m > 2 && isLeap ? f[m - 1] + 1 : f[m - 1];
+		return ans + d;
+	}
 }
