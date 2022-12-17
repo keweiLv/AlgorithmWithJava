@@ -1421,16 +1421,60 @@ public class Solution {
 	// 一年中的第几天
 	static int[] nums = new int[]{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 	static int[] f = new int[13];
+
 	static {
 		for (int i = 1; i <= 12; i++) {
 			f[i] = f[i - 1] + nums[i - 1];
 		}
 	}
+
 	public int dayOfYear(String date) {
 		String[] ss = date.split("-");
 		int y = Integer.parseInt(ss[0]), m = Integer.parseInt(ss[1]), d = Integer.parseInt(ss[2]);
 		boolean isLeap = (y % 4 == 0 && y % 100 != 0) || y % 400 == 0;
 		int ans = m > 2 && isLeap ? f[m - 1] + 1 : f[m - 1];
 		return ans + d;
+	}
+
+	// 奇怪的打印机
+	public int strangePrinter(String s) {
+		int n = s.length();
+		int[][] dp = new int[n][n];
+		for (int i = 0; i < n; i++) {
+			Arrays.fill(dp[i], Integer.MAX_VALUE);
+		}
+		for (int i = n - 1; i >= 0; i--) {
+			dp[i][i] = 1;
+			for (int j = i + 1; j < n; j++) {
+				if (s.charAt(i) == s.charAt(j)) {
+					dp[i][j] = dp[i][j - 1];
+				} else {
+					for (int k = i; k < j; k++) {
+						dp[i][j] = Math.min(dp[i][j], dp[i][k] + dp[k + 1][j]);
+					}
+				}
+			}
+		}
+		return dp[0][n - 1];
+	}
+
+	// 通过连接另一个数组的子数组得到一个数组
+	public boolean canChoose(int[][] groups, int[] nums) {
+		int p1 = 0, p2, n = nums.length;
+		for (int[] group : groups) {
+			p2 = 0;
+			while (p2 < group.length && p1 < n) {
+				if (nums[p1++] == group[p2]) {
+					p2++;
+				} else {
+					p1 -= p2;
+					p2 = 0;
+				}
+			}
+			if (p1 >= n && p2 != group.length) {
+				return false;
+			}
+		}
+		return true;
 	}
 }
