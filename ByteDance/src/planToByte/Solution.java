@@ -1477,4 +1477,35 @@ public class Solution {
 		}
 		return true;
 	}
+
+	// 重复的DNA序列
+	public List<String> findRepeatedDnaSequences(String s) {
+		List<String> ans = new ArrayList<>();
+		int n = s.length();
+		Map<String, Integer> map = new HashMap<>();
+		for (int i = 0; i + 10 <= n; i++) {
+			String cur = s.substring(i, i + 10);
+			int cnt = map.getOrDefault(cur, 0);
+			if (cnt == 1) {
+				ans.add(cur);
+			}
+			map.put(cur, cnt + 1);
+		}
+		return ans;
+	}
+
+	// 重复叠加字符串匹配
+	public int repeatedStringMatch(String a, String b) {
+		StringBuilder sb = new StringBuilder();
+		int ans = 0;
+		while (sb.length() < b.length() && ++ans > 0) {
+			sb.append(a);
+		}
+		sb.append(a);
+		int idx = sb.indexOf(b);
+		if (idx == -1) {
+			return -1;
+		}
+		return idx + b.length() > a.length() * ans ? ans + 1 : ans;
+	}
 }
