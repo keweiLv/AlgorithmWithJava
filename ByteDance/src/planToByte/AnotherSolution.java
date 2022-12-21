@@ -1,7 +1,6 @@
 package planToByte;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Kezi
@@ -51,6 +50,7 @@ public class AnotherSolution {
 
 	// 寻求图中是否存在路径
 	int[] pathP;
+
 	public boolean validPath(int n, int[][] edges, int source, int destination) {
 		pathP = new int[n];
 		for (int i = 0; i < n; i++) {
@@ -59,12 +59,53 @@ public class AnotherSolution {
 		for (int[] e : edges) {
 			pathP[find(e[0])] = find(e[1]);
 		}
-		return find(source)	== find(destination);
+		return find(source) == find(destination);
 	}
+
 	private int find(int i) {
 		if (pathP[i] != i) {
 			pathP[i] = find(pathP[i]);
 		}
 		return pathP[i];
+	}
+
+	// 转化数字的最小幸运数
+	public int minimumOperations(int[] nums, int start, int goal) {
+		Deque<Integer> deque = new ArrayDeque<>();
+		Map<Integer, Integer> map = new HashMap<>();
+		deque.addLast(start);
+		map.put(start, 0);
+		while (!deque.isEmpty()) {
+			int cur = deque.pollFirst();
+			int step = map.get(cur);
+			for (int num : nums) {
+				int[] result = new int[]{cur + num, cur - num, cur ^ num};
+				for (int next : result) {
+					if (next == goal) {
+						return step + 1;
+					}
+					if (next < 0 || next > 1000) {
+						continue;
+					}
+					if (map.containsKey(next)) {
+						continue;
+					}
+					map.put(next, step + 1);
+					deque.addLast(next);
+				}
+			}
+		}
+		return -1;
+	}
+
+	// 移除石子的最大得分
+	public int maximumScore(int a, int b, int c) {
+		int[] rec = new int[]{a, b, c};
+		Arrays.sort(rec);
+		if (rec[0] + rec[1] <= rec[2]) {
+			return rec[0] + rec[1];
+		} else {
+			return (a + b + c) >> 1;
+		}
 	}
 }
