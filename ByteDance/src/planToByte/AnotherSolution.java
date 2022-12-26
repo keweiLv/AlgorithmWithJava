@@ -186,4 +186,126 @@ public class AnotherSolution {
 		}
 		return ans;
 	}
+
+	// 序列化二叉树
+	// Encodes a tree to a single string.
+	public String serialize1(TreeNode root) {
+		if (root == null) {
+			return "[]";
+		}
+		StringBuilder res = new StringBuilder("[");
+		Queue<TreeNode> queue = new LinkedList<TreeNode>() {{
+			add(root);
+		}};
+		while (!queue.isEmpty()) {
+			TreeNode node = queue.poll();
+			if (node != null) {
+				res.append(node.val + ",");
+				queue.add(node.left);
+				queue.add(node.right);
+			} else {
+				res.append("null,");
+			}
+		}
+		res.deleteCharAt(res.length() - 1);
+		res.append("]");
+		return res.toString();
+	}
+
+	// Decodes your encoded data to tree.
+	public TreeNode deserialize1(String data) {
+		if (data.equals("[]")) {
+			return null;
+		}
+		String[] vals = data.substring(1, data.length() - 1).split(",");
+		TreeNode root = new TreeNode(Integer.parseInt(vals[0]));
+		Queue<TreeNode> queue = new LinkedList<TreeNode>() {{
+			add(root);
+		}};
+		int i = 1;
+		while (!queue.isEmpty()) {
+			TreeNode node = queue.poll();
+			if (!vals[i].equals("null")) {
+				node.left = new TreeNode(Integer.parseInt(vals[i]));
+				queue.add(node.left);
+			}
+			i++;
+			if (!vals[i].equals("null")) {
+				node.right = new TreeNode(Integer.parseInt(vals[i]));
+				queue.add(node.right);
+			}
+			i++;
+		}
+		return root;
+	}
+
+	// 序列化和反序列化二查搜索树
+	// Encodes a tree to a single string.
+	public String serialize2(TreeNode root) {
+		if (root == null) {
+			return null;
+		}
+		List<String> list = new ArrayList<>();
+		dfs1(root, list);
+		int n = list.size();
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < n; i++) {
+			sb.append(list.get(i));
+			if (i != n - 1) {
+				sb.append(",");
+			}
+		}
+		return sb.toString();
+	}
+
+	private void dfs1(TreeNode root, List<String> list) {
+		if (root == null) {
+			return;
+		}
+		list.add(String.valueOf(root.val));
+		dfs1(root.left, list);
+		dfs1(root.right, list);
+	}
+
+	// Decodes your encoded data to tree.
+	public TreeNode deserialize2(String data) {
+		if (data == null) {
+			return null;
+		}
+		String[] ss = data.split(",");
+		return dfs2(0, ss.length - 1, ss);
+	}
+
+	private TreeNode dfs2(int l, int r, String[] ss) {
+		if (l > r) {
+			return null;
+		}
+		int j = l + 1, t = Integer.parseInt(ss[l]);
+		TreeNode ans = new TreeNode(t);
+		while (j <= r && Integer.parseInt(ss[j]) <= t) {
+			j++;
+		}
+		ans.left = dfs2(l + 1, j - 1, ss);
+		ans.right = dfs2(j, r, ss);
+		return ans;
+	}
+
+	// 统计同构子字符串的数目
+	private static final int MOD = (int) 1e9 + 7;
+	public int countHomogenous(String s) {
+		int n = s.length();
+		long ans = 0;
+		for (int i = 0, j = 0; i < n; i = j) {
+			j = i;
+			while (j < n && s.charAt(j) == s.charAt(i)) {
+				j++;
+			}
+			int cnt = j - i;
+			ans += (long) (1 + cnt) * cnt / 2;
+			ans %= MOD;
+		}
+		return (int) ans;
+	}
+
+
 }
