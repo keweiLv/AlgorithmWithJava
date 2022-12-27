@@ -292,6 +292,7 @@ public class AnotherSolution {
 
 	// 统计同构子字符串的数目
 	private static final int MOD = (int) 1e9 + 7;
+
 	public int countHomogenous(String s) {
 		int n = s.length();
 		long ans = 0;
@@ -307,5 +308,56 @@ public class AnotherSolution {
 		return (int) ans;
 	}
 
+	// 网络延迟时间
+	public int networkDelayTime(int[][] times, int n, int k) {
+		final int INF = Integer.MAX_VALUE / 2;
+		int[][] g = new int[n][n];
+		for (int i = 0; i < n; i++) {
+			Arrays.fill(g[i], INF);
+		}
+		for (int[] t : times) {
+			int x = t[0] - 1, y = t[1] - 1;
+			g[x][y] = t[2];
+		}
+		int[] dist = new int[n];
+		Arrays.fill(dist, INF);
+		dist[k - 1] = 0;
+		boolean[] used = new boolean[n];
+		for (int i = 0; i < n; i++) {
+			int x = -1;
+			for (int y = 0; y < n; ++y) {
+				if (!used[y] && (x == -1 || dist[y] < dist[x])) {
+					x = y;
+				}
+			}
+			used[x] = true;
+			for (int y = 0; y < n; ++y) {
+				dist[y] = Math.min(dist[y], dist[x] + g[x][y]);
+			}
+		}
+		int ans = Arrays.stream(dist).max().getAsInt();
+		return ans == INF ? -1 : ans;
+	}
 
+	// 转换字符串的最少操作次数
+	public int minimumMoves(String s) {
+		int ans = 0;
+		for (int i = 0; i < s.length(); ++i) {
+			if (s.charAt(i) == 'X') {
+				++ans;
+				i += 2;
+			}
+		}
+		return ans;
+	}
+
+	// 颠倒二进制位
+	public int reverseBits(int n) {
+		int rev = 0;
+		for (int i = 0; i < 32 && n != 0; ++i) {
+			rev |= (n & 1) << (31 - i);
+			n >>>= 1;
+		}
+		return rev;
+	}
 }
