@@ -360,4 +360,41 @@ public class AnotherSolution {
 		}
 		return rev;
 	}
+
+	// 删除字符串两端相同字符后的最短长度
+	public int minimumLength(String S) {
+		int l = 0, r = S.length() - 1;
+		char[] s = S.toCharArray();
+		while (l < r && s[l] == s[r]) {
+			char c = s[l];
+			while (l <= r && s[l] == c) {
+				l++;
+			}
+			while (l <= r && s[r] == c) {
+				r--;
+			}
+		}
+		return r - l + 1;
+	}
+
+	// 旋转矩阵
+	public void rotate(int[][] matrix) {
+		int n = matrix.length;
+		// 水平翻转
+		for (int i = 0; i < n / 2; ++i) {
+			for (int j = 0; j < n; ++j) {
+				int temp = matrix[i][j];
+				matrix[i][j] = matrix[n - i - 1][j];
+				matrix[n - i - 1][j] = temp;
+			}
+		}
+		// 主对角线翻转
+		for (int i = 0; i < n; ++i) {
+			for (int j = 0; j < i; ++j) {
+				int temp = matrix[i][j];
+				matrix[i][j] = matrix[j][i];
+				matrix[j][i] = temp;
+			}
+		}
+	}
 }
