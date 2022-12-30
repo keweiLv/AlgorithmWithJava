@@ -397,4 +397,34 @@ public class AnotherSolution {
 			}
 		}
 	}
+
+	// 访问所有节点的最短路径
+	public int shortestPathLength(int[][] graph) {
+		int n = graph.length;
+		// 三个属性分别为 idx, mask, dist
+		Queue<int[]> queue = new LinkedList<>();
+		boolean[][] vis = new boolean[n][1 << n];
+		for (int i = 0; i < n; i++) {
+			queue.offer(new int[]{i, 1 << i, 0});
+			vis[i][1 << i] = true;
+		}
+		while (!queue.isEmpty()) {
+			int[] temp = queue.poll();
+			int idx = temp[0], mask = temp[1], dist = temp[2];
+			if (mask == (1 << n) - 1) {
+				return dist;
+			}
+			for (int x : graph[idx]) {
+				int nextMask = mask | (1 << x);
+				if (!vis[x][nextMask]) {
+					queue.offer(new int[]{x, nextMask, dist + 1});
+					vis[x][nextMask] = true;
+				}
+			}
+		}
+		return 0;
+	}
+
+	//
+
 }
