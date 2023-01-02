@@ -120,7 +120,6 @@ public class ExamRoom {
 				while (a > 0 && !buy.isEmpty() && buy.peek()[0] >= p) {
 					int[] q = buy.poll();
 					int x = q[0], y = q[1];
-					77
 					if (a >= y) {
 						a -= y;
 					} else {
