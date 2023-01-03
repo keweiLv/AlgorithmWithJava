@@ -425,6 +425,87 @@ public class AnotherSolution {
 		return 0;
 	}
 
-	//
+	// 第一次出现两次的字母
+	public char repeatedCharacter(String s) {
+		int mask = 0;
+		for (char c : s.toCharArray()) {
+			int t = 1 << (c - 'a');
+			if ((mask & t) != 0) {
+				return c;
+			}
+			mask |= t;
+		}
+		return 0;
+	}
+
+	// 组合
+	public List<List<Integer>> combine(int n, int k) {
+		List<List<Integer>> ans = new ArrayList<>();
+		if (k <= 0 || n < k) {
+			return ans;
+		}
+		Deque<Integer> deque = new ArrayDeque<>();
+		dfs(n, k, 1, deque, ans);
+		return ans;
+	}
+
+	private void dfs(int n, int k, int index, Deque<Integer> path, List<List<Integer>> ans) {
+		if (path.size() == k) {
+			ans.add(new ArrayList<>(path));
+			return;
+		}
+		for (int i = index; i <= n - (k - path.size()) + 1; i++) {
+			path.addLast(i);
+			dfs(n, k, i + 1, path, ans);
+			path.removeLast();
+		}
+	}
+
+	// 积压订单中的订单总数
+	public int getNumberOfBacklogOrders(int[][] orders) {
+		PriorityQueue<int[]> buy = new PriorityQueue<>((a, b) -> b[0] - a[0]);
+		PriorityQueue<int[]> sell = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+		for (int[] order : orders) {
+			int p = order[0], a = order[1], t = order[2];
+			if (t == 0) {
+				while (a > 0 && !sell.isEmpty() && sell.peek()[0] <= p) {
+					int[] q = sell.poll();
+					int x = q[0], y = q[1];
+					if (a >= y) {
+						a -= y;
+					} else {
+						sell.offer(new int[]{x, y - a});
+						a = 0;
+					}
+				}
+				if (a > 0) {
+					buy.offer(new int[]{p, a});
+				}
+			} else {
+				while (a > 0 && !buy.isEmpty() && buy.peek()[0] >= p) {
+					int[] q = buy.poll();
+					int x = q[0], y = q[1];
+					if (a >= y) {
+						a -= y;
+					} else {
+						buy.offer(new int[]{x, y - a});
+						a = 0;
+					}
+				}
+				if (a > 0){
+					sell.offer(new int[]{p,a});
+				}
+			}
+		}
+		long ans = 0;
+		final int mod = (int) 1e9+7;
+		while (!buy.isEmpty()){
+			ans += buy.poll()[1];
+		}
+		while (!sell.isEmpty()){
+			ans += sell.poll()[1];
+		}
+		return (int) (ans % mod);
+	}
 
 }
