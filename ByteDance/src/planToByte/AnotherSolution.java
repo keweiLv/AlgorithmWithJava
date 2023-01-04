@@ -492,20 +492,36 @@ public class AnotherSolution {
 						a = 0;
 					}
 				}
-				if (a > 0){
-					sell.offer(new int[]{p,a});
+				if (a > 0) {
+					sell.offer(new int[]{p, a});
 				}
 			}
 		}
 		long ans = 0;
-		final int mod = (int) 1e9+7;
-		while (!buy.isEmpty()){
+		final int mod = (int) 1e9 + 7;
+		while (!buy.isEmpty()) {
 			ans += buy.poll()[1];
 		}
-		while (!sell.isEmpty()){
+		while (!sell.isEmpty()) {
 			ans += sell.poll()[1];
 		}
 		return (int) (ans % mod);
 	}
 
+	// 有界数组中指定下标的最大值
+	public int maxValue(int n, int index, int maxSum) {
+		int left = 1, right = maxSum;
+		while (left < right) {
+			int mid = (left + right + 1) >> 1;
+			if (sum(mid - 1, index) + sum(mid, n - index) <= maxSum) {
+				left = mid;
+			} else {
+				right = mid - 1;
+			}
+		}
+		return left;
+	}
+	private long sum(long x, int cnt) {
+		return x >= cnt ? (x + x - cnt + 1) * cnt / 2 : (x + 1) * x / 2 + cnt - x;
+	}
 }
