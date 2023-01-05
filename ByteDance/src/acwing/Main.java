@@ -1,9 +1,6 @@
 package acwing;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.math.BigInteger;
+import java.util.Scanner;
 
 /**
  * @author Kezi
@@ -47,7 +44,8 @@ public class Main {
 	static int N = 100010;
 	static int[] A = new int[N];
 	static int n, k;
-//	public static void main(String[] args) {
+
+	//	public static void main(String[] args) {
 //		Scanner sc = new Scanner(System.in);
 //		n = sc.nextInt();
 //		k = sc.nextInt();
@@ -78,11 +76,47 @@ public class Main {
 	}
 
 	// 高精度加法
-	public static void main(String[] args) throws IOException {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-		BigInteger a = new BigInteger(reader.readLine());
-		BigInteger b = new BigInteger(reader.readLine());
-		System.out.println(a.add(b));
-		reader.close();
+//	public static void main(String[] args) throws IOException {
+//		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+//		BigInteger a = new BigInteger(reader.readLine());
+//		BigInteger b = new BigInteger(reader.readLine());
+//		System.out.println(a.add(b));
+//		reader.close();
+//	}
+
+	// 前缀和
+//	public static void main(String[] args) {
+//		Scanner sc = new Scanner(System.in);
+//		int n = sc.nextInt();
+//		int m = sc.nextInt();
+//		int[] arr = new int[N];
+//		for (int i = 1; i <= n; i++) {
+//			arr[i] = sc.nextInt();
+//		}
+//		int[] s = new int[N];
+//		s[0] = 0;
+//		for (int i = 1; i <= n; i++) {
+//			s[i] = s[i - 1] + arr[i];
+//		}
+//		while (m-- > 0) {
+//			int l = sc.nextInt();
+//			int r = sc.nextInt();
+//			System.out.println(s[r] - s[l-1]);
+//		}
+//	}
+
+	// 二进制中1的个数
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		while (n-- != 0) {
+			int x = sc.nextInt();
+			int res = 0;
+			while (x != 0){
+				x &= (x-1);
+				res++;
+			}
+			System.out.print(res + " ");
+		}
 	}
 }
