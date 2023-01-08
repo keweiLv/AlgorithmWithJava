@@ -1,6 +1,6 @@
 package acwing;
 
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * @author Kezi
@@ -178,29 +178,72 @@ public class Main {
 //    }
 
 	// 判断子序列
+//	public static void main(String[] args) {
+//		Scanner scanner = new Scanner(System.in);
+//		int n = scanner.nextInt();
+//		int m = scanner.nextInt();
+//		int[] a = new int[n];
+//		int[] b = new int[m];
+//		for (int i = 0; i < n; i++) {
+//			a[i] = scanner.nextInt();
+//		}
+//		for (int i = 0; i < m; i++) {
+//			b[i] = scanner.nextInt();
+//		}
+//		int i = 0, j = 0;
+//		while (i < n && j < m) {
+//			if (a[i] == b[j]) {
+//				i++;
+//			}
+//			j++;
+//		}
+//		if (i == n) {
+//			System.out.println("Yes");
+//		} else {
+//			System.out.println("No");
+//		}
+//	}
+
+	// 区间合并
 	public static void main(String[] args) {
+		List<Interval> intervals = new ArrayList<>();
+		read(intervals);
+		Collections.sort(intervals);
+
+		int start = intervals.get(0).start;
+		int end = intervals.get(0).end;
+		int total = 0;
+		for (Interval interval : intervals) {
+			if (interval.start <= end) {
+				end = Math.max(end, interval.end);
+			} else {
+				start = interval.start;
+				end = interval.end;
+				total++;
+			}
+		}
+		System.out.println(total + 1);
+	}
+	private static void read(List<Interval> intervals) {
 		Scanner scanner = new Scanner(System.in);
 		int n = scanner.nextInt();
-		int m = scanner.nextInt();
-		int[] a = new int[n];
-		int[] b = new int[m];
-		for (int i = 0; i < n; i++) {
-			a[i] = scanner.nextInt();
+		while (n-- > 0) {
+			int start = scanner.nextInt();
+			int end = scanner.nextInt();
+			intervals.add(new Interval(start, end));
 		}
-		for (int i = 0; i < m; i++) {
-			b[i] = scanner.nextInt();
+		scanner.close();
+	}
+	static class Interval implements Comparable<Interval> {
+		public int start, end;
+
+		public Interval(int start, int end) {
+			this.start = start;
+			this.end = end;
 		}
-		int i = 0, j = 0;
-		while (i < n && j < m) {
-			if (a[i] == b[j]) {
-				i++;
-			}
-			j++;
-		}
-		if (i == n) {
-			System.out.println("Yes");
-		} else {
-			System.out.println("No");
+		@Override
+		public int compareTo(Interval object) {
+			return Integer.compare(start, object.start);
 		}
 	}
 }
