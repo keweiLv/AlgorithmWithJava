@@ -1,6 +1,7 @@
 package acwing;
 
-import java.util.*;
+import java.util.List;
+import java.util.Scanner;
 
 /**
  * @author Kezi
@@ -205,25 +206,25 @@ public class Main {
 //	}
 
 	// 区间合并
-	public static void main(String[] args) {
-		List<Interval> intervals = new ArrayList<>();
-		read(intervals);
-		Collections.sort(intervals);
-
-		int start = intervals.get(0).start;
-		int end = intervals.get(0).end;
-		int total = 0;
-		for (Interval interval : intervals) {
-			if (interval.start <= end) {
-				end = Math.max(end, interval.end);
-			} else {
-				start = interval.start;
-				end = interval.end;
-				total++;
-			}
-		}
-		System.out.println(total + 1);
-	}
+//	public static void main(String[] args) {
+//		List<Interval> intervals = new ArrayList<>();
+//		read(intervals);
+//		Collections.sort(intervals);
+//
+//		int start = intervals.get(0).start;
+//		int end = intervals.get(0).end;
+//		int total = 0;
+//		for (Interval interval : intervals) {
+//			if (interval.start <= end) {
+//				end = Math.max(end, interval.end);
+//			} else {
+//				start = interval.start;
+//				end = interval.end;
+//				total++;
+//			}
+//		}
+//		System.out.println(total + 1);
+//	}
 	private static void read(List<Interval> intervals) {
 		Scanner scanner = new Scanner(System.in);
 		int n = scanner.nextInt();
@@ -234,6 +235,7 @@ public class Main {
 		}
 		scanner.close();
 	}
+
 	static class Interval implements Comparable<Interval> {
 		public int start, end;
 
@@ -241,9 +243,107 @@ public class Main {
 			this.start = start;
 			this.end = end;
 		}
+
 		@Override
 		public int compareTo(Interval object) {
 			return Integer.compare(start, object.start);
 		}
+	}
+
+	// 单指针
+//	public static int[] e = new int[N];
+//	public static int[] ne = new int[N];
+//	public static int head = -1;
+//	public static int idx = 0;
+//
+//	public static void main(String[] args) {
+//		Scanner scanner = new Scanner(System.in);
+//		int n = scanner.nextInt();
+//		while (n-- > 0) {
+//			String str = scanner.next();
+//			if (str.equals("H")) {
+//				int x = scanner.nextInt();
+//				insertHead(x);
+//			} else if (str.equals("I")) {
+//				int k = scanner.nextInt();
+//				int x = scanner.nextInt();
+//				insert(k - 1, x);
+//			} else if (str.equals("D")) {
+//				int k = scanner.nextInt();
+//				if (k == 0) {
+//					head = ne[head];
+//				} else {
+//					delete(k - 1);
+//				}
+//			}
+//		}
+//		int i = head;
+//		while (i != -1) {
+//			System.out.print(e[i] + " ");
+//			i = ne[i];
+//		}
+//	}
+//
+//	private static void delete(int k) {
+//		ne[k] = ne[ne[k]];
+//	}
+//
+//	private static void insert(int k, int x) {
+//		e[idx] = x;
+//		ne[idx] = ne[k];
+//		ne[k] = idx;
+//		idx++;
+//	}
+//
+//	private static void insertHead(int x) {
+//		e[idx] = x;
+//		ne[idx] = head;
+//		head = idx;
+//		idx++;
+//	}
+
+	// 模拟栈
+	static int[] s = new int[N];
+	static int tt = 0;
+
+	public static void main(String[] args) {
+		String op = null;
+		Scanner scanner = new Scanner(System.in);
+		int m = scanner.nextInt();
+		while (m-- > 0) {
+			op = scanner.next();
+			switch (op) {
+				case "push":
+					push(scanner.nextInt());
+					break;
+				case "pop":
+					pop();
+					break;
+				case "empty":
+					System.out.println(empty() ? "YES" : "NO");
+					break;
+				case "query": {
+					System.out.println(query());
+					break;
+				}
+				default:
+			}
+		}
+	}
+
+	private static int query() {
+		return s[tt];
+	}
+
+	private static boolean empty() {
+		return tt == 0;
+	}
+
+	private static void pop() {
+		tt--;
+	}
+
+	private static void push(int x) {
+		s[++tt] = x;
 	}
 }

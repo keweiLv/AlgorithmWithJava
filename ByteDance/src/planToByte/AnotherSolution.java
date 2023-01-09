@@ -568,4 +568,21 @@ public class AnotherSolution {
 		}
 		return ans < 0 ? -1 : n - ans;
 	}
+
+	// 还原排列的最少操作步数
+	public int reinitializePermutation(int n) {
+		int ans = 0;
+		for (int i = 1; ; ) {
+			if ((i & 1) == 0) {
+				i >>= 1;
+			} else {
+				i = (n >> 1) + (i - 1 >> 1);
+			}
+			++ans;
+			if (i == 1) {
+				break;
+			}
+		}
+		return ans;
+	}
 }
