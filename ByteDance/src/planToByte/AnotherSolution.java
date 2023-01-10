@@ -585,4 +585,35 @@ public class AnotherSolution {
 		}
 		return ans;
 	}
+
+	// 最长重复子数组
+	public int findLength(int[] nums1, int[] nums2) {
+		int n = nums1.length, m = nums2.length;
+		int ret = 0;
+		for (int i = 0; i < n; i++) {
+			int len = Math.min(m, n - i);
+			int maxLen = maxLength(nums1, nums2, i, 0, len);
+			ret = Math.max(ret, maxLen);
+		}
+		for (int i = 0; i < m; i++) {
+			int len = Math.min(n, m - i);
+			int maxLen = maxLength(nums1, nums2, 0, i, len);
+			ret = Math.max(ret, maxLen);
+		}
+		return ret;
+	}
+
+	private int maxLength(int[] nums1, int[] nums2, int addA, int addB, int len) {
+		int ret = 0, k = 0;
+		for (int i = 0; i < len; i++) {
+			if (nums1[addA + i] == nums2[addB + i]) {
+				k++;
+			} else {
+				k = 0;
+			}
+			ret = Math.max(ret, k);
+		}
+		return ret;
+	}
+
 }

@@ -1,7 +1,6 @@
 package acwing;
 
-import java.util.List;
-import java.util.Scanner;
+import java.io.*;
 
 /**
  * @author Kezi
@@ -225,30 +224,30 @@ public class Main {
 //		}
 //		System.out.println(total + 1);
 //	}
-	private static void read(List<Interval> intervals) {
-		Scanner scanner = new Scanner(System.in);
-		int n = scanner.nextInt();
-		while (n-- > 0) {
-			int start = scanner.nextInt();
-			int end = scanner.nextInt();
-			intervals.add(new Interval(start, end));
-		}
-		scanner.close();
-	}
-
-	static class Interval implements Comparable<Interval> {
-		public int start, end;
-
-		public Interval(int start, int end) {
-			this.start = start;
-			this.end = end;
-		}
-
-		@Override
-		public int compareTo(Interval object) {
-			return Integer.compare(start, object.start);
-		}
-	}
+//	private static void read(List<Interval> intervals) {
+//		Scanner scanner = new Scanner(System.in);
+//		int n = scanner.nextInt();
+//		while (n-- > 0) {
+//			int start = scanner.nextInt();
+//			int end = scanner.nextInt();
+//			intervals.add(new Interval(start, end));
+//		}
+//		scanner.close();
+//	}
+//
+//	static class Interval implements Comparable<Interval> {
+//		public int start, end;
+//
+//		public Interval(int start, int end) {
+//			this.start = start;
+//			this.end = end;
+//		}
+//
+//		@Override
+//		public int compareTo(Interval object) {
+//			return Integer.compare(start, object.start);
+//		}
+//	}
 
 	// 单指针
 //	public static int[] e = new int[N];
@@ -306,30 +305,30 @@ public class Main {
 	static int[] s = new int[N];
 	static int tt = 0;
 
-	public static void main(String[] args) {
-		String op = null;
-		Scanner scanner = new Scanner(System.in);
-		int m = scanner.nextInt();
-		while (m-- > 0) {
-			op = scanner.next();
-			switch (op) {
-				case "push":
-					push(scanner.nextInt());
-					break;
-				case "pop":
-					pop();
-					break;
-				case "empty":
-					System.out.println(empty() ? "YES" : "NO");
-					break;
-				case "query": {
-					System.out.println(query());
-					break;
-				}
-				default:
-			}
-		}
-	}
+//	public static void main(String[] args) {
+//		String op = null;
+//		Scanner scanner = new Scanner(System.in);
+//		int m = scanner.nextInt();
+//		while (m-- > 0) {
+//			op = scanner.next();
+//			switch (op) {
+//				case "push":
+//					push(scanner.nextInt());
+//					break;
+//				case "pop":
+//					pop();
+//					break;
+//				case "empty":
+//					System.out.println(empty() ? "YES" : "NO");
+//					break;
+//				case "query": {
+//					System.out.println(query());
+//					break;
+//				}
+//				default:
+//			}
+//		}
+//	}
 
 	private static int query() {
 		return s[tt];
@@ -345,5 +344,25 @@ public class Main {
 
 	private static void push(int x) {
 		s[++tt] = x;
+	}
+
+	// 滑动窗口
+	public static void main(String[] args) throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		PrintWriter wt = new PrintWriter(new OutputStreamWriter(System.out));
+		String[] st = reader.readLine().split(" ");
+		int n = Integer.parseInt(st[0]);
+		int k = Integer.parseInt(st[1]);
+		String[] str = reader.readLine().split(" ");
+		for (int i = 0; i < n; i++) {
+			a[i] = Integer.parseInt(str[i]);
+		}
+		int hh = 0, tt = -1;
+		int[] q = new int[N];
+		for (int i = 0; i < n; i++) {
+			if (hh <= tt && q[hh] < i - k + 1) {
+				hh++;
+			}
+		}
 	}
 }
