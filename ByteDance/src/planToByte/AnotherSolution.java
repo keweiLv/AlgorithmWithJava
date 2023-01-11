@@ -616,4 +616,41 @@ public class AnotherSolution {
 		return ret;
 	}
 
+	// 判断一个数的数字计数是否等于数位的值
+	public boolean digitCount(String num) {
+		int[] tmp = new int[num.length()];
+		for (char c : num.toCharArray()) {
+			tmp[c - '0']++;
+		}
+		for (int i = 0; i < num.length(); i++) {
+			if (tmp[i] != num.charAt(i) - '0') {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * 最佳买卖股票时机含冷冻期
+	 * dp[0][0]=0;//本来就不持有，啥也没干
+	 * dp[0][1]=-1*prices[0];//第0天只买入
+	 * dp[0][2]=0; 卖出(第0天买入又卖出)
+ 	 */
+	public int maxProfit(int[] prices) {
+		int n = prices.length;
+		if (n <= 1) {
+			return 0;
+		}
+		int[][] dp = new int[n][3];
+		dp[0][0] = 0;
+		dp[0][1] = -1 * prices[0];
+		dp[0][2] = 0;
+		for (int i = 1; i < n; i++) {
+			dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][2]);
+			dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i]);
+			dp[i][2] = dp[i - 1][1] + prices[i];
+		}
+		return Math.max(dp[n - 1][0], dp[n - 1][2]);
+	}
+
 }
