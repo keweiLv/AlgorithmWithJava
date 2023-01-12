@@ -635,7 +635,7 @@ public class AnotherSolution {
 	 * dp[0][0]=0;//本来就不持有，啥也没干
 	 * dp[0][1]=-1*prices[0];//第0天只买入
 	 * dp[0][2]=0; 卖出(第0天买入又卖出)
- 	 */
+	 */
 	public int maxProfit(int[] prices) {
 		int n = prices.length;
 		if (n <= 1) {
@@ -653,4 +653,22 @@ public class AnotherSolution {
 		return Math.max(dp[n - 1][0], dp[n - 1][2]);
 	}
 
+	// 替换字符串中的括号内容
+	public String evaluate(String s, List<List<String>> knowledge) {
+		Map<String, String> map = new HashMap<>(knowledge.size());
+		for (List<String> list : knowledge) {
+			map.put(list.get(0), list.get(1));
+		}
+		StringBuilder ans = new StringBuilder();
+		for (int i = 0; i < s.length(); i++) {
+			if (s.charAt(i) == '(') {
+				int j = s.indexOf(')', i + 1);
+				ans.append(map.getOrDefault(s.substring(i + 1, j), "?"));
+				i = j;
+			} else {
+				ans.append(s.charAt(i));
+			}
+		}
+		return ans.toString();
+	}
 }
