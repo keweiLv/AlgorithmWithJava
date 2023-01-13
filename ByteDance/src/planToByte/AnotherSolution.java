@@ -671,4 +671,45 @@ public class AnotherSolution {
 		}
 		return ans.toString();
 	}
+
+	// 重排字符形成目标字符串
+	public int rearrangeCharacters(String s, String target) {
+		int[] cnt1 = new int[26];
+		int[] cnt2 = new int[26];
+		for (int i = 0; i < s.length(); i++) {
+			cnt1[s.charAt(i) - 'a']++;
+		}
+		for (int i = 0; i < target.length(); i++) {
+			cnt2[target.charAt(i) - 'a']++;
+		}
+		int ans = 100;
+		for (int i = 0; i < 26; i++) {
+			if (cnt2[i] > 0) {
+				ans = Math.min(ans, cnt1[i] / cnt2[i]);
+			}
+		}
+		return ans;
+	}
+
+	// 寻找重复数
+	public int findDuplicate(int[] nums) {
+		int len = nums.length;
+		int left = 1;
+		int right = len - 1;
+		while (left < right) {
+			int mid = (left + right) / 2;
+			int count = 0;
+			for (int num : nums) {
+				if (num <= mid) {
+					count++;
+				}
+			}
+			if (count > mid) {
+				right = mid;
+			} else {
+				left = mid + 1;
+			}
+		}
+		return left;
+	}
 }
