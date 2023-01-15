@@ -729,4 +729,55 @@ public class AnotherSolution {
 		}
 		return minMaxGame(newNums);
 	}
+
+	// 回文子串
+	public int countSubstrings(String s) {
+		int ans = 0;
+		int n = s.length();
+		for (int i = 0; i < n; i++) {
+			// 中心扩展法，实则就是遍历，j=0,中心是一个点，j=1,中心是两个点
+			for (int j = 0; j <= 1; j++) {
+				int l = i;
+				int r = i + j;
+				while (l >= 0 && r < n && s.charAt(l--) == s.charAt(r++)) {
+					ans++;
+				}
+			}
+		}
+		return ans;
+	}
+
+	public static void main(String[] args) {
+		System.out.println(longestPalindrome("babad"));
+	}
+
+	/**
+	 * 最长回文子串
+	 * i为回文子串的中间位置 减去 回文子串的一半长度 就等于回文子串的start；End同理。至于为什么len-1，我理解的是单字符为轴的回文子串减不减没关系，但是已双字符为轴的回文子串不减的话算出来start的位置出错了。
+	 */
+	public static String longestPalindrome(String s) {
+		int start = 0, end = 0;
+		int n = s.length();
+		for (int i = 0; i < n; i++) {
+			int len1 = expandAroundCenter(s, i, i);
+			int len2 = expandAroundCenter(s, i, i + 1);
+			int len = Math.max(len1, len2);
+			if (len > end - start) {
+				start = i - (len - 1) / 2;
+				end = i + len / 2;
+			}
+		}
+		return s.substring(start, end + 1);
+	}
+
+	private static int expandAroundCenter(String s, int left, int right) {
+		int L = left, R = right;
+		while (L >= 0 && R < s.length() && s.charAt(L) == s.charAt(R)) {
+			L--;
+			R++;
+		}
+		// 因为用的while，所以最后退出循环时L和R时已经不符合要求，真正子串长度是R-L-1;
+		return R - L - 1;
+	}
+
 }
