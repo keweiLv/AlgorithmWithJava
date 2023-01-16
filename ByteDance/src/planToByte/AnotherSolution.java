@@ -747,10 +747,6 @@ public class AnotherSolution {
 		return ans;
 	}
 
-	public static void main(String[] args) {
-		System.out.println(longestPalindrome("babad"));
-	}
-
 	/**
 	 * 最长回文子串
 	 * i为回文子串的中间位置 减去 回文子串的一半长度 就等于回文子串的start；End同理。至于为什么len-1，我理解的是单字符为轴的回文子串减不减没关系，但是已双字符为轴的回文子串不减的话算出来start的位置出错了。
@@ -780,4 +776,19 @@ public class AnotherSolution {
 		return R - L - 1;
 	}
 
+	// 句子相似性
+	public static boolean areSentencesSimilar(String sentence1, String sentence2) {
+		if (sentence1.length() > sentence2.length()) {
+			return areSentencesSimilar(sentence2, sentence1);
+		}
+		String[] a1 = sentence1.split(" "), a2 = sentence2.split(" ");
+		int n = a1.length, m = a2.length, l = 0, r = 0;
+		while (l < n && a1[l].equals(a2[l])) {
+			l++;
+		}
+		while (r < n - l && a1[n - r - 1].equals(a2[m - r - 1])) {
+			r++;
+		}
+		return l + r == n;
+	}
 }
