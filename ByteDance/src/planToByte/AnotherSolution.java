@@ -852,44 +852,68 @@ public class AnotherSolution {
 
     // 课程表
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        Map<Integer,Integer> in = new HashMap<>();
-        for (int i =0 ;i<numCourses;i++){
-            in.put(i,0);
+        Map<Integer, Integer> in = new HashMap<>();
+        for (int i = 0; i < numCourses; i++) {
+            in.put(i, 0);
         }
-        Map<Integer,List<Integer>> adj = new HashMap<>();
-        for (int[] site:prerequisites){
+        Map<Integer, List<Integer>> adj = new HashMap<>();
+        for (int[] site : prerequisites) {
             int next = site[0];
             int cur = site[1];
-            in.put(next,in.get(next)+1);
-            if (!adj.containsKey(cur)){
-                adj.put(cur,new ArrayList<>());
+            in.put(next, in.get(next) + 1);
+            if (!adj.containsKey(cur)) {
+                adj.put(cur, new ArrayList<>());
             }
             adj.get(cur).add(next);
         }
         Queue<Integer> queue = new LinkedList<>();
-        for (int key:in.keySet()){
-            if (in.get(key) == 0){
+        for (int key : in.keySet()) {
+            if (in.get(key) == 0) {
                 queue.offer(key);
             }
         }
-        while (!queue.isEmpty()){
+        while (!queue.isEmpty()) {
             int cur = queue.poll();
-            if (!adj.containsKey(cur)){
+            if (!adj.containsKey(cur)) {
                 continue;
             }
             List<Integer> succ = adj.get(cur);
-            for (int k:succ){
-                in.put(k,in.get(k)-1);
-                if (in.get(k) == 0 ){
+            for (int k : succ) {
+                in.put(k, in.get(k) - 1);
+                if (in.get(k) == 0) {
                     queue.offer(k);
                 }
             }
         }
-        for (int key :in.keySet()){
-            if (in.get(key) != 0){
+        for (int key : in.keySet()) {
+            if (in.get(key) != 0) {
                 return false;
             }
         }
         return true;
+    }
+
+    // 强密码校验器二
+    public boolean strongPasswordCheckerII(String password) {
+        if (password.length() < 8) {
+            return false;
+        }
+        int mask = 0;
+        for (int i = 0; i < password.length(); i++) {
+            char c = password.charAt(i);
+            if (i > 0 && c == password.charAt(i - 1)) {
+                return false;
+            }
+            if (Character.isLowerCase(c)) {
+                mask |= 1;
+            } else if (Character.isUpperCase(c)) {
+                mask |= 2;
+            } else if (Character.isDigit(c)) {
+                mask |= 4;
+            } else {
+                mask |= 8;
+            }
+        }
+        return mask == 15;
     }
 }
