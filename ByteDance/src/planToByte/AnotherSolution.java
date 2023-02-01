@@ -947,4 +947,53 @@ public class AnotherSolution {
 		}
 		return true;
 	}
+
+	// 解密消息
+	// char类型都有对应的数字，也就是ascall码表，一共有128个.空格在表中对应32，也就是存在下标是32
+	public String decodeMessage(String key, String message) {
+		char[] tmp = new char[128];
+		tmp[' '] = ' ';
+		for (int i = 0, j = 0; i < key.length(); i++) {
+			char c = key.charAt(i);
+			if (tmp[c] == 0) {
+				tmp[c] = (char) ('a' + j++);
+			}
+		}
+		char[] ans = message.toCharArray();
+		for (int i = 0; i < ans.length; i++) {
+			ans[i] = tmp[ans[i]];
+		}
+		return String.valueOf(ans);
+	}
+
+	// UTF-8 编码验证,懂了八九分，还需回顾
+	public boolean validUtf8(int[] data) {
+		int n = data.length;
+		for (int i = 0; i < n; ) {
+			int t = data[i], j = 7;
+			while (j >= 0 && (((t >> j) & 1) == 1)) {
+				j--;
+			}
+			int cnt = 7 - j;
+			if (cnt == 1 || cnt > 4) {
+				return false;
+			}
+			if (i + cnt - 1 >= n) {
+				return false;
+			}
+			for (int k = i + 1; k < i + cnt; k++) {
+				if ((((data[k] >> 7) & 1) == 1) && (((data[k] >> 6) & 1) == 0)) {
+					continue;
+				}
+				return false;
+			}
+			if (cnt == 0) {
+				i++;
+			} else {
+				i += cnt;
+			}
+		}
+		return true;
+	}
+
 }
