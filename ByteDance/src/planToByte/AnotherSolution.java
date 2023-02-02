@@ -996,4 +996,33 @@ public class AnotherSolution {
 		return true;
 	}
 
+	// 根据字符出现频率排序
+	public String frequencySort(String s) {
+		char[] cs = s.toCharArray();
+		Map<Character,Integer> map = new HashMap<>();
+		for (char c : cs){
+			map.put(c,map.getOrDefault(c,0) + 1);
+		}
+		PriorityQueue<int[]> pq = new PriorityQueue<>((a,b) -> {
+			return a[1] != b[1]?b[1] - a[1]:a[0] - b[0];
+		});
+		for (char c: map.keySet()){
+			pq.add(new int[]{c,map.get(c)});
+		}
+		StringBuilder sb = new StringBuilder();
+		while (!pq.isEmpty()){
+			int[] poll = pq.poll();
+			int c = poll[0],k = poll[1];
+			while (k-- >0){
+				sb.append((char) c);
+			}
+		}
+		return sb.toString();
+	}
+
+	// 2的幂
+	// 若n为2的幂，则恒有n & (n-1) = 0,因为n的二进制最高位为1，其余为0，n-1最高位为0，其余为1。
+	public boolean isPowerOfTwo(int n) {
+		return n > 0 && (n & (n-1)) == 0;
+	}
 }
