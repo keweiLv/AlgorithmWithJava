@@ -1,8 +1,6 @@
 package planToByte;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Kezi
@@ -65,4 +63,44 @@ public class NewSolution {
 		}
 		return longestLen;
 	}
+
+	// 有效的括号
+	private static final Map<Character, Character> map = new HashMap<Character, Character>() {{
+		put('{', '}');
+		put('[', ']');
+		put('(', ')');
+		put('?', '?');
+	}};
+
+	public boolean isValid(String s) {
+		if (s.length() > 0 && !map.containsKey(s.charAt(0))) {
+			return false;
+		}
+		LinkedList<Character> stack = new LinkedList<Character>() {{
+			add('?');
+		}};
+		for (Character c : s.toCharArray()) {
+			if (map.containsKey(c)) {
+				stack.addLast(c);
+			} else if (!map.get(stack.removeLast()).equals(c)) {
+				return false;
+			}
+		}
+		return stack.size() == 1;
+	}
+
+	// 爬楼梯
+	public int climbStairs(int n) {
+		if (n <= 2) {
+			return n;
+		}
+		int[] f = new int[n + 1];
+		f[1] = 1;
+		f[2] = 2;
+		for (int i = 3; i <= n; i++) {
+			f[i] = f[i - 1] + f[i - 2];
+		}
+		return f[n];
+	}
+
 }
