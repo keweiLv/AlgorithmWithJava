@@ -103,4 +103,14 @@ public class NewSolution {
 		return f[n];
 	}
 
+	// 计算布尔二叉树的值
+	public boolean evaluateTree(TreeNode root) {
+		if (root.left == null) {
+			return root.val == 1;
+		}
+		boolean l = evaluateTree(root.left);
+		boolean r = evaluateTree(root.right);
+		return root.val == 2 ? l || r : l && r;
+	}
+
 }
