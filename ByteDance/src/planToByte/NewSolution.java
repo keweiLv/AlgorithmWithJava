@@ -180,4 +180,27 @@ public class NewSolution {
 			return t % 2 == 0 ? t / 2 + c : t / 2 + c + 1;
 		}
 	}
+
+	// 最大平均通过率
+	public double maxAverageRatio(int[][] classes, int extraStudents) {
+		PriorityQueue<double[]> pq = new PriorityQueue<>((a, b) -> {
+			double x = (a[0] + 1) / (a[1] + 1) - a[0] / a[1];
+			double y = (b[0] + 1) / (b[1] + 1) - b[0] / b[1];
+			return Double.compare(y, x);
+		});
+		for (int[] item : classes) {
+			pq.offer(new double[]{item[0], item[1]});
+		}
+		while (extraStudents-- > 0) {
+			double[] poll = pq.poll();
+			double a = poll[0] + 1, b = poll[1] + 1;
+			pq.offer(new double[]{a, b});
+		}
+		double ans = 0;
+		while (!pq.isEmpty()) {
+			double[] poll = pq.poll();
+			ans += poll[0] / poll[1];
+		}
+		return ans / classes.length;
+	}
 }
