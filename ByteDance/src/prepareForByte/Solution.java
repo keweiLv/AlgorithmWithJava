@@ -53,6 +53,7 @@ public class Solution {
 		dfs(0);
 		return res.toArray(new String[res.size()]);
 	}
+
 	private void dfs(int x) {
 		if (x == c.length - 1) {
 			res.add(String.valueOf(c));
@@ -74,5 +75,26 @@ public class Solution {
 		char tmp = c[i];
 		c[i] = c[x];
 		c[x] = tmp;
+	}
+
+	// 环形链表
+	public ListNode detectCycle(ListNode head) {
+		ListNode fast = head, slow = head;
+		while (true) {
+			if (fast == null || fast.next == null) {
+				return null;
+			}
+			fast = fast.next.next;
+			slow = slow.next;
+			if (fast == slow) {
+				break;
+			}
+		}
+		fast = head;
+		while (fast != slow) {
+			fast = fast.next;
+			slow = slow.next;
+		}
+		return fast;
 	}
 }
