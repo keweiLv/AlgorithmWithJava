@@ -203,4 +203,44 @@ public class Solution {
         }
         return ans;
     }
+
+    // 链表中倒数第K哥节点
+    public ListNode getKthFromEnd(ListNode head, int k) {
+        ListNode fast = head, slow = head;
+        for (int i = 0; i < k; i++) {
+            fast = fast.next;
+        }
+        while (fast != null) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+
+    // 划分字母区间
+    public List<Integer> partitionLabels(String s) {
+        int[] last = new int[26];
+        int len = s.length();
+        for (int i = 0; i < len; i++) {
+            last[s.charAt(i) - 'a'] = i;
+        }
+        List<Integer> partition = new ArrayList<>();
+        int start = 0, end = 0;
+        for (int i = 0; i < len; i++) {
+            end = Math.max(end, last[s.charAt(i) - 'a']);
+            if (i == end) {
+                partition.add(end - start + 1);
+                start = end + 1;
+            }
+        }
+        return partition;
+    }
+
+    // 二叉树的深度
+    public int maxDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
+    }
 }
