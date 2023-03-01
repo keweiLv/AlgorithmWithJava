@@ -304,4 +304,64 @@ public class NewSolution {
 		}
 		return res;
 	}
+
+	// 矩阵中的局部最大值
+	public int[][] largestLocal(int[][] grid) {
+		int n = grid.length;
+		int[][] res = new int[n - 2][n - 2];
+		for (int i = 0; i < n - 2; i++) {
+			for (int j = 0; j < n - 2; j++) {
+				res[i][j] = localMax(grid, i, j);
+			}
+		}
+		return res;
+	}
+
+	private int localMax(int[][] grid, int left, int top) {
+		int max = 0;
+		for (int i = left; i < left + 3; i++) {
+			for (int j = top; j < top + 3; j++) {
+				max = Math.max(max, grid[i][j]);
+			}
+		}
+		return max;
+	}
+
+	// 青蛙过河
+	Map<Integer, Integer> crossMap = new HashMap<>();
+	Map<String, Boolean> cache = new HashMap<>();
+	public boolean canCross(int[] ss) {
+		int n = ss.length;
+		for (int i = 0; i < n; i++) {
+			crossMap.put(ss[i], i);
+		}
+		if (!crossMap.containsKey(1)) {
+			return false;
+		}
+		return dfs(ss, n, 1, 1);
+	}
+	boolean dfs(int[] ss, int n, int u, int k) {
+		String key = u + "_" + k;
+		if (cache.containsKey(key)) {
+			return cache.get(key);
+		}
+		if (u == n - 1) {
+			return true;
+		}
+		for (int i = -1; i <= 1; i++) {
+			if (k + i == 0) {
+				continue;
+			}
+			int next = ss[u] + k + i;
+			if (crossMap.containsKey(next)) {
+				boolean cur = dfs(ss, n, crossMap.get(next), k + i);
+				cache.put(key, cur);
+				if (cur) {
+					return true;
+				}
+			}
+		}
+		cache.put(key, false);
+		return false;
+	}
 }

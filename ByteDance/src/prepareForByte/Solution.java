@@ -252,11 +252,26 @@ public class Solution {
 			return Math.abs(depth(root.left) - depth(root.right)) <= 1 && isBalanced(root.left) && isBalanced(root.right);
 		}
 	}
+
 	public int depth(TreeNode root) {
 		if (root == null) {
 			return 0;
 		} else {
 			return Math.max(depth(root.left), depth(root.right)) + 1;
 		}
+	}
+
+	// 七进制数
+	public String convertToBase7(int num) {
+		boolean flag = num < 0;
+		if (flag) {
+			num = -num;
+		}
+		StringBuilder ans = new StringBuilder();
+		do {
+			ans.append(num % 7);
+			num /= 7;
+		} while (num != 0);
+		return flag ? ans.append("-").reverse().toString() : ans.reverse().toString();
 	}
 }
