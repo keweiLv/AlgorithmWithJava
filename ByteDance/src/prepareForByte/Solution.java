@@ -274,4 +274,33 @@ public class Solution {
 		} while (num != 0);
 		return flag ? ans.append("-").reverse().toString() : ans.reverse().toString();
 	}
+
+	// 去除重复字母
+	public String removeDuplicateLetters(String s) {
+		Deque<Character> stack = new ArrayDeque<>();
+		int[] count = new int[256];
+		for (int i = 0; i < s.length(); i++) {
+			count[s.charAt(i)]++;
+		}
+		boolean[] inStack = new boolean[256];
+		for (Character c : s.toCharArray()) {
+			count[c]--;
+			if (inStack[c]) {
+				continue;
+			}
+			while (!stack.isEmpty() && stack.peek() > c) {
+				if (count[stack.peek()] == 0) {
+					break;
+				}
+				inStack[stack.poll()] = false;
+			}
+			stack.push(c);
+			inStack[c] = true;
+		}
+		StringBuilder sb = new StringBuilder();
+		while (!stack.isEmpty()){
+			sb.append(stack.poll());
+		}
+		return sb.reverse().toString();
+	}
 }

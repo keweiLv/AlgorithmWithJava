@@ -330,6 +330,7 @@ public class NewSolution {
 	// 青蛙过河
 	Map<Integer, Integer> crossMap = new HashMap<>();
 	Map<String, Boolean> cache = new HashMap<>();
+
 	public boolean canCross(int[] ss) {
 		int n = ss.length;
 		for (int i = 0; i < n; i++) {
@@ -340,6 +341,7 @@ public class NewSolution {
 		}
 		return dfs(ss, n, 1, 1);
 	}
+
 	boolean dfs(int[] ss, int n, int u, int k) {
 		String key = u + "_" + k;
 		if (cache.containsKey(key)) {
@@ -363,5 +365,48 @@ public class NewSolution {
 		}
 		cache.put(key, false);
 		return false;
+	}
+
+	// 十进制小数转二进制小数
+	public String printBin(double num) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("0.");
+		while (sb.length() < 32 && num != 0) {
+			num *= 2;
+			int x = (int) num;
+			sb.append(x);
+			num -= x;
+		}
+		return num != 0 ? "ERROR" : sb.toString();
+	}
+
+	// 我能赢吗
+	Map<Integer, Boolean> booleanMap = new HashMap<>();
+
+	public boolean canIWin(int maxChoosableInteger, int desiredTotal) {
+		if ((1 + maxChoosableInteger) * maxChoosableInteger / 2 < desiredTotal) {
+			return false;
+		}
+		return winDfs(maxChoosableInteger, 0, desiredTotal, 0);
+	}
+
+	private boolean winDfs(int maxChoosableInteger, int userNumber, int desiredTotal, int curTol) {
+		if (!booleanMap.containsKey(userNumber)) {
+			boolean res = false;
+			for (int i = 0; i < maxChoosableInteger; i++) {
+				if (((userNumber >> i) & 1) == 0) {
+					if (i + 1 + curTol >= desiredTotal) {
+						res = true;
+						break;
+					}
+					if (!winDfs(maxChoosableInteger, userNumber | (1 << i), desiredTotal, curTol + i + 1)) {
+						res = true;
+						break;
+					}
+				}
+			}
+			booleanMap.put(userNumber, res);
+		}
+		return booleanMap.get(userNumber);
 	}
 }
