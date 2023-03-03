@@ -298,9 +298,39 @@ public class Solution {
 			inStack[c] = true;
 		}
 		StringBuilder sb = new StringBuilder();
-		while (!stack.isEmpty()){
+		while (!stack.isEmpty()) {
 			sb.append(stack.poll());
 		}
 		return sb.reverse().toString();
+	}
+
+	// 第N个斐波那契数
+	public int tribonacci(int n) {
+		if (n <= 1) {
+			return n;
+		}
+		if (n == 2) {
+			return 1;
+		}
+		int a = 0, b = 1, c = 1;
+		for (int i = 3; i <= n; i++) {
+			int d = a + b + c;
+			a = b;
+			b = c;
+			c = d;
+		}
+		return c;
+	}
+
+	// 两数之和
+	public int[] twoSum(int[] nums, int target) {
+		Map<Integer, Integer> record = new HashMap<>();
+		for (int i = 0; i < nums.length; i++) {
+			if (record.containsKey(target - nums[i])) {
+				return new int[]{record.get(target - nums[i]), i};
+			}
+			record.put(nums[i], i);
+		}
+		return new int[0];
 	}
 }

@@ -409,4 +409,21 @@ public class NewSolution {
 		}
 		return booleanMap.get(userNumber);
 	}
+
+	// 保证文件名唯一
+	public String[] getFolderNames(String[] names) {
+		Map<String, Integer> folderMap = new HashMap<>();
+		for (int i = 0; i < names.length; i++) {
+			if (folderMap.containsKey(names[i])) {
+				int k = folderMap.get(names[i]);
+				while (folderMap.containsKey(names[i] + "(" + k + ")")) {
+					k++;
+				}
+				folderMap.put(names[i], k);
+				names[i] += "(" + k + ")";
+			}
+			folderMap.put(names[i], 1);
+		}
+		return names;
+	}
 }
