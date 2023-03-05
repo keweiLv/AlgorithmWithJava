@@ -458,4 +458,25 @@ public class NewSolution {
 		}
 		return r + 1 < n ? nums[r + 1] : nums[0];
 	}
+
+	// 经营摩天轮的最大利润
+	public int minOperationsMaxProfit(int[] customers, int boardingCost, int runningCost) {
+		int ans = -1;
+		int max = 0, cur = 0;
+		int wait = 0, i = 0;
+		while (wait > 0 || i < customers.length) {
+			wait += i < customers.length ? customers[i] : 0;
+			int up = Math.min(4, wait);
+			wait -= up;
+			i++;
+			cur += up * boardingCost - runningCost;
+			if (cur > max) {
+				max = cur;
+				ans = i;
+			}
+		}
+		return ans;
+	}
+
+
 }

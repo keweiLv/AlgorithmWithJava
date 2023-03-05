@@ -333,4 +333,40 @@ public class Solution {
 		}
 		return new int[0];
 	}
+
+	// 寻找峰值
+	public int findPeakElement(int[] nums) {
+		int n = nums.length;
+		int l = 0, r = n - 1;
+		while (l < r) {
+			int mid = l + r >> 1;
+			if (nums[mid] > nums[mid + 1]) {
+				r = mid;
+			} else {
+				l = mid + 1;
+			}
+		}
+		return r;
+	}
+
+	// 长度最小的子数组
+	public int minSubArrayLen(int target, int[] nums) {
+		int n = nums.length;
+		if (n == 0) {
+			return 0;
+		}
+		int ans = Integer.MAX_VALUE;
+		int start = 0, end = 0;
+		int sum = 0;
+		while (end < n) {
+			sum += nums[end];
+			while (sum >= target) {
+				ans = Math.min(ans, end - start + 1);
+				sum -= nums[start];
+				start++;
+			}
+			end++;
+		}
+		return ans == Integer.MAX_VALUE ? 0 : ans;
+	}
 }
