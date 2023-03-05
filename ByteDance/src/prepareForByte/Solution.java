@@ -369,4 +369,23 @@ public class Solution {
 		}
 		return ans == Integer.MAX_VALUE ? 0 : ans;
 	}
+
+	// 多个数组求交集
+	public List<Integer> intersection(int[][] nums) {
+		int[] cnt = new int[1001];
+		int n = nums.length;
+		for (int[] tmp : nums) {
+			for (int num : tmp) {
+				cnt[num]++;
+			}
+		}
+		List<Integer> list = new ArrayList<>();
+		for (int i = 0; i <= 1000; i++) {
+			if (cnt[i] == n) {
+				list.add(i);
+			}
+		}
+		return list;
+	}
+
 }
