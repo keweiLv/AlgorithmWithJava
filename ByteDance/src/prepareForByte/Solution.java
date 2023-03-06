@@ -388,4 +388,19 @@ public class Solution {
 		return list;
 	}
 
+	// 你能在你最喜欢的那天吃到你最喜欢的糖果吗？
+	public boolean[] canEat(int[] candiesCount, int[][] queries) {
+		int m = candiesCount.length, n = queries.length;
+		boolean[] ans = new boolean[n];
+		long[] sum = new long[m + 1];
+		for (int i = 1; i <= m; i++) {
+			sum[i] = sum[i - 1] + candiesCount[i - 1];
+		}
+		for (int i = 0; i < n; i++) {
+			int t = queries[i][0], d = queries[i][1] + 1, c = queries[i][2];
+			long a = sum[t] / c + 1, b = sum[t + 1];
+			ans[i] = a <= d && d <= b;
+		}
+		return ans;
+	}
 }

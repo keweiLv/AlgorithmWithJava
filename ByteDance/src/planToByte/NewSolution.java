@@ -478,5 +478,16 @@ public class NewSolution {
 		return ans;
 	}
 
-
+	// 使字符串平衡的最少删除次数
+	public int minimumDeletions(String s) {
+		int f = 0, cntB = 0;
+		for (char c : s.toCharArray()) {
+			if (c == 'b') {
+				++cntB;
+			} else {
+				f = Math.min(f + 1, cntB);
+			}
+		}
+		return f;
+	}
 }
