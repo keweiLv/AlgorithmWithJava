@@ -449,4 +449,44 @@ public class Solution {
 		}
 		return count;
 	}
+
+	// 礼物的最大价值
+	public int maxValue(int[][] grid) {
+		int m = grid.length, n = grid[0].length;
+		for (int j = 1; j < n; j++) {
+			grid[0][j] += grid[0][j - 1];
+		}
+		for (int j = 1; j < m; j++) {
+			grid[j][0] += grid[j - 1][0];
+		}
+		for (int i = 1; i < m; i++) {
+			for (int j = 1; j < n; j++) {
+				grid[i][j] += Math.max(grid[i][j - 1], grid[i - 1][j]);
+			}
+		}
+		return grid[m - 1][n - 1];
+	}
+
+	// 二叉树中和为某一值的路径
+	List<List<Integer>> ans = new ArrayList<>();
+	int t;
+
+	public List<List<Integer>> pathSum(TreeNode root, int target) {
+		t = target;
+		dfs(root, 0, new ArrayList<>());
+		return ans;
+	}
+
+	void dfs(TreeNode root, int cur, List<Integer> list) {
+		if (root == null) {
+			return;
+		}
+		list.add(root.val);
+		if (cur + root.val == t && root.left == null && root.right == null) {
+			ans.add(new ArrayList<>(list));
+		}
+		dfs(root.left, cur + root.val, list);
+		dfs(root.right, cur + root.val, list);
+		list.remove(list.size() - 1);
+	}
 }
