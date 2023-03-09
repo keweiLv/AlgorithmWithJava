@@ -489,4 +489,22 @@ public class Solution {
 		dfs(root.right, cur + root.val, list);
 		list.remove(list.size() - 1);
 	}
+
+	// 子数组异或查询
+	public int[] xorQueries(int[] arr, int[][] queries) {
+		int n = arr.length, m = queries.length;
+		int[] sum = new int[n + 1];
+		for (int i = 1; i <= n; i++) {
+			sum[i] = sum[i - 1] ^ arr[i - 1];
+		}
+		int[] ans = new int[m];
+		for (int i = 0; i < m; i++) {
+			int l = queries[i][0] + 1, r = queries[i][1] + 1;
+			ans[i] = sum[r] ^ sum[l - 1];
+		}
+		return ans;
+	}
+
+	// 区域和检索
+
 }
