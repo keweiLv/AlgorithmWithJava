@@ -505,4 +505,43 @@ public class NewSolution {
 		}
 		return ans;
 	}
+
+	// 统计作战单位数
+	static int N = (int) 1e5 + 10;
+	static int[] tr1 = new int[N], tr2 = new int[N];
+
+	int lowbit(int x) {
+		return x & -x;
+	}
+
+	void update(int[] tr, int x, int y) {
+		for (int i = x; i < N; i += lowbit(i)) {
+			tr[i] += y;
+		}
+	}
+
+	int query(int[] tr, int x) {
+		int ans = 0;
+		for (int i = x; i > 0; i -= lowbit(i)) {
+			ans += tr[i];
+		}
+		return ans;
+	}
+
+	public int numTeams(int[] rating) {
+		int n = rating.length, ans = 0;
+		Arrays.fill(tr1, 0);
+		Arrays.fill(tr2, 0);
+		for (int i : rating) {
+			update(tr2, i, 1);
+		}
+		for (int i = 0; i < n; i++) {
+			int t = rating[i];
+			update(tr2, t, -1);
+			ans += query(tr1, t - 1) * (query(tr2, N - 1) - query(tr2, t));
+			ans += (query(tr1, N - 1) - query(tr1, t)) * query(tr2, t - 1);
+			update(tr1, t, 1);
+		}
+		return ans;
+	}
 }
