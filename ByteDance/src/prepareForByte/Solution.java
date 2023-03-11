@@ -530,4 +530,29 @@ public class Solution {
 		return ans == n ? -1 : ans;
 	}
 
+	// 字母与数字
+	public String[] findLongestSubarray(String[] array) {
+		int n = array.length;
+		int[] sum = new int[n + 1];
+		sum[0] = 0;
+		for (int i = 1; i <= n; i++) {
+			sum[i] = sum[i-1] + (array[i - 1].charAt(0) >> 6 & 1) * 2 - 1;
+		}
+		int begin = 0, end = 0;
+		Map<Integer, Integer> map = new HashMap<>();
+		for (int i = 0; i <= n; i++) {
+			int j = map.getOrDefault(sum[i], -1);
+			if (j < 0) {
+				map.put(sum[i], i);
+			} else if (i - j > end - begin) {
+				begin = j;
+				end = i;
+			}
+		}
+		String[] sub = new String[end - begin];
+		System.arraycopy(array, begin, sub, 0, end - begin);
+		return sub;
+	}
+
+
 }
