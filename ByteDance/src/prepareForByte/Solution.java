@@ -1,6 +1,7 @@
 package prepareForByte;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Kezi
@@ -536,7 +537,7 @@ public class Solution {
 		int[] sum = new int[n + 1];
 		sum[0] = 0;
 		for (int i = 1; i <= n; i++) {
-			sum[i] = sum[i-1] + (array[i - 1].charAt(0) >> 6 & 1) * 2 - 1;
+			sum[i] = sum[i - 1] + (array[i - 1].charAt(0) >> 6 & 1) * 2 - 1;
 		}
 		int begin = 0, end = 0;
 		Map<Integer, Integer> map = new HashMap<>();
@@ -554,6 +555,110 @@ public class Solution {
 		return sub;
 	}
 
+	// 替换子串得到平衡字符串
+	public int balancedString(String s) {
+		int[] cnt = new int[4];
+		String t = "QWER";
+		int n = s.length();
+		for (int i = 0; i < n; i++) {
+			cnt[t.indexOf(s.charAt(i))]++;
+		}
+		int m = n / 4;
+		if (cnt[0] == m && cnt[1] == m && cnt[2] == m && cnt[3] == m) {
+			return 0;
+		}
+		int ans = n;
+		for (int i = 0, j = 0; j < n; j++) {
+			cnt[t.indexOf(s.charAt(j))]--;
+			while (i <= j && cnt[0] <= m && cnt[1] <= m && cnt[2] <= m && cnt[3] <= m) {
+				ans = Math.min(ans, j - i + 1);
+				cnt[t.indexOf(s.charAt(i++))]++;
+			}
+		}
+		return ans;
+	}
 
+	// 字母异位词分组
+	public List<List<String>> groupAnagrams(String[] strs) {
+		return new ArrayList<>(Arrays.stream(strs).collect(Collectors.groupingBy(str -> {
+			char[] chars = str.toCharArray();
+			Arrays.sort(chars);
+			return new String(chars);
+		})).values()
+		);
+	}
 
+	// 有效的字母异位词
+	public boolean isAnagram(String s, String t) {
+		if (s.length() != t.length()) {
+			return false;
+		}
+		int[] alpha = new int[26];
+		for (int i = 0; i < s.length(); i++) {
+			alpha[s.charAt(i) - 'a']++;
+			alpha[t.charAt(i) - 'a']--;
+		}
+		for (int i = 0; i < 26; i++) {
+			if (alpha[i] != 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	// 找到字符串中所有字母异位词
+	public List<Integer> findAnagrams(String s, String p) {
+		int n = s.length(), m = p.length();
+		List<Integer> ans = new ArrayList<>();
+		if (n < m) {
+			return ans;
+		}
+		int[] pCnt = new int[26];
+		int[] sCnt = new int[26];
+		for (int i = 0; i < m; i++) {
+			pCnt[p.charAt(i) - 'a']++;
+		}
+		int l = 0;
+		for (int r = 0; r < n; r++) {
+			int curR = s.charAt(r) - 'a';
+			sCnt[curR]++;
+			while (sCnt[curR] > pCnt[curR]) {
+				int curL = s.charAt(l) - 'a';
+				sCnt[curL]--;
+				l++;
+			}
+			if (r - l + 1 == m) {
+				ans.add(l);
+			}
+		}
+		return ans;
+	}
+
+	// 最小时间差
+	public int findMinDifference(List<String> timePoints) {
+		int n = timePoints.size();
+		if (n > 1440) {
+			return 0;
+		}
+		int[] cnts = new int[1440 * 2 + 10];
+		for (String s : timePoints) {
+			String[] split = s.split(":");
+			int h = Integer.parseInt(split[0]), m = Integer.parseInt(split[1]);
+			cnts[h * 60 + m]++;
+			cnts[h * 60 + m + 1440]++;
+		}
+		int ans = 1440, last = -1;
+		for (int i = 0; i < 1440 * 2 && ans != 0; i++) {
+			if (cnts[i] == 0) {
+				continue;
+			}
+			if (cnts[i] > 1) {
+				ans = 0;
+			} else if (last != -1) {
+				ans = Math.min(ans, i - last);
+			}
+			last = i;
+		}
+		return ans;
+	}
 }
