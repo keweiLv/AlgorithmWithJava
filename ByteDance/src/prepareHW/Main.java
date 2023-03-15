@@ -1,8 +1,9 @@
 package prepareHW;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Scanner;
+import java.util.StringJoiner;
 
 /**
  * @author Kezi
@@ -40,29 +41,49 @@ public class Main {
 //		System.out.println(sb.toString());
 //	}
 
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		String moneyStr = sc.nextLine();
-		int money = Integer.parseInt(moneyStr);
-		String prices = sc.nextLine();
-		String[] split = prices.split(" ");
-		List<Integer> list = new ArrayList<>();
-		for (String str : split) {
-			list.add(Integer.parseInt(str));
-		}
-		int[] dp = new int[money + 1];
-		int n = list.size();
-		for (int i = 1; i <= n; i++) {
-			int num = list.get(i-1);
-			for (int j = money;j >= i;j--){
-				int pre = dp[j-i];
-				if (j >= i && pre != Integer.MIN_VALUE){
-					dp[j] = Math.max(dp[j],pre + num);
-				}
-			}
-		}
-		System.out.println(dp[money]);
-		sc.close();
-	}
+//	public static void main(String[] args) {
+//		Scanner sc = new Scanner(System.in);
+//		String moneyStr = sc.nextLine();
+//		int money = Integer.parseInt(moneyStr);
+//		String prices = sc.nextLine();
+//		String[] split = prices.split(" ");
+//		List<Integer> list = new ArrayList<>();
+//		for (String str : split) {
+//			list.add(Integer.parseInt(str));
+//		}
+//		int[] dp = new int[money + 1];
+//		int n = list.size();
+//		for (int i = 1; i <= n; i++) {
+//			int num = list.get(i-1);
+//			for (int j = money;j >= i;j--){
+//				int pre = dp[j-i];
+//				if (j >= i && pre != Integer.MIN_VALUE){
+//					dp[j] = Math.max(dp[j],pre + num);
+//				}
+//			}
+//		}
+//		System.out.println(dp[money]);
+//		sc.close();
+//	}
 
+
+	// 最差的产品序列
+	public static void main(String[] args) {
+		Scanner scanner = new Scanner(System.in);
+		int m = scanner.nextInt();
+		Integer[] array = Arrays.stream(scanner.next().split(",")).map(Integer::parseInt).toArray(Integer[]::new);
+		ArrayList<Integer> ans = new ArrayList<>();
+		for (int i = 0; i <= array.length - m; i++) {
+			int min = Integer.MAX_VALUE;
+			for (int j = i; j < i + m; j++) {
+				min = Math.min(min, array[j]);
+			}
+			ans.add(min);
+		}
+		StringJoiner sj = new StringJoiner(",");
+		for (Integer num:ans){
+			sj.add(num + "");
+		}
+		System.out.println(sj.toString());
+	}
 }
