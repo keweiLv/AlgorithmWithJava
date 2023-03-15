@@ -661,4 +661,24 @@ public class Solution {
 		}
 		return ans;
 	}
+
+	// 最大网络秩
+	public int maximalNetworkRank(int n, int[][] roads) {
+		int[] cnt = new int[n];
+		int[][] g = new int[n][n];
+		for (int[] road : roads) {
+			int a = road[0], b = road[1];
+			g[a][b] = 1;
+			g[b][a] = 1;
+			cnt[a]++;
+			cnt[b]++;
+		}
+		int ans = 0;
+		for (int a = 0; a < n; a++) {
+			for (int b = a + 1; b < n; b++) {
+				ans = Math.max(ans, cnt[a] + cnt[b] - g[a][b]);
+			}
+		}
+		return ans;
+	}
 }
