@@ -681,4 +681,68 @@ public class Solution {
 		}
 		return ans;
 	}
+
+	// 最小体力消耗路径
+	public int minimumEffortPath(int[][] heights) {
+		int M = heights.length;
+		int N = heights[0].length;
+		List<int[]> edges = new ArrayList<>();
+		for (int i = 0; i < M; i++) {
+			for (int j = 0; j < N; j++) {
+				if (j + 1 < N) {
+					edges.add(new int[]{
+							Math.abs(heights[i][j + 1] - heights[i][j]),
+							i * N + j,
+							i * N + j + 1
+					});
+				}
+				if (i + 1 < M) {
+					edges.add(new int[]{
+							Math.abs(heights[i + 1][j] - heights[i][j]),
+							i * N + j,
+							(i + 1) * N + j
+					});
+				}
+			}
+		}
+		edges.sort((a1, a2) -> a1[0] - a2[0]);
+		UnionFind uf = new UnionFind(M * N);
+		for (int[] edge : edges) {
+			uf.union(edge[1], edge[2]);
+			if (uf.find(0) == uf.find(M * N - 1)) {
+				return edge[0];
+			}
+		}
+		return 0;
+	}
+
+	class UnionFind {
+		int count;
+		int[] parent;
+
+		public UnionFind(int n) {
+			this.count = n;
+			parent = new int[n];
+			for (int i = 0; i < n; i++) {
+				parent[i] = i;
+			}
+		}
+
+		public void union(int x, int y) {
+			int rootX = find(x);
+			int rootY = find(y);
+			if (rootY == rootX) {
+				return;
+			}
+			parent[rootX] = rootY;
+			count--;
+		}
+
+		public int find(int x) {
+			if (x != parent[x]) {
+				parent[x] = find(parent[x]);
+			}
+			return parent[x];
+		}
+	}
 }
