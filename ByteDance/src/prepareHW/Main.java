@@ -1,6 +1,7 @@
 package prepareHW;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Kezi
@@ -135,33 +136,125 @@ public class Main {
 //	}
 
 	//最长的密码
+//	public static void main(String[] args) {
+//		Scanner scanner = new Scanner(System.in);
+//		String[] strings = scanner.nextLine().split(" ");
+//		Set<String> set = new HashSet<>();
+//		for (String str : strings) {
+//			set.add(str);
+//		}
+//		String truePass = "";
+//		for (String str : strings) {
+//			boolean flag = true;
+//			for (int i = 1; i < str.length(); i++) {
+//				String substring = str.substring(0, i);
+//				if (!set.contains(substring)) {
+//					flag = false;
+//					break;
+//				}
+//			}
+//			if (flag) {
+//				if (str.length() > truePass.length()) {
+//					truePass = str;
+//				}
+//				if (str.length() == truePass.length() && str.compareTo(truePass) > 0) {
+//					truePass = str;
+//				}
+//			}
+//		}
+//		System.out.println(truePass);
+//	}
+
+	// 开心消消乐
+//	public static void main(String[] args) {
+//		Scanner in = new Scanner(System.in);
+//		int rows = in.nextInt();
+//		int cols = in.nextInt();
+//		int[][] mat = new int[rows][cols];
+//		for (int i = 0; i < rows; i++) {
+//			for (int j = 0; j < cols; j++) {
+//				mat[i][j] = in.nextInt();
+//			}
+//		}
+//		int ans = 0;
+//		for (int i = 0; i < rows; i++) {
+//			for (int j = 0; j < cols; j++) {
+//				if (mat[i][j] == 1){
+//					ans++;
+//					dfs(mat,i,j);
+//				}
+//			}
+//		}
+//		System.out.println(ans);
+//	}
+//	private static void dfs(int[][] mat, int i, int j) {
+//		mat[i][j] = 0;
+//		int rows = mat.length;
+//		int cols = mat[0].length;
+//		int[][] direct = {{-1,0},{1,0},{0,-1},{-1,0},{-1,-1},{-1,1},{1,-1},{1,1}};
+//		for (int[] dir : direct){
+//			int nxetX = i + dir[0];
+//			int nextY = j + dir[1];
+//			if (nxetX >=0 && nxetX < rows && nextY >= 0 && nextY < cols && mat[nxetX][nextY] == 1){
+//				dfs(mat,nxetX,nextY);
+//			}
+//		}
+//	}
+
+	// 最大化控制资源成本
+//	public static void main(String[] args) {
+//		Scanner sc = new Scanner(System.in);
+//		int num = sc.nextInt();
+//		int[][] tasks = new int[num][3];
+//		for (int i = 0; i < num; i++) {
+//			tasks[i][0] = sc.nextInt();
+//			tasks[i][1] = sc.nextInt();
+//			tasks[i][2] = sc.nextInt();
+//		}
+//		Arrays.sort(tasks, (a, b) -> a[0] - b[0]);
+//		PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+//		int max = 0;
+//		int cur = 0;
+//		for (int[] task : tasks) {
+//			while (!pq.isEmpty() && pq.peek()[0] < task[0]) {
+//				int[] pop = pq.poll();
+//				cur -= pop[1];
+//			}
+//			pq.offer(new int[]{task[1], task[2]});
+//			cur += task[2];
+//			max = Math.max(max, cur);
+//		}
+//		System.out.println(max);
+//	}
+
+	// 预定酒店
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
-		String[] strings = scanner.nextLine().split(" ");
-		Set<String> set = new HashSet<>();
-		for (String str : strings) {
-			set.add(str);
+		int n = scanner.nextInt();
+		int k = scanner.nextInt();
+		int x = scanner.nextInt();
+		int[] prices = new int[n];
+		for (int i = 0; i < n; i++) {
+			prices[i] = scanner.nextInt();
 		}
-		String truePass = "";
-		for (String str : strings) {
-			boolean flag = true;
-			for (int i = 1; i < str.length(); i++) {
-				String substring = str.substring(0, i);
-				if (!set.contains(substring)) {
-					flag = false;
-					break;
-				}
-			}
-			if (flag) {
-				if (str.length() > truePass.length()) {
-					truePass = str;
-				}
-				if (str.length() == truePass.length() && str.compareTo(truePass) > 0) {
-					truePass = str;
-				}
+		Arrays.sort(prices);
+		int[][] dif = new int[n][2];
+		for (int i = 0; i < n; i++) {
+			int price = prices[i];
+			dif[i][0] = price;
+			dif[i][1] = Math.abs(price - x);
+		}
+		List<int[]> sorted = Arrays.stream(dif).sorted(Comparator.comparing(item -> item[1])).collect(Collectors.toList());
+		List<Integer> pick = new ArrayList<>();
+		for (int i = 0; i < k; i++) {
+			pick.add(sorted.get(i)[0]);
+		}
+		pick.sort(Integer::compareTo);
+		for (int i = 0;i<pick.size();i++){
+			System.out.print(pick.get(i));
+			if (i != pick.size() -1){
+				System.out.print(" ");
 			}
 		}
-		System.out.println(truePass);
 	}
-
 }

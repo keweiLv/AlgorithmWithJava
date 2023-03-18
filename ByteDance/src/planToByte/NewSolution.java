@@ -544,4 +544,62 @@ public class NewSolution {
 		}
 		return ans;
 	}
+
+	// 分隔两个字符串得到回文串
+	public boolean checkPalindromeFormation(String a, String b) {
+		return check(a, b) || check(b, a);
+	}
+
+	private boolean check(String a, String b) {
+		int i = 0, j = a.length() - 1;
+		while (i < j && a.charAt(i) == b.charAt(j)) {
+			++i;
+			--j;
+		}
+		return isForm(a, i, j) || isForm(b, i, j);
+	}
+
+	private boolean isForm(String s, int i, int j) {
+		while (i < j && s.charAt(i) == s.charAt(j)) {
+			i++;
+			j--;
+		}
+		return i >= j;
+	}
+
+	// 下一个更大元素一
+	public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+		int n = nums1.length, m = nums2.length;
+		Deque<Integer> deque = new ArrayDeque<>();
+		Map<Integer, Integer> map = new HashMap<>();
+		for (int i = m - 1; i >= 0; i--) {
+			int x = nums2[i];
+			while (!deque.isEmpty() && x > deque.peekLast()) {
+				deque.pollLast();
+			}
+			map.put(x, deque.isEmpty() ? -1 : deque.peekLast());
+			deque.addLast(x);
+		}
+		int[] ans = new int[n];
+		for (int i = 0; i < n; i++) {
+			ans[i] = map.get(nums1[i]);
+		}
+		return ans;
+	}
+
+	// 下一个更大元素二
+	public int[] nextGreaterElements(int[] nums) {
+		int n = nums.length;
+		int[] ans = new int[n];
+		Arrays.fill(ans, -1);
+		Deque<Integer> deque = new ArrayDeque<>();
+		for (int i = 0; i < n * 2; i++) {
+			while (!deque.isEmpty() && nums[i % n] > nums[deque.peekLast()]) {
+				int idx = deque.pollLast();
+				ans[idx] = nums[i % n];
+			}
+			deque.addLast(i % n);
+		}
+		return ans;
+	}
 }
