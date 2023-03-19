@@ -800,4 +800,73 @@ public class Solution {
 		}
 		return l;
 	}
+
+	// 执行操作后字典序最小的字符串
+	public String findLexSmallestString(String s, int a, int b) {
+		Deque<String> deque = new ArrayDeque<>();
+		deque.offer(s);
+		Set<String> vis = new HashSet<>();
+		vis.add(s);
+		String ans = s;
+		int n = s.length();
+		while (!deque.isEmpty()) {
+			s = deque.poll();
+			if (ans.compareTo(s) > 0) {
+				ans = s;
+			}
+			char[] cs = s.toCharArray();
+			for (int i = 0; i < n; i += 2) {
+				cs[i] = (char) (((cs[i] - '0' + a) % 10) + '0');
+			}
+			String s1 = String.valueOf(cs);
+			String s2 = s.substring(n - b) + s.substring(0, n - b);
+			if (vis.add(s1)) {
+				deque.offer(s1);
+			}
+			if (vis.add(s2)) {
+				deque.offer(s2);
+			}
+		}
+		return ans;
+	}
+
+	// 132	模式
+	public boolean find132pattern(int[] nums) {
+		int n = nums.length;
+		Deque<Integer> deque = new ArrayDeque<>();
+		int k = Integer.MIN_VALUE;
+		for (int i = n - 1; i >= 0; i--) {
+			if (nums[i] < k) {
+				return true;
+			}
+			while (!deque.isEmpty() && deque.peekLast() < nums[i]) {
+				k = Math.max(k, deque.pollLast());
+			}
+			deque.offer(nums[i]);
+		}
+		return false;
+	}
+
+	// 最大二叉树
+	public TreeNode constructMaximumBinaryTree(int[] nums) {
+		Deque<TreeNode> deque = new ArrayDeque<>();
+		for (int i = 0; i < nums.length; i++) {
+			TreeNode node = new TreeNode(nums[i]);
+			while (!deque.isEmpty()) {
+				TreeNode top = deque.peekLast();
+				if (top.val > node.val) {
+					deque.addLast(node);
+					top.right = node;
+					break;
+				} else {
+					deque.removeLast();
+					node.left = top;
+				}
+			}
+			if (deque.isEmpty()) {
+				deque.addLast(node);
+			}
+		}
+		return deque.peekLast();
+	}
 }
