@@ -869,4 +869,28 @@ public class Solution {
 		}
 		return deque.peekLast();
 	}
+
+	// 接雨水
+	public int trap(int[] height) {
+		if (height == null || height.length <= 2) {
+			return 0;
+		}
+		int water = 0;
+		Deque<Integer> deque = new ArrayDeque<>();
+		for (int right = 0; right < height.length; right++) {
+			while (!deque.isEmpty() && height[right] > height[deque.peekLast()]){
+				int bottom = deque.pop();
+				if (deque.isEmpty()){
+					break;
+				}
+				int left = deque.peekLast();
+				int leftHeight = height[left];
+				int rightHeight = height[right];
+				int bottomHeight = height[bottom];
+				water += (right - left - 1) * (Math.min(leftHeight,rightHeight) - bottomHeight);
+			}
+			deque.push(right);
+		}
+		return water;
+	}
 }
