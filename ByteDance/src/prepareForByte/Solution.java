@@ -878,19 +878,60 @@ public class Solution {
 		int water = 0;
 		Deque<Integer> deque = new ArrayDeque<>();
 		for (int right = 0; right < height.length; right++) {
-			while (!deque.isEmpty() && height[right] > height[deque.peekLast()]){
+			while (!deque.isEmpty() && height[right] > height[deque.peekLast()]) {
 				int bottom = deque.pop();
-				if (deque.isEmpty()){
+				if (deque.isEmpty()) {
 					break;
 				}
 				int left = deque.peekLast();
 				int leftHeight = height[left];
 				int rightHeight = height[right];
 				int bottomHeight = height[bottom];
-				water += (right - left - 1) * (Math.min(leftHeight,rightHeight) - bottomHeight);
+				water += (right - left - 1) * (Math.min(leftHeight, rightHeight) - bottomHeight);
 			}
 			deque.push(right);
 		}
 		return water;
+	}
+
+	// 温度转换
+	public double[] convertTemperature(double celsius) {
+		return new double[]{celsius + 273.15, celsius * 1.8 + 32};
+	}
+
+	// 根据字符出现频率排序
+	public String frequencySort(String s) {
+		char[] chars = s.toCharArray();
+		Map<Character, Integer> map = new HashMap<>();
+		for (char c : chars) {
+			map.put(c, map.getOrDefault(c, 0) + 1);
+		}
+		PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> {
+			return a[1] != b[1] ? b[1] - a[1] : a[0] - b[0];
+		});
+		for (char c : map.keySet()) {
+			pq.add(new int[]{c, map.get(c)});
+		}
+		StringBuilder sb = new StringBuilder();
+		while (!pq.isEmpty()) {
+			int[] poll = pq.poll();
+			int c = poll[0], k = poll[1];
+			while (k-- > 0) {
+				sb.append((char) c);
+			}
+		}
+		return sb.toString();
+	}
+
+	// 根据身高重建队列
+	public int[][] reconstructQueue(int[][] people) {
+		Arrays.sort(people, (a, b) -> {
+			return a[0] == b[0] ? a[1] - b[1] : b[0] - a[0];
+		});
+		List<int[]> ans = new ArrayList<>();
+		for (int[] p : people) {
+			ans.add(p[1], p);
+		}
+		return ans.toArray(new int[people.length][]);
 	}
 }
