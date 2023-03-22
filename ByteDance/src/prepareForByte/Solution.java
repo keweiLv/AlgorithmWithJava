@@ -934,4 +934,44 @@ public class Solution {
 		}
 		return ans.toArray(new int[people.length][]);
 	}
+
+	// 最长递增子序列
+	public int lengthOfLIS(int[] nums) {
+		if (nums.length == 0) {
+			return 0;
+		}
+		int[] dp = new int[nums.length];
+		int res = 0;
+		Arrays.fill(dp, 1);
+		for (int i = 0; i < nums.length; i++) {
+			for (int j = 0; j < i; j++) {
+				if (nums[j] < nums[i]) {
+					dp[i] = Math.max(dp[i], dp[j] + 1);
+				}
+			}
+			res = Math.max(res, dp[i]);
+		}
+		return res;
+	}
+
+	// 无矛盾的最佳球队
+	public int bestTeamScore(int[] scores, int[] ages) {
+		int n = scores.length, ans = 0;
+		Integer[] idx = new Integer[n];
+		for (int i = 0; i < n; i++) {
+			idx[i] = i;
+		}
+		Arrays.sort(idx, (a, b) -> scores[a] != scores[b] ? scores[a] - scores[b] : ages[a] - ages[b]);
+		int[] f = new int[n + 1];
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < i; j++) {
+				if (ages[idx[j]] <= ages[idx[i]]) {
+					f[i] = Math.max(f[i], f[j]);
+				}
+			}
+			f[i] += scores[idx[i]];
+			ans = Math.max(ans, f[i]);
+		}
+		return ans;
+	}
 }
