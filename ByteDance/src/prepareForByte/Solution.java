@@ -974,4 +974,43 @@ public class Solution {
 		}
 		return ans;
 	}
+
+	// 等差子数组
+	public List<Boolean> checkArithmeticSubarrays(int[] nums, int[] l, int[] r) {
+		int n = l.length;
+		List<Boolean> ans = new ArrayList<>();
+		for (int i = 0; i < n; i++) {
+			int left = l[i], right = r[i];
+			int minv = nums[left], maxv = nums[left];
+			for (int j = left; j <= right; j++) {
+				minv = Math.min(minv, nums[j]);
+				maxv = Math.max(maxv, nums[j]);
+			}
+			if (minv == maxv) {
+				ans.add(true);
+				continue;
+			}
+			if ((maxv - minv) % (right - left) != 0) {
+				ans.add(false);
+				continue;
+			}
+			int d = (maxv - minv) / (right - left);
+			boolean flag = true;
+			boolean[] memo = new boolean[right - left + 1];
+			for (int j = left; j <= right; j++) {
+				if ((nums[j] - minv) % d != 0) {
+					flag = false;
+					break;
+				}
+				int t = (nums[j] - minv) / d;
+				if (memo[t]) {
+					flag = false;
+					break;
+				}
+				memo[t] = true;
+			}
+			ans.add(flag);
+		}
+		return ans;
+	}
 }
