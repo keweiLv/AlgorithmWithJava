@@ -65,7 +65,7 @@ public class Main {
 //	}
 
 
-	// 最差的产品序列
+    // 最差的产品序列
 //	public static void main(String[] args) {
 //		Scanner scanner = new Scanner(System.in);
 //		int m = scanner.nextInt();
@@ -85,7 +85,7 @@ public class Main {
 //		System.out.println(sj.toString());
 //	}
 
-	// 最大利润
+    // 最大利润
 //	public static void main(String[] args) {
 //		Scanner scanner = new Scanner(System.in);
 //		int items = scanner.nextInt();
@@ -113,7 +113,7 @@ public class Main {
 //		System.out.println(maxProfit);
 //	}
 
-	// 字符串重新排序
+    // 字符串重新排序
 //	public static void main(String[] args) {
 //		Scanner scanner = new Scanner(System.in);
 //		String[] s = scanner.nextLine().split(" ");
@@ -134,6 +134,75 @@ public class Main {
 //		}
 //		System.out.println(sj.toString());
 //	}
+
+    //最长的密码
+//	public static void main(String[] args) {
+//		Scanner scanner = new Scanner(System.in);
+//		String[] strings = scanner.nextLine().split(" ");
+//		Set<String> set = new HashSet<>();
+//		for (String str : strings) {
+//			set.add(str);
+//		}
+//		String truePass = "";
+//		for (String str : strings) {
+//			boolean flag = true;
+//			for (int i = 1; i < str.length(); i++) {
+//				String substring = str.substring(0, i);
+//				if (!set.contains(substring)) {
+//					flag = false;
+//					break;
+//				}
+//			}
+//			if (flag) {
+//				if (str.length() > truePass.length()) {
+//					truePass = str;
+//				}
+//				if (str.length() == truePass.length() && str.compareTo(truePass) > 0) {
+//					truePass = str;
+//				}
+//			}
+//		}
+//		System.out.println(truePass);
+//	}
+
+    // 通信误码
+//    public static void main(String[] args) {
+//        Scanner scanner = new Scanner(System.in);
+//        String getN = scanner.nextLine();
+//        int n = Integer.parseInt(getN);
+//        String getM = scanner.nextLine();
+//        String[] s = getM.split(" ");
+//        ArrayList<Integer> arrs = new ArrayList<>();
+//        for (String str : s) {
+//            arrs.add(Integer.parseInt(str));
+//        }
+//        int maxCnt = 0;
+//        Map<Integer, Integer> record = new HashMap<>();
+//        for (int i = 0; i < n; i++) {
+//            record.put(arrs.get(i), record.getOrDefault(arrs.get(i), 0) + 1);
+//            maxCnt = Math.max(maxCnt, record.get(arrs.get(i)));
+//        }
+//        Set<Integer> maxNums = new HashSet<>();
+//        for (Map.Entry<Integer, Integer> entry : record.entrySet()) {
+//            if (entry.getValue() == maxCnt) {
+//                maxNums.add(entry.getKey());
+//            }
+//        }
+//        int ans = n;
+//        for (int num : maxNums) {
+//            int left = 0, right = n - 1;
+//            while (arrs.get(left) != num) {
+//                left++;
+//            }
+//            while (arrs.get(right) != num) {
+//                right--;
+//            }
+//            if (left <= right) {
+//                ans = Math.min(ans, right - left + 1);
+//            }
+//        }
+//        System.out.println(ans);
+//    }
 
 	//最长的密码
 //	public static void main(String[] args) {
