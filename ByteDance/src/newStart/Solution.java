@@ -1,5 +1,8 @@
 package newStart;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Solution {
 
     // 删除最短的子数组使剩余数组有序
@@ -131,5 +134,58 @@ public class Solution {
             ans += num;
         }
         return ans;
+    }
+
+    // 数组中重复的元素
+    public List<Integer> findDuplicates(int[] nums) {
+        List<Integer> ans = new ArrayList<>();
+        for (int num : nums) {
+            if (nums[Math.abs(num) - 1] < 0) {
+                ans.add(Math.abs(num));
+            } else {
+                nums[Math.abs(num) - 1] *= -1;
+            }
+        }
+        return ans;
+    }
+
+    // 缺失的第一个正数
+    public int firstMissingPositive(int[] nums) {
+        int n = nums.length;
+        for (int i = 0; i < n; i++) {
+            while (nums[i] > 0 && nums[i] <= n && nums[nums[i] - 1] != nums[i]) {
+                swap(nums, i, nums[i] - 1);
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            if (nums[i] != i + 1) {
+                return i + 1;
+            }
+        }
+        return n + 1;
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    // 装饰树
+    public TreeNode expandBinaryTree(TreeNode root) {
+        if(root == null || (root.left == null && root.right == null)){
+            return root;
+        }
+        TreeNode leftNode = root.left;
+        if(leftNode != null){
+            root.left = new TreeNode(-1);
+            root.left.left = expandBinaryTree(leftNode);
+        }
+        TreeNode righNode = root.right;
+        if(righNode != null){
+            root.right = new TreeNode(-1);
+            root.right.right = expandBinaryTree(righNode);
+        }
+        return root;
     }
 }
