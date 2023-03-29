@@ -1,6 +1,7 @@
 package newStart;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Solution {
@@ -187,5 +188,18 @@ public class Solution {
             root.right.right = expandBinaryTree(righNode);
         }
         return root;
+    }
+
+    // 统计字典序元首字符串的数目
+    public int countVowelStrings(int n) {
+        int[] f = {1, 1, 1, 1, 1};
+        for (int i = 0; i < n - 1; ++i) {
+            int s = 0;
+            for (int j = 0; j < 5; ++j) {
+                s += f[j];
+                f[j] = s;
+            }
+        }
+        return Arrays.stream(f).sum();
     }
 }
