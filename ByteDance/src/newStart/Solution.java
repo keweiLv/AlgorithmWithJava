@@ -2,7 +2,11 @@ package newStart;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class Solution {
 
@@ -201,5 +205,70 @@ public class Solution {
             }
         }
         return Arrays.stream(f).sum();
+    }
+
+    // 两点之间不包含任何点的最宽垂直面积
+    public int maxWidthOfVerticalArea(int[][] points) {
+        Arrays.sort(points,(a,b) -> a[0] - b[0]);
+        int ans = 0;
+        for(int i = 0;i<points.length - 1;i++){
+            ans = Math.max(ans, points[i+1][0] - points[i][0]);
+        }
+        return ans;
+    }
+
+    // 交通枢纽
+    public int transportationHub(int[][] path) {
+        int[] in = new int[1001];
+        int[] out = new int[1001];
+        Set<Integer> set = new HashSet<>();
+        for(int[] item : path){
+            int x = item[0],y = item[1];
+            out[x]++;
+            in[y]++;
+            set.add(x);
+            set.add(y);
+        }
+        int cnt = set.size();
+        for(int i = 0;i<1001;i++){
+            if(in[i] == cnt -1 && out[i] == 0){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    // 乘积小于K的子数组
+    public int numSubarrayProductLessThanK(int[] nums, int k) {
+        int n = nums.length,ans = 0;
+        if(k <= 1){
+            return 0;
+        }
+        for(int i = 0,j=0,cur=1;i<n;i++){
+            cur *= nums[i];
+            while(cur >= k){
+                cur /= nums[j++];
+            }
+            ans += i - j + 1;
+        }
+        return ans;
+    }
+
+    // 无重复字符的最长字串
+    public int lengthOfLongestSubstring(String s) {
+        if(s.length() == 0){
+            return 0;
+        }
+        Map<Character,Integer> map = new HashMap<>();
+        int ans = 0;
+        int left = 0;
+        for(int i = 0;i<s.length();i++){
+            if(map.containsKey(s.charAt(i))){
+                left = Math.max(left, map.get(s.charAt(i)) + 1);
+            }
+            map.put(s.charAt(i), i);
+            ans = Math.max(ans, i - left + 1);
+        }
+        return ans;
     }
 }
