@@ -271,4 +271,56 @@ public class Solution {
         }
         return ans;
     }
+
+    // 算数三元组的数目
+    public int arithmeticTriplets(int[] nums, int diff) {
+        Set<Integer> set = new HashSet<>();
+        int ans = 0;
+        for(int num:nums){
+            set.add(num);
+            if(set.contains(num - diff) && set.contains(num - 2 * diff)){
+                ans++;
+            }
+        }
+        return ans;
+    }
+
+    // Nim游戏
+    public boolean canWinNim(int n) {
+        return n % 4 != 0;
+    }
+
+    // 我能赢吗
+    int n, t;
+    int[] memo = new int[1 << 20];
+
+    public boolean canIWin(int maxChoosableInteger, int desiredTotal) {
+        n = maxChoosableInteger;
+        t = desiredTotal;
+        if (maxChoosableInteger >= desiredTotal) {
+            return true;
+        }
+        if (maxChoosableInteger * (maxChoosableInteger + 1) / 2 < desiredTotal) {
+            return false;
+        }
+        return dfs(0, 0) == 1;
+    }
+
+    private int dfs(int state, int tol) {
+        if (memo[state] != 0) {
+            return memo[state];
+        }
+        for (int i = 0; i < n; i++) {
+            if (((state >> i) & 1) == 1) {
+                continue;
+            }
+            if (tol + i + 1 >= t) {
+                return memo[state] = 1;
+            }
+            if (dfs(state | (1 << i), tol + i + 1) == -1) {
+                return memo[state] = 1;
+            }
+        }
+        return memo[state] = -1;
+    }
 }
