@@ -371,4 +371,22 @@ public class Solution {
         return socreMemo[i][j] = res;
     }
 
+    // 交换一次的先前排列
+    public int[] prevPermOpt1(int[] arr) {
+        int n = arr.length;
+        for (int i = n - 1; i > 0; i++) {
+            if (arr[i - 1] > arr[i]) {
+                for (int j = n - 1; i > i - 1; j--) {
+                    if (arr[j] < arr[i - 1] && arr[j - 1] != arr[j]) {
+                        int t = arr[i - 1];
+                        arr[i - 1] = arr[j];
+                        arr[j] = t;
+                        return arr;
+                    }
+                }
+            }
+        }
+        return arr;
+    }
+
 }
