@@ -392,12 +392,31 @@ public class Solution {
     // 共因子的数目
     public int commonFactors(int a, int b) {
         int ans = 0;
-        for (int i = 1;i<= Math.min(a,b);i++){
-            if (a % i ==0 && b % i == 0){
+        for (int i = 1; i <= Math.min(a, b); i++) {
+            if (a % i == 0 && b % i == 0) {
                 ans++;
             }
         }
         return ans;
     }
 
+    // 负二进制转换
+    public String baseNeg2(int n) {
+        if (n == 0) {
+            return "0";
+        }
+        int k = 1;
+        StringBuilder sb = new StringBuilder();
+        while (n != 0) {
+            if (n % 2 != 0) {
+                sb.append(1);
+                n -= k;
+            } else {
+                sb.append(0);
+            }
+            k *= -1;
+            n /= 2;
+        }
+        return sb.reverse().toString();
+    }
 }
