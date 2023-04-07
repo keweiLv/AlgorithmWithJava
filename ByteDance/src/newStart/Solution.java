@@ -419,4 +419,24 @@ public class Solution {
         }
         return sb.reverse().toString();
     }
+
+    // 移动石子直接连续二
+    public int[] numMovesStonesII(int[] s) {
+        Arrays.sort(s);
+        int n = s.length;
+        int e1 = s[n - 2] - s[0] - n + 2;
+        int e2 = s[n - 1] - s[1] - n + 2;
+        int maxMove = Math.max(e1, e2);
+        if (e1 == 0 || e2 == 0) {
+            return new int[]{Math.min(2, maxMove), maxMove};
+        }
+        int maxCnt = 0, left = 0;
+        for (int right = 0; right < n; ++right) {
+            while (s[right] - s[left] + 1 > n) {
+                ++left;
+            }
+            maxCnt = Math.max(maxCnt, right - left + 1);
+        }
+        return new int[]{n - maxCnt, maxMove};
+    }
 }
