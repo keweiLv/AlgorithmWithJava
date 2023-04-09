@@ -444,7 +444,12 @@ public class Solution {
     public int maxDistance(List<List<Integer>> list) {
         List<Integer> init = list.get(0);
         int res = 0, minVal = init.get(0), maxVal = init.get(init.size()-1);
+        int flag = 0;
         for (List<Integer> item:list){
+            if (flag == 0){
+                flag++;
+                continue;
+            }
             res = Math.max(res, Math.max(Math.abs(item.get(item.size()-1) - minVal), Math.abs(maxVal - item.get(0))));
             minVal = Math.min(minVal,item.get(0));
             maxVal = Math.max(maxVal,item.get(item.size()-1));
