@@ -439,4 +439,16 @@ public class Solution {
         }
         return new int[]{n - maxCnt, maxMove};
     }
+
+    // 数组列表中的最大值
+    public int maxDistance(List<List<Integer>> list) {
+        List<Integer> init = list.get(0);
+        int res = 0, minVal = init.get(0), maxVal = init.get(init.size()-1);
+        for (List<Integer> item:list){
+            res = Math.max(res, Math.max(Math.abs(item.get(item.size()-1) - minVal), Math.abs(maxVal - item.get(0))));
+            minVal = Math.min(minVal,item.get(0));
+            maxVal = Math.max(maxVal,item.get(item.size()-1));
+        }
+        return res;
+    }
 }
