@@ -456,4 +456,58 @@ public class Solution {
         }
         return res;
     }
+
+    // 链表中的下一个更大节点
+    public int[] nextLargerNodes(ListNode head) {
+        int n = 0;
+        for (ListNode cur = head;cur != null;cur = cur.next){
+            n++;
+        }
+        int[] ans = new int[n];
+        Deque<Integer> deque = new ArrayDeque<>();
+        int i = 0;
+        for (ListNode cur = head;cur!=null;cur = cur.next){
+            while (!deque.isEmpty() && ans[deque.peek()] < cur.val){
+                ans[deque.pop()] = cur.val;
+            }
+            deque.push(i);
+            ans[i++] = cur.val;
+        }
+        for (Integer idx : deque){
+            ans[idx] = 0;
+        }
+        return ans;
+    }
+
+    // 字符串的左右移
+    public String stringShift(String s, int[][] shift) {
+        int n = s.length();
+        int count = 0;
+        for (int i = 0;i<shift.length;i++){
+            count = shift[i][1] % n;
+            if (shift[i][0] == 0 && shift[i][1] > 0){
+                s = s.substring(count) + s.substring(0,count);
+            }else {
+                s = s.substring(n-count) + s.substring(0,n-count);
+            }
+        }
+        return s;
+    }
+
+    // 句子相似性
+    public boolean areSentencesSimilar(String[] sentence1, String[] sentence2, List<List<String>> similarPairs) {
+        if (sentence1.length != sentence2.length){
+            return false;
+        }
+        Set<String> set = new HashSet<>();
+        for (List<String> str : similarPairs){
+            set.add(str.get(0) + "#" + str.get(1));
+        }
+        for (int i = 0;i<sentence1.length;i++){
+            if (!sentence1[i].equals(sentence2[i]) && !set.contains(sentence1[i] + "#" + sentence2[i]) && !set.contains(sentence2[i] + "#" + sentence1[i])){
+                return false;
+            }
+        }
+        return true;
+    }
 }
