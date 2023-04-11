@@ -443,16 +443,16 @@ public class Solution {
     // 数组列表中的最大值
     public int maxDistance(List<List<Integer>> list) {
         List<Integer> init = list.get(0);
-        int res = 0, minVal = init.get(0), maxVal = init.get(init.size()-1);
+        int res = 0, minVal = init.get(0), maxVal = init.get(init.size() - 1);
         int flag = 0;
-        for (List<Integer> item:list){
-            if (flag == 0){
+        for (List<Integer> item : list) {
+            if (flag == 0) {
                 flag++;
                 continue;
             }
-            res = Math.max(res, Math.max(Math.abs(item.get(item.size()-1) - minVal), Math.abs(maxVal - item.get(0))));
-            minVal = Math.min(minVal,item.get(0));
-            maxVal = Math.max(maxVal,item.get(item.size()-1));
+            res = Math.max(res, Math.max(Math.abs(item.get(item.size() - 1) - minVal), Math.abs(maxVal - item.get(0))));
+            minVal = Math.min(minVal, item.get(0));
+            maxVal = Math.max(maxVal, item.get(item.size() - 1));
         }
         return res;
     }
@@ -460,20 +460,20 @@ public class Solution {
     // 链表中的下一个更大节点
     public int[] nextLargerNodes(ListNode head) {
         int n = 0;
-        for (ListNode cur = head;cur != null;cur = cur.next){
+        for (ListNode cur = head; cur != null; cur = cur.next) {
             n++;
         }
         int[] ans = new int[n];
         Deque<Integer> deque = new ArrayDeque<>();
         int i = 0;
-        for (ListNode cur = head;cur!=null;cur = cur.next){
-            while (!deque.isEmpty() && ans[deque.peek()] < cur.val){
+        for (ListNode cur = head; cur != null; cur = cur.next) {
+            while (!deque.isEmpty() && ans[deque.peek()] < cur.val) {
                 ans[deque.pop()] = cur.val;
             }
             deque.push(i);
             ans[i++] = cur.val;
         }
-        for (Integer idx : deque){
+        for (Integer idx : deque) {
             ans[idx] = 0;
         }
         return ans;
@@ -483,12 +483,12 @@ public class Solution {
     public String stringShift(String s, int[][] shift) {
         int n = s.length();
         int count = 0;
-        for (int i = 0;i<shift.length;i++){
+        for (int i = 0; i < shift.length; i++) {
             count = shift[i][1] % n;
-            if (shift[i][0] == 0 && shift[i][1] > 0){
-                s = s.substring(count) + s.substring(0,count);
-            }else {
-                s = s.substring(n-count) + s.substring(0,n-count);
+            if (shift[i][0] == 0 && shift[i][1] > 0) {
+                s = s.substring(count) + s.substring(0, count);
+            } else {
+                s = s.substring(n - count) + s.substring(0, n - count);
             }
         }
         return s;
@@ -496,18 +496,35 @@ public class Solution {
 
     // 句子相似性
     public boolean areSentencesSimilar(String[] sentence1, String[] sentence2, List<List<String>> similarPairs) {
-        if (sentence1.length != sentence2.length){
+        if (sentence1.length != sentence2.length) {
             return false;
         }
         Set<String> set = new HashSet<>();
-        for (List<String> str : similarPairs){
+        for (List<String> str : similarPairs) {
             set.add(str.get(0) + "#" + str.get(1));
         }
-        for (int i = 0;i<sentence1.length;i++){
-            if (!sentence1[i].equals(sentence2[i]) && !set.contains(sentence1[i] + "#" + sentence2[i]) && !set.contains(sentence2[i] + "#" + sentence1[i])){
+        for (int i = 0; i < sentence1.length; i++) {
+            if (!sentence1[i].equals(sentence2[i]) && !set.contains(sentence1[i] + "#" + sentence2[i]) && !set.contains(sentence2[i] + "#" + sentence1[i])) {
                 return false;
             }
         }
         return true;
+    }
+
+    // 困于环中的机器人
+    public boolean isRobotBounded(String instructions) {
+        int k = 0;
+        int[] dist = new int[4];
+        for (int i = 0; i < instructions.length(); i++) {
+            char c = instructions.charAt(i);
+            if (c == 'L') {
+                k = (k + 1) % 4;
+            } else if (c == 'R') {
+                k = (k + 3) % 4;
+            } else {
+                dist[k]++;
+            }
+        }
+        return (dist[0] == dist[2] && dist[1] == dist[3]) || (k != 0);
     }
 }
