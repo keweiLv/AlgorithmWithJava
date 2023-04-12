@@ -527,4 +527,41 @@ public class Solution {
         }
         return (dist[0] == dist[2] && dist[1] == dist[3]) || (k != 0);
     }
+
+    // 会议室
+    public boolean canAttendMeetings(int[][] intervals) {
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return o1[0] - o2[0];
+            }
+        });
+        for (int i = 0; i < intervals.length - 1; i++) {
+            if (intervals[i][1] > intervals[i + 1][0]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // 会议室二
+    public int minMeetingRooms(int[][] intervals) {
+        if (intervals == null || intervals.length == 0) {
+            return 0;
+        }
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+        pq.add(intervals[0][1]);
+        for (int i = 1; i < intervals.length; i++) {
+            int last = pq.peek();
+            if (last <= intervals[i][0]) {
+                pq.poll();
+                pq.add(intervals[i][1]);
+            } else {
+                pq.add(intervals[i][1]);
+            }
+        }
+        return pq.size();
+    }
+
 }
