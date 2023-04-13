@@ -564,4 +564,24 @@ public class Solution {
         return pq.size();
     }
 
+    // 出现最频繁的偶数元素
+    public int mostFrequentEven(int[] nums) {
+        Map<Integer,Integer> map = new HashMap<>();
+        for (int num : nums){
+            if (num % 2 ==0){
+                map.merge(num,1,Integer::sum);
+            }
+        }
+        int ans = -1,mx = 0;
+        Set<Map.Entry<Integer, Integer>> entries = map.entrySet();
+        for (Map.Entry<Integer,Integer> en : map.entrySet()){
+            int x = en.getKey(),v = en.getValue();
+            if (v > mx || (v == mx && x < ans)){
+                ans = x;
+                mx = v;
+            }
+        }
+        return ans;
+    }
+
 }
