@@ -566,17 +566,17 @@ public class Solution {
 
     // 出现最频繁的偶数元素
     public int mostFrequentEven(int[] nums) {
-        Map<Integer,Integer> map = new HashMap<>();
-        for (int num : nums){
-            if (num % 2 ==0){
-                map.merge(num,1,Integer::sum);
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num : nums) {
+            if (num % 2 == 0) {
+                map.merge(num, 1, Integer::sum);
             }
         }
-        int ans = -1,mx = 0;
+        int ans = -1, mx = 0;
         Set<Map.Entry<Integer, Integer>> entries = map.entrySet();
-        for (Map.Entry<Integer,Integer> en : map.entrySet()){
-            int x = en.getKey(),v = en.getValue();
-            if (v > mx || (v == mx && x < ans)){
+        for (Map.Entry<Integer, Integer> en : map.entrySet()) {
+            int x = en.getKey(), v = en.getValue();
+            if (v > mx || (v == mx && x < ans)) {
                 ans = x;
                 mx = v;
             }
@@ -584,4 +584,30 @@ public class Solution {
         return ans;
     }
 
+
+    // 驼峰式匹配
+    public List<Boolean> camelMatch(String[] queries, String pattern) {
+        List<Boolean> ans = new ArrayList<>();
+        for (String str : queries) {
+            ans.add(check(str, pattern));
+        }
+        return ans;
+    }
+
+    private Boolean check(String str, String pattern) {
+        int m = str.length(), n = pattern.length();
+        int i = 0, j = 0;
+        for (; j < n; i++, j++) {
+            while (i < m && str.charAt(i) != pattern.charAt(j) && Character.isLowerCase(str.charAt(i))){
+                ++i;
+            }
+            if (i == m || str.charAt(i) != pattern.charAt(j)){
+                return false;
+            }
+        }
+        while (i < m && Character.isLowerCase(str.charAt(i))){
+            ++i;
+        }
+        return  i == m;
+    }
 }
