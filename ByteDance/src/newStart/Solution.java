@@ -598,17 +598,17 @@ public class Solution {
         int m = str.length(), n = pattern.length();
         int i = 0, j = 0;
         for (; j < n; i++, j++) {
-            while (i < m && str.charAt(i) != pattern.charAt(j) && Character.isLowerCase(str.charAt(i))){
+            while (i < m && str.charAt(i) != pattern.charAt(j) && Character.isLowerCase(str.charAt(i))) {
                 ++i;
             }
-            if (i == m || str.charAt(i) != pattern.charAt(j)){
+            if (i == m || str.charAt(i) != pattern.charAt(j)) {
                 return false;
             }
         }
-        while (i < m && Character.isLowerCase(str.charAt(i))){
+        while (i < m && Character.isLowerCase(str.charAt(i))) {
             ++i;
         }
-        return  i == m;
+        return i == m;
     }
 
     // 字符串解码
@@ -618,21 +618,21 @@ public class Solution {
         Deque<Integer> stackMulti = new ArrayDeque<>();
         Deque<String> stackStr = new ArrayDeque<>();
         for (Character c : s.toCharArray()) {
-            if (c == '['){
+            if (c == '[') {
                 stackMulti.addLast(multi);
                 stackStr.add(ans.toString());
                 multi = 0;
                 ans = new StringBuilder();
-            }else if (c == ']'){
-                StringBuilder tmp =  new StringBuilder();
-                int curMulto = stackMulti.removeLast();
-                for (int i = 0;i<curMulto;i++){
+            } else if (c == ']') {
+                StringBuilder tmp = new StringBuilder();
+                int curMulti = stackMulti.removeLast();
+                for (int i = 0; i < curMulti; i++) {
                     tmp.append(ans);
                 }
                 ans = new StringBuilder(stackStr.removeLast() + tmp);
-            }else if (c >= '0' && c <= '9'){
+            } else if (c >= '0' && c <= '9') {
                 multi = multi * 10 + Integer.parseInt(c + "");
-            }else {
+            } else {
                 ans.append(c);
             }
         }
@@ -652,11 +652,11 @@ public class Solution {
         boolean[] used = new boolean[5];
         for (int i = 0; i < n; i++) {
             Arrays.fill(used, false);
-            for (int y : g[i]){
+            for (int y : g[i]) {
                 used[ans[y]] = true;
             }
-            for (int c = 1;c < 5;c++){
-                if (!used[c]){
+            for (int c = 1; c < 5; c++) {
+                if (!used[c]) {
                     ans[i] = c;
                     break;
                 }
