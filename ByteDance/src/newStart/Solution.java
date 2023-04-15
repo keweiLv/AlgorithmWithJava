@@ -610,4 +610,58 @@ public class Solution {
         }
         return  i == m;
     }
+
+    // 字符串解码
+    public String decodeString(String s) {
+        StringBuilder ans = new StringBuilder();
+        int multi = 0;
+        Deque<Integer> stackMulti = new ArrayDeque<>();
+        Deque<String> stackStr = new ArrayDeque<>();
+        for (Character c : s.toCharArray()) {
+            if (c == '['){
+                stackMulti.addLast(multi);
+                stackStr.add(ans.toString());
+                multi = 0;
+                ans = new StringBuilder();
+            }else if (c == ']'){
+                StringBuilder tmp =  new StringBuilder();
+                int curMulto = stackMulti.removeLast();
+                for (int i = 0;i<curMulto;i++){
+                    tmp.append(ans);
+                }
+                ans = new StringBuilder(stackStr.removeLast() + tmp);
+            }else if (c >= '0' && c <= '9'){
+                multi = multi * 10 + Integer.parseInt(c + "");
+            }else {
+                ans.append(c);
+            }
+        }
+        return ans.toString();
+    }
+
+    // 不领接植花
+    public int[] gardenNoAdj(int n, int[][] paths) {
+        List<Integer>[] g = new List[n];
+        Arrays.setAll(g, x -> new ArrayList<>());
+        for (int[] path : paths) {
+            int x = path[0] - 1, y = path[1] - 1;
+            g[x].add(y);
+            g[y].add(x);
+        }
+        int[] ans = new int[n];
+        boolean[] used = new boolean[5];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(used, false);
+            for (int y : g[i]){
+                used[ans[y]] = true;
+            }
+            for (int c = 1;c < 5;c++){
+                if (!used[c]){
+                    ans[i] = c;
+                    break;
+                }
+            }
+        }
+        return ans;
+    }
 }
