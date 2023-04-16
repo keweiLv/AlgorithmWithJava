@@ -664,4 +664,64 @@ public class Solution {
         }
         return ans;
     }
+
+    // 最接近的二叉搜索树值
+    public int closestValue(TreeNode root, double target) {
+        int l = root.val;
+        int r = root.val;
+        while (root != null) {
+            if (target == root.val) {
+                return root.val;
+            } else if (target < root.val) {
+                r = root.val;
+                root = root.left;
+            } else {
+                l = root.val;
+                root = root.right;
+            }
+        }
+        return Math.abs(target - l) < Math.abs(target - r) ? l : r;
+    }
+
+    // 验证前序遍历序列二叉搜索树
+    public boolean verifyPreorder(int[] preorder) {
+        if (preorder == null || preorder.length == 0) {
+            return true;
+        }
+        int n = preorder.length;
+        int i = 1;
+        for (; i < n; i++) {
+            if (preorder[i] > preorder[0]) {
+                break;
+            }
+        }
+        for (int j = i; j < n; j++) {
+            if (preorder[j] < preorder[0]) {
+                return false;
+            }
+        }
+        return verifyPreorder(Arrays.copyOfRange(preorder, 1, i)) && verifyPreorder(Arrays.copyOfRange(preorder, i, n));
+    }
+
+    /**
+     * 摆动排序
+     * 实际可用归纳法证明，假设【0，1，...k]已满足摆动排序，k+1不满足，记k-1,k,k+1分别为a,b,c
+     * 1.若不满足降序，则 c > b,同时b >= a ,此时a<=b<c,交换b、c之后，变为a < c > b，满足条件
+     * 2.若不满足升序，则c < b,同事 b <= a，此时c<b<=a,交换b、c之后，变为a > c < b,满足条件
+     */
+    public void wiggleSort(int[] nums) {
+        boolean jud = true;
+        for (int i = 0; i < nums.length - 1; i++) {
+            if (jud) {
+                if (nums[i] > nums[i + 1]) {
+                    swap(nums, i, i + 1);
+                }
+            } else {
+                if (nums[i] < nums[i + 1]) {
+                    swap(nums, i, i + 1);
+                }
+            }
+            jud = !jud;
+        }
+    }
 }
