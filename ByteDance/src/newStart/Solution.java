@@ -724,4 +724,63 @@ public class Solution {
             jud = !jud;
         }
     }
+
+    // 统计共同度过的日子数
+    private int[] days = new int[]{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    public int countDaysTogether(String arriveAlice, String leaveAlice, String arriveBob, String leaveBob) {
+        String a = arriveAlice.compareTo(arriveBob) < 0 ? arriveBob : arriveAlice;
+        String b = leaveAlice.compareTo(leaveBob) < 0 ? leaveAlice : leaveBob;
+        int x = countDay(a), y = countDay(b);
+        return Math.max(0, y - x + 1);
+    }
+
+    private int countDay(String s) {
+        int m = Integer.parseInt(s.substring(0, 2)) - 1;
+        int sum = 0;
+        for (int i = 0; i < m; i++) {
+            sum += days[i];
+        }
+        sum += Integer.parseInt(s.substring(3));
+        return sum;
+    }
+
+    // 相隔为1的编辑距离
+    public boolean isOneEditDistance(String s, String t) {
+        int m = s.length(), n = t.length();
+        if (n - m == 1) {
+            return checkSame(s, t);
+        } else if (m - n == 1) {
+            return checkSame(t, s);
+        } else if (m == n) {
+            boolean flag = false;
+            for (int i = 0; i < m; i++) {
+                if (s.charAt(i) != t.charAt(i)) {
+                    if (!flag) {
+                        flag = true;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+            return flag;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean checkSame(String shorter, String longer) {
+        int l1 = shorter.length(), l2 = longer.length();
+        int idx1 = 0, idx2 = 0;
+        while (idx1 < l1 && idx2 < l2) {
+            if (shorter.charAt(idx1) == longer.charAt(idx2)) {
+                idx1++;
+            }
+            idx2++;
+            if (idx2 - idx1 > 1) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
