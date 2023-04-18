@@ -783,4 +783,47 @@ public class Solution {
         }
         return true;
     }
+
+    // 节点与其祖先之间的最大差值
+    private int ans;
+
+    public int maxAncestorDiff(TreeNode root) {
+        dfs(root, root.val, root.val);
+        return ans;
+    }
+
+    private void dfs(TreeNode root, int mn, int mx) {
+        if (root == null) {
+            ans = Math.max(ans, mx - mn);
+            return;
+        }
+        mn = Math.min(mn, root.val);
+        mx = Math.max(mx, root.val);
+        dfs(root.left, mn, mx);
+        dfs(root.right, mn, mx);
+    }
+
+    // 至多包含两个不同字符的最长子串
+    public int lengthOfLongestSubstringTwoDistinct(String s) {
+        int n = s.length();
+        if (n < 3) {
+            return n;
+        }
+        int left = 0;
+        int right = 0;
+        Map<Character, Integer> map = new HashMap<>();
+        int ans = 2;
+        while (right < n) {
+            if (map.size() < 3) {
+                map.put(s.charAt(right), right++);
+            }
+            if (map.size() == 3) {
+                Integer min = Collections.min(map.values());
+                map.remove(s.charAt(min));
+                left = min + 1;
+            }
+            ans = Math.max(ans, right - left);
+        }
+        return ans;
+    }
 }
