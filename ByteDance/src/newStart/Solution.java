@@ -826,4 +826,58 @@ public class Solution {
         }
         return ans;
     }
+
+    // 分隔数组以得到最大和
+    private int[] arr, meo;
+    private int k;
+
+    public int maxSumAfterPartitioning(int[] arr, int k) {
+        this.arr = arr;
+        this.k = k;
+        int n = arr.length;
+        meo = new int[n];
+        Arrays.fill(meo, -1);
+        return dfs(n - 1);
+    }
+
+    private int dfs(int i) {
+        if (i < 0) {
+            return 0;
+        }
+        if (meo[i] != -1) {
+            return meo[i];
+        }
+        int res = 0;
+        for (int j = i, mx = 0; j > i - k && j >= 0; j--) {
+            mx = Math.max(mx, arr[j]);
+            res = Math.max(res, dfs(j - 1) + (i - j + 1) * mx);
+        }
+        return meo[i] = res;
+    }
+
+    // 阿姆斯特朗数
+    public boolean isArmstrong(int n) {
+        int tmp = n, sum = 0;
+        int len = String.valueOf(n).length();
+        for (int i = 0; i < len; i++) {
+            sum += Math.pow(n % 10, len);
+            n /= 10;
+        }
+        return sum == tmp;
+    }
+
+    // 栅栏涂色
+    public int numWays(int n, int k) {
+        if (n == 1) {
+            return k;
+        }
+        int a = k;
+        int b = k * k;
+        for (int i = 2; i < n; i++) {
+            int tmp = b;
+            b = a * (k - 1) + b * (k - 1);
+            a = b;
+        }
+        return b;
+    }
 }
