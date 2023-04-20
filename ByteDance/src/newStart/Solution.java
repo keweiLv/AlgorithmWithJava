@@ -880,4 +880,80 @@ public class Solution {
         }
         return b;
     }
+
+    // 长度为K的无重复字符子串
+    public int numKLenSubstrNoRepeats(String s, int k) {
+        int n = s.length();
+        int ans = 0;
+        int left = 0;
+        Map<Character, Integer> rec = new HashMap<>();
+        for (int right = 0; right < n; right++) {
+            char c = s.charAt(right);
+            rec.put(c, rec.getOrDefault(c, 0) + 1);
+            if (rec.get(c) == 1 && (right - left + 1 == k)) {
+                ans++;
+                rec.put(s.charAt(left), rec.get(s.charAt(left)) - 1);
+                left++;
+                continue;
+            }
+            while (rec.get(c) > 1) {
+                rec.put(s.charAt(left), rec.get(s.charAt(left)) - 1);
+                left++;
+            }
+        }
+        return ans;
+    }
+
+    // 删除区间
+    public List<List<Integer>> removeInterval(int[][] intervals, int[] toBeRemoved) {
+        List<List<Integer>> ans = new ArrayList<>();
+        int down = toBeRemoved[0];
+        int up = toBeRemoved[1];
+        for (int[] inter : intervals) {
+            int left = inter[0];
+            int right = inter[1];
+            if (right <= down || left >= up) {
+                ans.add(Arrays.asList(left, right));
+                continue;
+            }
+            if (right <= up && left >= down) {
+                continue;
+            }
+            if (left < down) {
+                ans.add(Arrays.asList(left, down));
+            }
+            if (right > up) {
+                ans.add(Arrays.asList(up, right));
+            }
+        }
+        return ans;
+    }
+
+    // 中序遍历
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        dfs(root, res);
+        return res;
+    }
+
+    private void dfs(TreeNode root, List<Integer> res) {
+        if (root == null) {
+            return;
+        }
+        dfs(root.left, res);
+        res.add(root.val);
+        dfs(root.right, res);
+    }
+
+    // 不同的二叉搜索树
+    public int numTrees(int n) {
+        int[] dp = new int[n + 1];
+        dp[0] = 0;
+        for (int i = 1; i <= n; i++) {
+            for (int j = 0; j < i; j++) {
+                dp[i] += dp[j] * dp[i-j-1];
+            }
+        }
+        return dp[n];
+    }
 }
