@@ -951,7 +951,7 @@ public class Solution {
         dp[0] = 0;
         for (int i = 1; i <= n; i++) {
             for (int j = 0; j < i; j++) {
-                dp[i] += dp[j] * dp[i-j-1];
+                dp[i] += dp[j] * dp[i - j - 1];
             }
         }
         return dp[n];
@@ -963,23 +963,68 @@ public class Solution {
         ListNode cur = pre;
         int carry = 0;
         while (l1 != null || l2 != null) {
-            int x = l1 == null?0:l1.val;
-            int y = l2 == null?0:l2.val;
+            int x = l1 == null ? 0 : l1.val;
+            int y = l2 == null ? 0 : l2.val;
             int sum = x + y + carry;
             carry = sum / 10;
-            sum = sum%10;
+            sum = sum % 10;
             cur.next = new ListNode(sum);
             cur = cur.next;
-            if (l1 != null){
+            if (l1 != null) {
                 l1 = l1.next;
             }
-            if (l2 != null){
+            if (l2 != null) {
                 l2 = l2.next;
             }
         }
-        if (carry == 1){
+        if (carry == 1) {
             cur.next = new ListNode(carry);
         }
         return pre.next;
+    }
+
+    // 最小偶倍数
+    public int smallestEvenMultiple(int n) {
+        if (n % 2 == 0) {
+            return n;
+        } else {
+            return n * 2;
+        }
+    }
+
+    // 三元表达式解析器
+    public String parseTernary(String expression) {
+        int n = expression.length();
+        int level = 0;
+        for (int j = 1; j < n; j++) {
+            if (expression.charAt(j) == '?') {
+                level++;
+            }
+            if (expression.charAt(j) == ':') {
+                level--;
+            }
+            if (level == 0) {
+                return (expression.charAt(0) == 'T') ? parseTernary(expression.substring(2, j)) : parseTernary(expression.substring(j + 1, n));
+            }
+        }
+        return expression;
+    }
+
+    // 二叉树最长连续序列
+    int maxLength = 0;
+
+    public int longestConsecutive(TreeNode root) {
+        dfs(root, null, 0);
+        return maxLength;
+    }
+
+    private void dfs(TreeNode cur, TreeNode parent, int len) {
+        if (cur == null) {
+            return;
+        }
+        len = (parent != null && cur.val == parent.val + 1 ? len + 1 : 1);
+        maxLength = Math.max(maxLength, len);
+        dfs(cur.left, cur, len);
+        dfs(cur.right, cur, len);
     }
 }
