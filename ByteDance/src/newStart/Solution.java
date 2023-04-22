@@ -1027,4 +1027,19 @@ public class Solution {
         dfs(cur.left, cur, len);
         dfs(cur.right, cur, len);
     }
+
+    // 最长等差数列
+    public int longestArithSeqLength(int[] nums) {
+        int n = nums.length;
+        int ans = 0;
+        int[][] f = new int[n][1001];
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                int k = nums[i] - nums[j] + 500;
+                f[i][k] = Math.max(f[i][k], f[j][k] + 1);
+                ans = Math.max(ans, f[i][k]);
+            }
+        }
+        return ans + 1;
+    }
 }
