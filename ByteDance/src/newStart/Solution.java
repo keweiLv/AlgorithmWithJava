@@ -1042,4 +1042,84 @@ public class Solution {
         }
         return ans + 1;
     }
+
+    // 填充书架
+    private int[][] books;
+    private int shelfWidth;
+    private int[] bookMemo;
+
+    public int minHeightShelves(int[][] books, int shelfWidth) {
+        this.books = books;
+        this.shelfWidth = shelfWidth;
+        int n = books.length;
+        bookMemo = new int[n];
+        Arrays.fill(bookMemo, -1);
+        return bookDfs(n - 1);
+    }
+
+    private int bookDfs(int i) {
+        if (i < 0) {
+            return 0;
+        }
+        if (bookMemo[i] != -1) {
+            return bookMemo[i];
+        }
+        int res = Integer.MAX_VALUE, maxH = 0, floorH = shelfWidth;
+        for (int j = i; j >= 0; j--) {
+            floorH -= books[j][0];
+            if (floorH < 0) {
+                break;
+            }
+            maxH = Math.max(maxH, books[j][1]);
+            res = Math.min(res, bookDfs(j - 1) + maxH);
+        }
+        return bookMemo[i] = res;
+    }
+
+    // 寻找排列
+    public int[] findPermutation(String s) {
+        int[] res = new int[s.length() + 1];
+        for (int i = 0; i < res.length; i++) {
+            res[i] = i + 1;
+        }
+        int i = 1;
+        while (i <= s.length()) {
+            int j = i;
+            while (i <= s.length() && s.charAt(i - 1) == 'D') {
+                i++;
+            }
+            reverse(res, j - 1, i);
+            i++;
+        }
+        return res;
+    }
+
+    private void reverse(int[] res, int start, int end) {
+        for (int i = 0; i < (end - start) / 2; i++) {
+            int temp = res[i + start];
+            res[i + start] = res[end - i - 1];
+            res[end - i - 1] = temp;
+        }
+    }
+
+    // 给单链表加1
+    public ListNode plusOne(ListNode head) {
+        ListNode pre = new ListNode(0);
+        pre.next = head;
+        ListNode slow = pre;
+        while (head != null) {
+            if (head.val != 9) {
+                slow = head;
+            }
+            head = head.next;
+        }
+        slow.val++;
+        slow = slow.next;
+        if (slow != null) {
+            slow.val = 0;
+            slow = slow.next;
+        }
+        return pre.val != 0 ? pre : pre.next;
+    }
+
 }
