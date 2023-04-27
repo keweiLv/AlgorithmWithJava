@@ -1,7 +1,6 @@
 package newStart;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Solution2 {
 
@@ -51,4 +50,54 @@ public class Solution2 {
         return result;
     }
 
+    // 最长字符串链
+    Map<String, Integer> ws = new HashMap<>();
+    public int longestStrChain(String[] words) {
+        for (String str : words) {
+            ws.put(str, 0);
+        }
+        int ans = 0;
+        for (String key : ws.keySet()) {
+            ans = Math.max(ans, dfs(key));
+        }
+        return ans;
+    }
+    private int dfs(String s) {
+        Integer cnt = ws.get(s);
+        if (cnt > 0) {
+            return cnt;
+        }
+        for (int i = 0; i < s.length(); i++) {
+            String tmp = s.substring(0, i) + s.substring(i + 1);
+            if (ws.containsKey(tmp)) {
+                cnt = Math.max(cnt, dfs(tmp));
+            }
+        }
+        ws.put(s, cnt + 1);
+        return cnt + 1;
+    }
+
+    // 寻找二叉树的叶子节点
+    public List<List<Integer>> findLeaves(TreeNode root){
+        List<List<Integer>> ans = new ArrayList<>();
+        while (root != null){
+            List<Integer> list = new ArrayList<>();
+            root = recur(root,list);
+            ans.add(list);
+        }
+        return ans;
+    }
+
+    private TreeNode recur(TreeNode root, List<Integer> list) {
+        if (root == null){
+            return null;
+        }
+        if (root.left == null && root.right == null){
+            list.add(root.val);
+            return null;
+        }
+        root.left = recur(root.left,list);
+        root.right = recur(root.right,list);
+        return root;
+    }
 }
