@@ -52,6 +52,7 @@ public class Solution2 {
 
     // 最长字符串链
     Map<String, Integer> ws = new HashMap<>();
+
     public int longestStrChain(String[] words) {
         for (String str : words) {
             ws.put(str, 0);
@@ -62,6 +63,7 @@ public class Solution2 {
         }
         return ans;
     }
+
     private int dfs(String s) {
         Integer cnt = ws.get(s);
         if (cnt > 0) {
@@ -78,26 +80,41 @@ public class Solution2 {
     }
 
     // 寻找二叉树的叶子节点
-    public List<List<Integer>> findLeaves(TreeNode root){
+    public List<List<Integer>> findLeaves(TreeNode root) {
         List<List<Integer>> ans = new ArrayList<>();
-        while (root != null){
+        while (root != null) {
             List<Integer> list = new ArrayList<>();
-            root = recur(root,list);
+            root = recur(root, list);
             ans.add(list);
         }
         return ans;
     }
 
     private TreeNode recur(TreeNode root, List<Integer> list) {
-        if (root == null){
+        if (root == null) {
             return null;
         }
-        if (root.left == null && root.right == null){
+        if (root.left == null && root.right == null) {
             list.add(root.val);
             return null;
         }
-        root.left = recur(root.left,list);
-        root.right = recur(root.right,list);
+        root.left = recur(root.left, list);
+        root.right = recur(root.right, list);
         return root;
+    }
+
+    // 检查一个数是否在数组中占绝大多数
+    public boolean isMajorityElement(int[] nums, int target) {
+        int n = nums.length;
+        int left = 0, right = n - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return left + n / 2 < n && nums[left + n / 2] == target;
     }
 }
