@@ -117,4 +117,34 @@ public class Solution2 {
         }
         return left + n / 2 < n && nums[left + n / 2] == target;
     }
+
+    // 删除字符使频率相同
+    public boolean equalFrequency(String word) {
+        int[] set = new int[26];
+        for (int i = 0; i < word.length(); i++) {
+            set[word.charAt(i) - 'a']++;
+        }
+        for (int i = 0; i < 26; i++) {
+            if (set[i] > 0){
+                set[i]--;
+                int mark = 0;
+                boolean ok = true;
+                for (int num:set){
+                    if (num == 0){
+                        continue;
+                    }
+                    if (mark > 0 && num != mark){
+                        ok = false;
+                        break;
+                    }
+                    mark = num;
+                }
+                if (ok){
+                    return true;
+                }
+                set[i]++;
+            }
+        }
+        return false;
+    }
 }
