@@ -125,26 +125,38 @@ public class Solution2 {
             set[word.charAt(i) - 'a']++;
         }
         for (int i = 0; i < 26; i++) {
-            if (set[i] > 0){
+            if (set[i] > 0) {
                 set[i]--;
                 int mark = 0;
                 boolean ok = true;
-                for (int num:set){
-                    if (num == 0){
+                for (int num : set) {
+                    if (num == 0) {
                         continue;
                     }
-                    if (mark > 0 && num != mark){
+                    if (mark > 0 && num != mark) {
                         ok = false;
                         break;
                     }
                     mark = num;
                 }
-                if (ok){
+                if (ok) {
                     return true;
                 }
                 set[i]++;
             }
         }
         return false;
+    }
+
+    // 移动石子直到连续
+    public int[] numMovesStones(int a, int b, int c) {
+        int[] tmp = new int[]{a, b, c};
+        Arrays.sort(tmp);
+        a = tmp[0];
+        b = tmp[1];
+        c = tmp[2];
+        return new int[]{
+                c - a == 2 ? 0 : b - a <= 2 || c - b <= 2 ? 1 : 2, c - a - 2
+        };
     }
 }
