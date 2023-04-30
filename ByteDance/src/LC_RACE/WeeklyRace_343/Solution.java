@@ -1,5 +1,8 @@
 package LC_RACE.WeeklyRace_343;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 第 343 场周赛
  */
@@ -27,4 +30,25 @@ public class Solution {
         return pl1 > pl2 ? 1 : 2;
     }
 
+    // 找出叠涂元素
+    public int firstCompleteIndex(int[] arr, int[][] mat) {
+        int n = mat.length, m = mat[0].length;
+        Map<Integer, int[]> map = new HashMap<>();
+        int[] rows = new int[n];
+        int[] cols = new int[m];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                map.put(mat[i][j], new int[]{i, j});
+            }
+        }
+        for (int i = 0; i < arr.length; i++) {
+            int[] ints = map.get(arr[i]);
+            rows[ints[0]]++;
+            cols[ints[1]]++;
+            if (rows[ints[0]] == m || cols[ints[1]] == n){
+                return i;
+            }
+        }
+        return -1;
+    }
 }
