@@ -159,4 +159,24 @@ public class Solution2 {
                 c - a == 2 ? 0 : b - a <= 2 || c - b <= 2 ? 1 : 2, c - a - 2
         };
     }
+
+    // 通知所有员工所需的时间
+    public int numOfMinutes(int n, int headID, int[] manager, int[] informTime) {
+        List<Integer> g[] = new ArrayList[n];
+        Arrays.setAll(g, e -> new ArrayList<>());
+        for (int i = 0; i < n; i++) {
+            if (manager[i] >= 0){
+                g[manager[i]].add(i);
+            }
+        }
+        return dfs(g,informTime,headID);
+    }
+
+    private int dfs(List<Integer>[] g, int[] informTime, int id) {
+        int maxTime = 0;
+        for (int num : g[id]){
+            maxTime = Math.max(maxTime,dfs(g,informTime,num));
+        }
+        return maxTime + informTime[id];
+    }
 }
