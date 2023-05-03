@@ -196,4 +196,22 @@ public class Solution2 {
         }
         return new ArrayList<>(set);
     }
+
+    // 检查替换后的词是否有效
+    public static boolean isValid(String s) {
+        String tmp = s;
+        while (!tmp.isBlank()){
+            String replace = tmp.replace("abc", "");
+            if (replace.equals(tmp)){
+                return false;
+            }
+            tmp = replace;
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        String s = "abcabcababcc";
+        System.out.println(isValid(s));
+    }
 }
