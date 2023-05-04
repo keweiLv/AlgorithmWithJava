@@ -3,6 +3,7 @@ package newStart;
 import java.util.LinkedHashMap;
 
 public class LRUCache {
+
     int cap;
     LinkedHashMap<Integer, Integer> cache = new LinkedHashMap<>();
 
@@ -18,12 +19,6 @@ public class LRUCache {
         return cache.get(key);
     }
 
-    private void makeRecently(int key) {
-        int val = cache.get(key);
-        cache.remove(key);
-        cache.put(key, val);
-    }
-
     public void put(int key, int value) {
         if (cache.containsKey(key)) {
             cache.put(key, value);
@@ -35,5 +30,11 @@ public class LRUCache {
             cache.remove(next);
         }
         cache.put(key, value);
+    }
+
+    private void makeRecently(int key) {
+        int val = cache.get(key);
+        cache.remove(key);
+        cache.put(key, val);
     }
 }

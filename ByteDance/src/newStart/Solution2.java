@@ -165,17 +165,17 @@ public class Solution2 {
         List<Integer> g[] = new ArrayList[n];
         Arrays.setAll(g, e -> new ArrayList<>());
         for (int i = 0; i < n; i++) {
-            if (manager[i] >= 0){
+            if (manager[i] >= 0) {
                 g[manager[i]].add(i);
             }
         }
-        return dfs(g,informTime,headID);
+        return dfs(g, informTime, headID);
     }
 
     private int dfs(List<Integer>[] g, int[] informTime, int id) {
         int maxTime = 0;
-        for (int num : g[id]){
-            maxTime = Math.max(maxTime,dfs(g,informTime,num));
+        for (int num : g[id]) {
+            maxTime = Math.max(maxTime, dfs(g, informTime, num));
         }
         return maxTime + informTime[id];
     }
@@ -183,14 +183,14 @@ public class Solution2 {
     // 强整数
     public List<Integer> powerfulIntegers(int x, int y, int bound) {
         Set<Integer> set = new HashSet<>();
-        for (int a = 1;a <= bound;a *= x){
-            for (int b = 1;a + b <= bound;b *= y){
-                set.add(a+b);
-                if (y == 1){
+        for (int a = 1; a <= bound; a *= x) {
+            for (int b = 1; a + b <= bound; b *= y) {
+                set.add(a + b);
+                if (y == 1) {
                     break;
                 }
             }
-            if (x == 1){
+            if (x == 1) {
                 break;
             }
         }
@@ -200,9 +200,9 @@ public class Solution2 {
     // 检查替换后的词是否有效
     public static boolean isValid(String s) {
         String tmp = s;
-        while (!tmp.isBlank()){
+        while (!tmp.isBlank()) {
             String replace = tmp.replace("abc", "");
-            if (replace.equals(tmp)){
+            if (replace.equals(tmp)) {
                 return false;
             }
             tmp = replace;
@@ -210,8 +210,55 @@ public class Solution2 {
         return true;
     }
 
-    public static void main(String[] args) {
-        String s = "abcabcababcc";
-        System.out.println(isValid(s));
+    // 摘水果
+    public int maxTotalFruits(int[][] fruits, int startPos, int k) {
+        int left = lowerBound(fruits, startPos - k);
+        int right = left, s = 0, n = fruits.length;
+        for (; right < n && fruits[right][0] <= startPos; right++) {
+            s += fruits[right][1];
+        }
+        int ans = s;
+        for (; right < n && fruits[right][0] <= startPos + k; right++) {
+            s += fruits[right][1];
+            while (fruits[right][0] * 2 - fruits[left][0] - startPos > k && fruits[right][0] - fruits[left][0] * 2 + startPos > k) {
+                s -= fruits[left++][1];
+            }
+            ans = Math.max(ans, s);
+        }
+        return ans;
+    }
+
+    private int lowerBound(int[][] fruits, int target) {
+        int left = -1, right = fruits.length;
+        while (left + 1 < right) {
+            int mid = left + (right - left) / 2;
+            if (fruits[mid][0] < target) {
+                left = mid;
+            } else {
+                right = mid;
+            }
+        }
+        return right;
+    }
+
+    // 有序数组中的缺失元素
+    public int missingElement(int[] nums, int k) {
+        int lose = nums[nums.length - 1] - nums[0] + 1 - nums.length;
+        if (k > lose) {
+            return nums[nums.length - 1] + k - lose;
+        }
+        int l = 0;
+        int r = nums.length - 1;
+        while (l < r - 1) {
+            int mid = l + (r - l) >> 1;
+            int loseCnt = nums[mid] - nums[l] - (mid - l);
+            if (k > loseCnt){
+                l = mid;
+                k -= loseCnt;
+            }else {
+                r = mid;
+            }
+        }
+        return nums[l] + k;
     }
 }
