@@ -252,13 +252,30 @@ public class Solution2 {
         while (l < r - 1) {
             int mid = l + (r - l) >> 1;
             int loseCnt = nums[mid] - nums[l] - (mid - l);
-            if (k > loseCnt){
+            if (k > loseCnt) {
                 l = mid;
                 k -= loseCnt;
-            }else {
+            } else {
                 r = mid;
             }
         }
         return nums[l] + k;
     }
+
+    // 处理用时最长的那个任务的员工
+    public int hardestWorker(int n, int[][] logs) {
+        int ans = 0;
+        int last = 0, mx = 0;
+        for (int[] log : logs) {
+            int uid = log[0], time = log[1];
+            time -= last;
+            if (time > mx || (time == mx && uid < ans)) {
+                ans = uid;
+                mx = time;
+            }
+            last += time;
+        }
+        return ans;
+    }
+
 }
