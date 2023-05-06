@@ -280,16 +280,42 @@ public class Solution2 {
 
     // 找出变味映射
     public int[] anagramMappings(int[] nums1, int[] nums2) {
-        Map<Integer,Integer> D = new HashMap<>();
-        for (int i =0;i<nums2.length;i++){
-            D.put(nums2[i],i);
+        Map<Integer, Integer> D = new HashMap<>();
+        for (int i = 0; i < nums2.length; i++) {
+            D.put(nums2[i], i);
         }
         int[] ans = new int[nums1.length];
         int t = 0;
-        for (int x:nums1){
+        for (int x : nums1) {
             ans[t++] = D.get(x);
         }
         return ans;
     }
 
+    // 数青蛙
+    private static final char[] pre = new char['s'];
+
+    static {
+        char[] charArray = "croakc".toCharArray();
+        for (int i = 1; i < charArray.length; i++) {
+            pre[charArray[i]] = charArray[i - 1];
+        }
+    }
+
+    public int minNumberOfFrogs(String croakOfFrogs) {
+       int[] cnt = new int['s'];
+       for (char ch: croakOfFrogs.toCharArray()){
+           char c = pre[ch];
+           if (cnt[c] > 0) {
+               cnt[c]--;
+           }else if (ch != 'c'){
+               return -1;
+           }
+           cnt[ch]++;
+       }
+       if (cnt['c'] > 0 || cnt['r'] > 0 || cnt['o'] > 0 || cnt['a'] > 0){
+           return -1;
+       }
+       return cnt['k'];
+    }
 }
