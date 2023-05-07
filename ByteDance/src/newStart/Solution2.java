@@ -303,19 +303,60 @@ public class Solution2 {
     }
 
     public int minNumberOfFrogs(String croakOfFrogs) {
-       int[] cnt = new int['s'];
-       for (char ch: croakOfFrogs.toCharArray()){
-           char c = pre[ch];
-           if (cnt[c] > 0) {
-               cnt[c]--;
-           }else if (ch != 'c'){
-               return -1;
-           }
-           cnt[ch]++;
-       }
-       if (cnt['c'] > 0 || cnt['r'] > 0 || cnt['o'] > 0 || cnt['a'] > 0){
-           return -1;
-       }
-       return cnt['k'];
+        int[] cnt = new int['s'];
+        for (char ch : croakOfFrogs.toCharArray()) {
+            char c = pre[ch];
+            if (cnt[c] > 0) {
+                cnt[c]--;
+            } else if (ch != 'c') {
+                return -1;
+            }
+            cnt[ch]++;
+        }
+        if (cnt['c'] > 0 || cnt['r'] > 0 || cnt['o'] > 0 || cnt['a'] > 0) {
+            return -1;
+        }
+        return cnt['k'];
+    }
+
+    // 单线程CPU
+    public int[] getOrder(int[][] tasks) {
+        int n = tasks.length;
+        int[][] nt = new int[n][3];
+        for (int i = 0; i < n; i++) {
+            nt[i] = new int[]{tasks[i][0], tasks[i][1], i};
+        }
+        Arrays.sort(nt, (a, b) -> a[0] - b[0]);
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> {
+            if (a[1] != b[1]) {
+                return a[1] - b[1];
+            }
+            return a[2] - b[2];
+        });
+        int[] ans = new int[n];
+        for (int time = 1, j = 0, idx = 0; idx < n; ) {
+            while (j < n && nt[j][0] <= time) {
+                pq.add(nt[j++]);
+            }
+            if (pq.isEmpty()) {
+                time = nt[j][0];
+            } else {
+                int[] poll = pq.poll();
+                ans[idx++] = poll[2];
+                time += poll[1];
+            }
+        }
+        return ans;
+    }
+
+    // 总持续时间可被60整除的歌曲
+    public int numPairsDivisibleBy60(int[] time) {
+        int ans = 0;
+        int[] cnt = new int[60];
+        for (int t : time){
+            ans += cnt[(60 - t % 60) % 60];
+            cnt[t % 60]++;
+        }
+        return ans;
     }
 }
