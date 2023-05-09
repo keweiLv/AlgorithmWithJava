@@ -368,7 +368,7 @@ public class Solution2 {
             ds[i][0] = ws[i] * 1.0 / qs[i];
             ds[i][1] = i * 1.0;
         }
-        Arrays.sort(ds, (a, b) -> Double.compare(a[0],b[0]));
+        Arrays.sort(ds, (a, b) -> Double.compare(a[0], b[0]));
         PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> b - a);
         double ans = 1e18;
         for (int i = 0, tol = 0; i < n; i++) {
@@ -384,4 +384,20 @@ public class Solution2 {
         }
         return ans;
     }
+
+    // 有效时间的数目
+    public int countTime(String time) {
+        return func(time.substring(0, 2), 24) * func(time.substring(3, 5), 60);
+    }
+
+    private int func(String time, int m) {
+        int cnt = 0;
+        for (int i = 0; i < m; i++) {
+            boolean a = time.charAt(0) == '?' || time.charAt(0) - '0' == i / 10;
+            boolean b = time.charAt(1) == '?' || time.charAt(1) - '0' == i % 10;
+            cnt += a && b ? 1 : 0;
+        }
+        return cnt;
+    }
+
 }
