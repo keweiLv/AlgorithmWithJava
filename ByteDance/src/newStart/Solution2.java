@@ -400,4 +400,59 @@ public class Solution2 {
         return cnt;
     }
 
+    // 单词替换
+    class Node {
+        boolean isEnd;
+        Node[] tns = new Node[26];
+    }
+
+    Node root = new Node();
+
+    public String replaceWords(List<String> dictionary, String sentence) {
+        for (String str : dictionary) {
+            add(str);
+        }
+        StringBuilder sb = new StringBuilder();
+        for (String str : sentence.split(" ")) {
+            sb.append(query(str)).append(" ");
+        }
+        return sb.substring(0, sb.length() - 1);
+    }
+
+    private String query(String str) {
+        Node p = root;
+        for (int i = 0; i < str.length(); i++) {
+            int u = str.charAt(i) - 'a';
+            if (p.tns[u] == null) {
+                break;
+            }
+            if (p.tns[u].isEnd) {
+                return str.substring(0, i + 1);
+            }
+            p = p.tns[u];
+        }
+        return str;
+    }
+
+    private void add(String str) {
+        Node p = root;
+        for (int i = 0; i < str.length(); i++) {
+            int u = str.charAt(i) - 'a';
+            if (p.tns[u] == null) {
+                p.tns[u] = new Node();
+            }
+            p = p.tns[u];
+        }
+        p.isEnd = true;
+    }
+
+    // 可以被K整除的最小整数
+    public int smallestRepunitDivByK(int k) {
+        Set<Integer> set = new HashSet<>();
+        int x = 1 % k;
+        while (x > 0 && set.add(x)) {
+            x = (x * 10 + 1) % k;
+        }
+        return x > 0 ? -1 : set.size() + 1;
+    }
 }
