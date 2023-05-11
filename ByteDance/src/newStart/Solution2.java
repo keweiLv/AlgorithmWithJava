@@ -455,4 +455,15 @@ public class Solution2 {
         }
         return x > 0 ? -1 : set.size() + 1;
     }
+
+    // 子串能表示从1到N数字的二进制串
+    public boolean queryString(String s, int n) {
+        for (int i = 1; i <= n ; i++) {
+            String binaryString = Integer.toBinaryString(i);
+            if (!s.contains(binaryString)){
+                return false;
+            }
+        }
+        return true;
+    }
 }
