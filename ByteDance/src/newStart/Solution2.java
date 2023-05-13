@@ -458,12 +458,51 @@ public class Solution2 {
 
     // 子串能表示从1到N数字的二进制串
     public boolean queryString(String s, int n) {
-        for (int i = 1; i <= n ; i++) {
+        for (int i = 1; i <= n; i++) {
             String binaryString = Integer.toBinaryString(i);
-            if (!s.contains(binaryString)){
+            if (!s.contains(binaryString)) {
                 return false;
             }
         }
         return true;
+    }
+
+    // 与对应负数同时存在的最大正整数
+    public int findMaxK(int[] nums) {
+        int ans = -1;
+        Set<Integer> set = new HashSet<>();
+        for (int x : nums) {
+            set.add(x);
+        }
+        for (int nu : set) {
+            if (set.contains(-nu)) {
+                ans = Math.max(ans, nu);
+            }
+        }
+        return ans;
+    }
+
+    // 所有子集
+    private final List<List<Integer>> ans = new ArrayList<>();
+    private final List<Integer> path = new ArrayList<>();
+    private int[] nums;
+
+    public List<List<Integer>> subsets(int[] nums) {
+        this.nums = nums;
+        dfs(0);
+        return ans;
+    }
+
+    private void dfs(int i) {
+        if (i == nums.length) {
+            ans.add(new ArrayList<>(path));
+            return;
+        }
+        // 不选nums[i]
+        dfs(i + 1);
+        // 选nums[i]
+        path.add(nums[i]);
+        dfs(i + 1);
+        path.remove(path.size() - 1);
     }
 }
