@@ -505,4 +505,48 @@ public class Solution2 {
         dfs(i + 1);
         path.remove(path.size() - 1);
     }
+
+    // 距离相等的条形码
+    public int[] rearrangeBarcodes(int[] barcodes) {
+        int n = barcodes.length;
+        Integer[] tmp = new Integer[n];
+        int max = 0;
+        for (int i = 0; i < n; i++) {
+            tmp[i] = barcodes[i];
+            max = Math.max(max, barcodes[i]);
+        }
+        int[] cnt = new int[max + 1];
+        for (int x : barcodes) {
+            cnt[x]++;
+        }
+        Arrays.sort(tmp, (a, b) -> cnt[a] == cnt[b] ? a - b : cnt[b] - cnt[a]);
+        int[] ans = new int[n];
+        for (int k = 0, j = 0; k < 2; k++) {
+            for (int i = k; i < n; i += 2) {
+                ans[i] = tmp[j++];
+            }
+        }
+        return ans;
+    }
+
+    // 字符串轮转
+    public boolean isFlipedString(String s1, String s2) {
+        return s1.length() == s2.length() && (s1 + s1).contains(s2);
+    }
+
+    // 重复的DNA序列
+    public List<String> findRepeatedDnaSequences(String s) {
+        List<String> ans = new ArrayList<>();
+        int n = s.length();
+        Map<String, Integer> map = new HashMap<>();
+        for (int i = 0; i + 10 <= n; i++) {
+            String cur = s.substring(i, i + 10);
+            int cnt = map.getOrDefault(cur, 0);
+            if (cnt == 1) {
+                ans.add(cur);
+            }
+            map.put(cur, cnt + 1);
+        }
+        return ans;
+    }
 }
