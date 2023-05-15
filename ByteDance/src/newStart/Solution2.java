@@ -549,4 +549,19 @@ public class Solution2 {
         }
         return ans;
     }
+
+    // 按列翻转得到最大值等行数
+    public int maxEqualRowsAfterFlips(int[][] matrix) {
+        int ans = 0, n = matrix[0].length;
+        Map<String, Integer> cnt = new HashMap<>(16);
+        for (int[] row : matrix) {
+            int[] r = new int[n];
+            for (int i = 0; i < n; i++) {
+                r[i] = (char) (row[0] ^ row[i]);
+            }
+            Integer merge = cnt.merge(Arrays.toString(r), 1, Integer::sum);
+            ans = Math.max(ans, merge);
+        }
+        return ans;
+    }
 }

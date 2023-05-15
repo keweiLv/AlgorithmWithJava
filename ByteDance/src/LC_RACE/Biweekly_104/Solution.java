@@ -47,11 +47,25 @@ public class Solution {
         return ans;
     }
 
+    // 最大或值
+    public long maximumOr(int[] nums, int k) {
+        int n = nums.length;
+        int[] suf = new int[n + 1];
+        for (int i = n - 1; i > 0; i--) {
+            suf[i] = suf[i + 1] | nums[i];
+        }
+        long ans = 0;
+        for (int i = 0, pre = 0; i < n; i++) {
+            ans = Math.max(ans, pre | ((long) nums[i] << k) | suf[i + 1]);
+            pre |= nums[i];
+        }
+        return ans;
+    }
 
     /**
      * 英雄的力量
      * TODO 超时
-      */
+     */
     static List<Integer> path = new ArrayList<>();
     static int[] nums;
     static int ans = 0;
@@ -65,7 +79,7 @@ public class Solution {
     private static void dfs(int i) {
         if (i == nums.length) {
             List<Integer> t = new ArrayList<>(path);
-            if (t.size() > 0){
+            if (t.size() > 0) {
                 int[] tmp = new int[t.size()];
                 for (int j = 0; j < t.size(); j++) {
                     tmp[j] = t.get(j);
@@ -73,7 +87,7 @@ public class Solution {
                 int max = Arrays.stream(tmp).max().getAsInt();
                 int min = Arrays.stream(tmp).min().getAsInt();
                 int sum = max * max * min;
-                ans = (int) ((ans + sum) % (1e9+7));
+                ans = (int) ((ans + sum) % (1e9 + 7));
             }
             return;
         }
@@ -84,7 +98,7 @@ public class Solution {
     }
 
     public static void main(String[] args) {
-        int[] param = new int[]{658,489,777,2418,1893,130,2448,178,1128,2149,1059,1495,1166,608,2006,713,1906,2108,680,1348,860,1620,146,2447,1895,1083,1465,2351,1359,1187,906,533,1943,1814,1808,2065,1744,254,1988,1889,1206};
+        int[] param = new int[]{658, 489, 777, 2418, 1893, 130, 2448, 178, 1128, 2149, 1059, 1495, 1166, 608, 2006, 713, 1906, 2108, 680, 1348, 860, 1620, 146, 2447, 1895, 1083, 1465, 2351, 1359, 1187, 906, 533, 1943, 1814, 1808, 2065, 1744, 254, 1988, 1889, 1206};
 
         System.out.println(sumOfPower(param));
     }
