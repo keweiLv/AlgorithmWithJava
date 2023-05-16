@@ -564,4 +564,103 @@ public class Solution2 {
         }
         return ans;
     }
+
+    // 工作计划的最低难度
+    private int[] a;
+    private int[][] memo;
+
+    public int minDifficulty(int[] jobDifficulty, int d) {
+        int n = jobDifficulty.length;
+        if (n < d) {
+            return -1;
+        }
+        this.a = jobDifficulty;
+        memo = new int[d][n];
+        for (int i = 0; i < d; i++) {
+            Arrays.fill(memo[i], -1);
+        }
+        return jobDfs(d - 1, n - 1);
+    }
+
+    private int jobDfs(int d, int n) {
+        if (memo[d][n] != -1) {
+            return memo[d][n];
+        }
+        if (d == 0) {
+            int mx = 0;
+            for (int k = 0; k <= n; k++) {
+                mx = Math.max(mx, a[k]);
+            }
+            return memo[d][n] = mx;
+        }
+        int res = Integer.MAX_VALUE;
+        int mx = 0;
+        for (int k = n; k >= d; k--) {
+            mx = Math.max(mx, a[k]);
+            res = Math.min(res, jobDfs(d - 1, k - 1) + mx);
+        }
+        return memo[d][n] = res;
+    }
+
+    // 文件的最长绝对路径
+    static int[] hash = new int[10010];
+
+    public int lengthLongestPath(String input) {
+        Arrays.fill(hash, -1);
+        int n = input.length(), ans = 0;
+        for (int i = 0; i < n; ) {
+            int level = 0;
+            while (i < n && input.charAt(i) == '\t' && ++level >= 0) {
+                i++;
+            }
+            int j = i;
+            boolean isDir = true;
+            while (j < n && input.charAt(j) != '\n') {
+                if (input.charAt(j++) == '.') {
+                    isDir = false;
+                }
+            }
+            int cur = j - i;
+            int pre = level - 1 >= 0 ? hash[level - 1] : -1;
+            int path = pre + 1 + cur;
+            if (isDir) {
+                hash[level] = path;
+            } else if (path > ans) {
+                ans = path;
+            }
+            i = j + 1;
+        }
+        return ans;
+    }
+
+    /**
+     * 最大BST子树
+     * int[]数组，[0]是否是BST，[1]当前为跟的BST的最最小值，[2]最大值，[3]该BST节点树
+     */
+
+    int largestBST = 0;
+
+    public int largestBSTSubtree(TreeNode root) {
+        dfs(root);
+        return largestBST;
+    }
+
+    private int[] dfs(TreeNode root) {
+        if (root == null) {
+            return new int[]{1, Integer.MAX_VALUE, Integer.MIN_VALUE, 0};
+        }
+        int[] left = dfs(root.left);
+        int[] right = dfs(root.right);
+        int[] cur = new int[4];
+        if (left[0] == 1 && right[0] == 1 && left[2] < root.val && right[1] > root.val) {
+            cur[0] = 1;
+            cur[1] = Math.min(left[1], root.val);
+            cur[2] = Math.max(right[2], root.val);
+            cur[3] = left[3] + right[3] + 1;
+            largestBST = Math.max(largestBST,cur[3]);
+        } else {
+            cur[0] = 0;
+        }
+        return cur;
+    }
 }
