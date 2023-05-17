@@ -657,10 +657,42 @@ public class Solution2 {
             cur[1] = Math.min(left[1], root.val);
             cur[2] = Math.max(right[2], root.val);
             cur[3] = left[3] + right[3] + 1;
-            largestBST = Math.max(largestBST,cur[3]);
+            largestBST = Math.max(largestBST, cur[3]);
         } else {
             cur[0] = 0;
         }
         return cur;
+    }
+
+
+    //判断两个事件是否存在冲突
+    public boolean haveConflict(String[] event1, String[] event2) {
+        return !(event1[0].compareTo(event2[1]) > 0 || event1[1].compareTo(event2[0]) < -0);
+    }
+
+    // 二叉树的垂直遍历
+    public List<List<Integer>> verticalOrder(TreeNode root) {
+        if (root == null) {
+            return new ArrayList<>();
+        }
+        Map<Integer, List<Integer>> res = new TreeMap<>();
+        Map<TreeNode, Integer> nodeMap = new HashMap<>();
+        nodeMap.put(root, 0);
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            TreeNode poll = queue.poll();
+            int i = nodeMap.get(poll);
+            res.computeIfAbsent(i, k -> new ArrayList<>()).add(poll.val);
+            if (poll.left != null) {
+                queue.add(poll.left);
+                nodeMap.put(poll.left, i - 1);
+            }
+            if (poll.right != null) {
+                queue.add(poll.right);
+                nodeMap.put(poll.right, i + 1);
+            }
+        }
+        return new ArrayList<>(res.values());
     }
 }
