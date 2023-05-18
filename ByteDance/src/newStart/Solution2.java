@@ -695,4 +695,58 @@ public class Solution2 {
         }
         return new ArrayList<>(res.values());
     }
+
+    // 反转每对括号间的子串
+    public String reverseParentheses(String s) {
+        Deque<String> stack = new LinkedList<>();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            if (ch == '(') {
+                stack.push(sb.toString());
+                sb.setLength(0);
+            } else if (ch == ')') {
+                sb.reverse();
+                sb.insert(0, stack.pop());
+            } else {
+                sb.append(ch);
+            }
+        }
+        return sb.toString();
+    }
+
+    // 查找两颗二叉搜索树之和
+    public boolean twoSumBSTs(TreeNode root1, TreeNode root2, int target) {
+        if (root1 == null || root2 == null) {
+            return false;
+        }
+        List<TreeNode> listA = new ArrayList<>();
+        List<TreeNode> listB = new ArrayList<>();
+        inorder(root1, listA);
+        inorder(root2, listB);
+        int lenA = listA.size();
+        int lenB = listB.size();
+        int pa = 0, pb = lenB - 1;
+        while (pa < lenA && pb >= 0) {
+            int valA = listA.get(pa).val;
+            int valB = listB.get(pb).val;
+            if (valA + valB == target) {
+                return true;
+            } else if (valA + valB > target) {
+                pb--;
+            } else {
+                pa++;
+            }
+        }
+        return false;
+    }
+
+    private void inorder(TreeNode root, List<TreeNode> list) {
+        if (root == null) {
+            return;
+        }
+        inorder(root.left, list);
+        list.add(root);
+        inorder(root.right, list);
+    }
 }
