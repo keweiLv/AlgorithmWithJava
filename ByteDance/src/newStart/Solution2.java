@@ -749,4 +749,95 @@ public class Solution2 {
         list.add(root);
         inorder(root.right, list);
     }
+
+    // 活字印刷
+    public int numTilePossibilities(String tiles) {
+        int[] cnt = new int[26];
+        for (char c : tiles.toCharArray()) {
+            ++cnt[c - 'A'];
+        }
+        return dfs(cnt);
+    }
+
+    private int dfs(int[] cnt) {
+        int res = 0;
+        for (int i = 0; i < cnt.length; i++) {
+            if (cnt[i] > 0) {
+                ++res;
+                --cnt[i];
+                res += dfs(cnt);
+                ++cnt[i];
+            }
+        }
+        return res;
+    }
+
+    // 打家劫舍
+    public int rob(int[] nums) {
+        int pre = 0;
+        int cur = 0;
+        for (int num : nums) {
+            int temp = Math.max(pre + num, cur);
+            pre = cur;
+            cur = temp;
+        }
+        return cur;
+    }
+
+    // 二叉树中最长的连续序列
+    int maxLen = 0;
+
+    public int longestConsecutive(TreeNode root) {
+        longestPath(root);
+        return maxLen;
+    }
+
+    private int[] longestPath(TreeNode root) {
+        if (root == null) {
+            return new int[]{0, 0};
+        }
+        int inr = 1, dcr = 1;
+        if (root.left != null) {
+            int[] l = longestPath(root.left);
+            if (root.val == root.left.val - 1) {
+                inr = l[0] + 1;
+            } else if (root.val == root.left.val + 1) {
+                dcr = l[1] + 1;
+            }
+        }
+        if (root.right != null) {
+            int[] r = longestPath(root.right);
+            if (root.val == root.right.val + 1) {
+                dcr = Math.max(dcr, r[1] + 1);
+            } else if (root.val == root.right.val - 1) {
+                inr = Math.max(inr, r[0] + 1);
+            }
+        }
+        maxLen = Math.max(maxLen, dcr + inr - 1);
+        return new int[]{inr, dcr};
+    }
+
+    // 至多包含k个不同字符的最长子串
+    public int lengthOfLongestSubstringKDistinct(String s, int k) {
+        int n = s.length();
+        if (n * k == 0) {
+            return 0;
+        }
+        if (k > n) {
+            return k;
+        }
+        int left = 0, right = 0;
+        Map<Character, Integer> map = new HashMap<>();
+        int ans = 1;
+        while (right < n) {
+            map.put(s.charAt(right), right++);
+            if (map.size() > k) {
+                Integer min = Collections.min(map.values());
+                map.remove(s.charAt(min));
+                left = min + 1;
+            }
+            ans = Math.max(ans, right - left);
+        }
+        return ans;
+    }
 }
