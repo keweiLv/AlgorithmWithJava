@@ -840,4 +840,76 @@ public class Solution2 {
         }
         return ans;
     }
+
+    // 二叉搜索子树的最大键值和
+    int maxSum = 0;
+
+    public int maxSumBST(TreeNode root) {
+        maxSumDfs(root);
+        return maxSum;
+    }
+
+    private int[] maxSumDfs(TreeNode root) {
+        if (root == null) {
+            return new int[]{Integer.MAX_VALUE, Integer.MIN_VALUE, 0};
+        }
+        int[] left = maxSumDfs(root.left);
+        int[] right = maxSumDfs(root.right);
+        int cur = root.val;
+        if (cur <= left[1] || cur >= right[0]) {
+            return new int[]{Integer.MIN_VALUE, Integer.MAX_VALUE, 0};
+        }
+        int s = left[2] + right[2] + cur;
+        maxSum = Math.max(maxSum, s);
+        return new int[]{Math.min(left[0], cur), Math.max(right[1], cur), s};
+    }
+
+    // 滑动窗口最大值
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        int n = nums.length;
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> {
+            return a[0] != b[0] ? b[0] - a[0] : b[1] - a[1];
+        });
+        for (int i = 0; i < k; i++) {
+            pq.add(new int[]{nums[i], i});
+        }
+        int[] ans = new int[n - k + 1];
+        ans[0] = pq.peek()[0];
+        for (int i = k; i < n; i++) {
+            pq.add(new int[]{nums[i], i});
+            while (pq.peek()[1] <= i - k) {
+                pq.poll();
+            }
+            ans[i - k + 1] = pq.peek()[0];
+        }
+        return ans;
+    }
+
+    // 柱状图中最大的矩形
+    public int largestRectangleArea(int[] hs) {
+        int n = hs.length;
+        int[] l = new int[n], r = new int[n];
+        Arrays.fill(l, -1);
+        Arrays.fill(r, n);
+        Deque<Integer> deque = new ArrayDeque<>();
+        for (int i = 0; i < n; i++) {
+            while (!deque.isEmpty() && hs[deque.peekLast()] > hs[i]) {
+                r[deque.pollLast()] = i;
+            }
+            deque.addLast(i);
+        }
+        deque.clear();
+        for (int i = n - 1; i >= 0; i--) {
+            while (!deque.isEmpty() && hs[deque.peekLast()] > hs[i]) {
+                l[deque.pollLast()] = i;
+            }
+            deque.addLast(i);
+        }
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            int h = hs[i], a = l[i], b = r[i];
+            ans = Math.max(ans, h * (a - b - 1));
+        }
+        return ans;
+    }
 }
