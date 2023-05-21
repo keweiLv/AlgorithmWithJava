@@ -912,4 +912,72 @@ public class Solution2 {
         }
         return ans;
     }
+
+    // 蓄水
+    public int storeWater(int[] bucket, int[] vat) {
+        int max = Arrays.stream(vat).max().getAsInt();
+        if (max == 0) {
+            return 0;
+        }
+        int ans = Integer.MAX_VALUE;
+        int n = bucket.length;
+        for (int i = 1; i <= max; i++) {
+            int y = 0;
+            for (int j = 0; j < n; j++) {
+                y += Math.max(0, (vat[j] + i - 1) / i - bucket[j]);
+            }
+            ans = Math.min(ans, i + y);
+        }
+        return ans;
+    }
+
+    // 子数组范围和
+    public long subArrayRanges(int[] nums) {
+        int n = nums.length;
+        long ans = 0;
+        for (int i = 0; i < n; i++) {
+            int min = nums[i], max = nums[i];
+            for (int j = i + 1; j < n; j++) {
+                min = Math.min(min, nums[j]);
+                max = Math.max(max, nums[j]);
+                ans += max - min;
+            }
+        }
+        return ans;
+    }
+
+    // 区间子数组个数
+    public int numSubarrayBoundedMax(int[] nums, int left, int right) {
+        int n = nums.length, ans = 0;
+        for (int i = 0, j = -1, k = -1; i < n; i++) {
+            if (nums[i] > right) {
+                k = i;
+            } else {
+                if (nums[i] < left) {
+                    if (j > k) {
+                        ans += j - k;
+                    }
+                } else {
+                    ans += i - k;
+                    j = i;
+                }
+            }
+        }
+        return ans;
+    }
+
+    // 最大连续1的个数二
+    public int findMaxConsecutiveOnes(int[] nums) {
+        int res = 0, cnt = 0;
+        for (int l = 0, r = 0; r < nums.length; r++) {
+            if (nums[r] == 0) {
+                cnt++;
+                while (cnt > 1) {
+                    cnt -= nums[l++] == 0 ? 1 : 0;
+                }
+            }
+            res = Math.max(res, r - l + 1);
+        }
+        return res;
+    }
 }
