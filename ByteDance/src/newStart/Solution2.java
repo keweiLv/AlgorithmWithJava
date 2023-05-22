@@ -980,4 +980,45 @@ public class Solution2 {
         }
         return res;
     }
+
+    // 根到叶路径上的不足节点
+    public TreeNode sufficientSubset(TreeNode root, int limit) {
+        limit -= root.val;
+        if (root.right == null && root.left == null) {
+            return limit > 0 ? null : root;
+        }
+        if (root.left != null) {
+            root.left = sufficientSubset(root.left, limit);
+        }
+        if (root.right != null) {
+            root.right = sufficientSubset(root.right, limit);
+        }
+        return root.left == null && root.right == null ? null : root;
+    }
+
+    // 每日温度
+    public int[] dailyTemperatures(int[] temperatures) {
+        int n = temperatures.length;
+        int[] ans = new int[n];
+        Deque<Integer> deque = new ArrayDeque<>();
+        for (int i = 0; i < n; i++) {
+            while (deque.peekLast() != null && temperatures[deque.peekLast()] < temperatures[i]) {
+                int idx = deque.pollLast();
+                ans[idx] = i - idx;
+            }
+            deque.offerLast(i);
+        }
+        return ans;
+    }
+
+    // 回文排列
+    public boolean canPermutePalindrome(String s) {
+        Set<Character> set = new HashSet<>();
+        for (int i = 0; i < s.length(); i++) {
+            if (!set.add(s.charAt(i))) {
+                set.remove(s.charAt(i));
+            }
+        }
+        return set.size() <= 1;
+    }
 }
