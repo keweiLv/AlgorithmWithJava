@@ -400,52 +400,6 @@ public class Solution2 {
         return cnt;
     }
 
-    // 单词替换
-    class Node {
-        boolean isEnd;
-        Node[] tns = new Node[26];
-    }
-
-    Node root = new Node();
-
-    public String replaceWords(List<String> dictionary, String sentence) {
-        for (String str : dictionary) {
-            add(str);
-        }
-        StringBuilder sb = new StringBuilder();
-        for (String str : sentence.split(" ")) {
-            sb.append(query(str)).append(" ");
-        }
-        return sb.substring(0, sb.length() - 1);
-    }
-
-    private String query(String str) {
-        Node p = root;
-        for (int i = 0; i < str.length(); i++) {
-            int u = str.charAt(i) - 'a';
-            if (p.tns[u] == null) {
-                break;
-            }
-            if (p.tns[u].isEnd) {
-                return str.substring(0, i + 1);
-            }
-            p = p.tns[u];
-        }
-        return str;
-    }
-
-    private void add(String str) {
-        Node p = root;
-        for (int i = 0; i < str.length(); i++) {
-            int u = str.charAt(i) - 'a';
-            if (p.tns[u] == null) {
-                p.tns[u] = new Node();
-            }
-            p = p.tns[u];
-        }
-        p.isEnd = true;
-    }
-
     // 可以被K整除的最小整数
     public int smallestRepunitDivByK(int k) {
         Set<Integer> set = new HashSet<>();
@@ -1043,4 +997,89 @@ public class Solution2 {
         }
         return ans;
     }
+
+    // 单词替换-字段树
+    class Node {
+        boolean isend;
+        Node[] tns = new Node[26];
+    }
+
+    Node root = new Node();
+
+    void add(String s) {
+        Node p = root;
+        for (int i = 0; i < s.length(); i++) {
+            int u = s.charAt(i) - 'a';
+            if (p.tns[u] == null) {
+                p.tns[u] = new Node();
+            }
+            p = p.tns[u];
+        }
+        p.isend = true;
+    }
+
+    String query(String s) {
+        Node p = root;
+        for (int i = 0; i < s.length(); i++) {
+            int u = s.charAt(i) - 'a';
+            if (p.tns[u] == null) {
+                break;
+            }
+            if (p.tns[u].isend) {
+                return s.substring(0, i + 1);
+            }
+            p = p.tns[u];
+        }
+        return s;
+    }
+
+    public String replaceWords(List<String> dictionary, String sentence) {
+        for (String str : dictionary) {
+            add(str);
+        }
+        StringBuilder sb = new StringBuilder();
+        for (String str : sentence.split(" ")) {
+            sb.append(query(str)).append(" ");
+        }
+        return sb.substring(0, sb.length() - 1);
+    }
+
+    // 单行键盘
+    public int calculateTime(String keyboard, String word) {
+        int ans = 0, start = 0;
+        int[] rec = new int[26];
+        for (int i = 0; i < keyboard.length(); i++) {
+            rec[keyboard.charAt(i) - 'a'] = i;
+        }
+        for (char c : word.toCharArray()) {
+            ans += Math.abs((rec[c - 'a']) - start);
+            start = rec[c - 'a'];
+        }
+        return ans;
+    }
+
+    // 缺失的区间
+    public List<List<Integer>> findMissingRanges(int[] nums, int lower, int upper) {
+        List<List<Integer>> res = new ArrayList<>();
+        long pre = lower - 1;
+        for (int i = 0; i < nums.length; i++) {
+            List<Integer> tmp = new ArrayList<>();
+            if (nums[i] - pre >= 2) {
+                tmp.add((int) (pre + 1));
+                tmp.add(nums[i] - 1);
+            }
+            pre = nums[i];
+            if (tmp.size() > 0) {
+                res.add(tmp);
+            }
+        }
+        if (upper - pre >= 1) {
+            List<Integer> tmp = new ArrayList<>();
+            tmp.add((int) (pre + 1));
+            tmp.add(upper);
+            res.add(tmp);
+        }
+        return res;
+    }
+
 }

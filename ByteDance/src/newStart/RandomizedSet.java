@@ -9,9 +9,9 @@ import java.util.Random;
  */
 public class RandomizedSet {
 
-    static int[] nums = new int[200010];
-    Random random = new Random();
+    int[] nums = new int[200010];
     Map<Integer, Integer> map = new HashMap<>();
+    Random random = new Random();
     int idx = -1;
 
     public RandomizedSet() {
@@ -31,11 +31,11 @@ public class RandomizedSet {
         if (!map.containsKey(val)) {
             return false;
         }
-        int loc = map.remove(val);
-        if (loc != idx) {
-            map.put(nums[idx], loc);
+        Integer remove = map.remove(val);
+        if (remove != idx) {
+            map.put(nums[idx], remove);
         }
-        nums[loc] = nums[idx--];
+        nums[remove] = nums[idx--];
         return true;
     }
 
