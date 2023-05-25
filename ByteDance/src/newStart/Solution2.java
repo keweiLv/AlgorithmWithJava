@@ -1082,4 +1082,45 @@ public class Solution2 {
         return res;
     }
 
+    // 差值数组不同的字符串
+    public String oddString(String[] words) {
+        Map<String, List<String>> map = new HashMap<>();
+        for (String str : words) {
+            int n = str.length();
+            char[] cs = new char[n - 1];
+            for (int i = 0; i < n - 1; i++) {
+                cs[i] = (char) (str.charAt(i + 1) - str.charAt(i));
+            }
+            String s = String.valueOf(cs);
+            map.computeIfAbsent(s, k -> new ArrayList<>()).add(str);
+        }
+        for (List<String> it : map.values()) {
+            if (it.size() == 1) {
+                return it.get(0);
+            }
+        }
+        return "";
+    }
+
+    // 删掉链表M个节点之后的N个节点
+    public ListNode deleteNodes(ListNode head, int m, int n) {
+        ListNode cur = head;
+        while (cur != null){
+            int num = 1;
+            while (num < m && cur != null){
+                cur = cur.next;
+                num++;
+            }
+            if (cur == null){
+                return head;
+            }
+            num = 0;
+            while (num < n && cur.next != null) {
+                cur.next = cur.next.next;
+                num++;
+            }
+            cur = cur.next;
+        }
+        return head;
+    }
 }
