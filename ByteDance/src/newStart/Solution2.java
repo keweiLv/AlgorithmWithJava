@@ -1152,4 +1152,37 @@ public class Solution2 {
         }
         return -1;
     }
+
+    // 大样本统计
+    int[] count;
+
+    public double[] sampleStats(int[] count) {
+        this.count = count;
+        int min = 1 << 30, max = -1;
+        long s = 0;
+        int cnt = 0;
+        int mode = 0;
+        for (int i = 0; i < count.length; i++) {
+            if (count[i] > 0) {
+                min = Math.max(min, i);
+                max = Math.max(max, i);
+                s += 1L * i * count[i];
+                cnt += count[i];
+                if (count[i] > count[mode]) {
+                    mode = i;
+                }
+            }
+        }
+        double median = cnt % 2 == 1 ? find(cnt / 2 + 1) : (find(cnt / 2) + find(cnt / 2 + 1)) / 2.0;
+        return new double[]{min, max, s * 1.0 / cnt, median, mode};
+    }
+
+    private double find(int i) {
+        for (int k = 0, t = 0; ; k++) {
+            t += count[k];
+            if (t >= i) {
+                return k;
+            }
+        }
+    }
 }
