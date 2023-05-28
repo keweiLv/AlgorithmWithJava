@@ -1185,4 +1185,24 @@ public class Solution2 {
             }
         }
     }
+
+    // 有序矩阵中的第k个最小数组和
+    public int kthSmallest(int[][] mat, int k) {
+        int[] a = new int[]{0};
+        for (int[] row : mat) {
+            int[] b = new int[a.length * row.length];
+            int i = 0;
+            for (int x : a) {
+                for (int y : row) {
+                    b[i++] = x + y;
+                }
+            }
+            Arrays.sort(b);
+            if (b.length > k) {
+                b = Arrays.copyOfRange(b, 0, k);
+            }
+            a = b;
+        }
+        return a[k - 1];
+    }
 }

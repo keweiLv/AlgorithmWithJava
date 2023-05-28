@@ -16,7 +16,18 @@ public class Solution {
 
     // 字符串中的额外字符
     public int minExtraChar(String s, String[] dictionary) {
-        return 0;
+        Set<String> set = new HashSet<>(Arrays.asList(dictionary));
+        int n = s.length();
+        int[] f = new int[n + 1];
+        for (int i = 0; i < n; i++) {
+            f[i + 1] = f[i] + 1;
+            for (int j = 0; j < i + 1; j++) {
+               if (set.contains(s.substring(j,i+1))){
+                   f[i+1] = Math.min(f[i+1],f[j]);
+               }
+            }
+        }
+        return f[n];
     }
 
     // 一个小组的最大实力值
@@ -42,7 +53,7 @@ public class Solution {
                 continue;
             }
             if ((res == 0 && i != mark) || cnt % 2 == 0) {
-                if (!flag){
+                if (!flag) {
                     res = 1;
                     flag = true;
                 }
