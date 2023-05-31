@@ -100,4 +100,21 @@ public class SolutionThird {
         }
         return dp[n];
     }
+
+    // 叶值的最小代价生成树
+    public int mctFromLeafValues(int[] arr) {
+        Deque<Integer> stack = new ArrayDeque<>();
+        stack.offerLast(Integer.MAX_VALUE);
+        int ans = 0;
+        for (int i = 0;i<arr.length;i++){
+            while (arr[i] > stack.peekLast()){
+                ans += stack.pollLast() * Math.min(stack.peekLast(),arr[i]);
+            }
+            stack.offerLast(arr[i]);
+        }
+        while (stack.size() > 2){
+            ans += stack.pollLast() * stack.peekLast();
+        }
+        return ans;
+    }
 }
