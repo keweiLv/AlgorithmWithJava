@@ -106,15 +106,63 @@ public class SolutionThird {
         Deque<Integer> stack = new ArrayDeque<>();
         stack.offerLast(Integer.MAX_VALUE);
         int ans = 0;
-        for (int i = 0;i<arr.length;i++){
-            while (arr[i] > stack.peekLast()){
-                ans += stack.pollLast() * Math.min(stack.peekLast(),arr[i]);
+        for (int i = 0; i < arr.length; i++) {
+            while (arr[i] > stack.peekLast()) {
+                ans += stack.pollLast() * Math.min(stack.peekLast(), arr[i]);
             }
             stack.offerLast(arr[i]);
         }
-        while (stack.size() > 2){
+        while (stack.size() > 2) {
             ans += stack.pollLast() * stack.peekLast();
         }
         return ans;
+    }
+
+    // 礼盒的最大甜蜜度
+    public int maximumTastiness(int[] price, int k) {
+        Arrays.sort(price);
+        int left = 0, right = (price[price.length - 1] - price[0]) / (k - 1) + 1;
+        while (left + 1 < right) {
+            int mid = left + (right - left) / 2;
+            if (check(price, mid) >= k) {
+                left = mid;
+            } else {
+                right = mid;
+            }
+        }
+        return left;
+    }
+
+    private int check(int[] price, int d) {
+        int cnt = 1, pre = price[0];
+        for (int p : price) {
+            if (p >= pre + d) {
+                cnt++;
+                pre = p;
+            }
+        }
+        return cnt;
+    }
+
+    // 爱吃香蕉的珂珂
+    public int minEatingSpeed(int[] piles, int h) {
+        int l = 0, r = (int) 1e9;
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+            if (check(piles, mid, h)) {
+                r = mid;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return l;
+    }
+
+    private boolean check(int[] piles, int mid, int h) {
+        int ans = 0;
+        for (int p : piles){
+            ans += Math.ceil(p * 1.0 / mid);
+        }
+        return ans <= h;
     }
 }
