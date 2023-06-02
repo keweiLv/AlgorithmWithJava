@@ -160,9 +160,62 @@ public class SolutionThird {
 
     private boolean check(int[] piles, int mid, int h) {
         int ans = 0;
-        for (int p : piles){
+        for (int p : piles) {
             ans += Math.ceil(p * 1.0 / mid);
         }
         return ans <= h;
+    }
+
+    // 统计范围内的元音字符串数
+    public int[] vowelStrings(String[] words, int[][] queries) {
+        Set<Character> set = Set.of('a', 'e', 'i', 'o', 'u');
+        int n = words.length;
+        int[] s = new int[n + 1];
+        for (int i = 0; i < n; i++) {
+            char a = words[i].charAt(0), b = words[i].charAt(words[i].length() - 1);
+            s[i + 1] = s[i] + (set.contains(a) && set.contains(b) ? 1 : 0);
+        }
+        int m = queries.length;
+        int[] ans = new int[m];
+        for (int i = 0; i < m; i++) {
+            int l = queries[i][0], r = queries[i][1];
+            ans[i] = s[r + 1] - s[l];
+        }
+        return ans;
+    }
+
+    // 删除并获得点数
+    int[] cnts = new int[10010];
+
+    public int deleteAndEarn(int[] nums) {
+        int n = nums.length;
+        int max = 0;
+        for (int nu : nums) {
+            cnts[nu]++;
+            max = Math.max(max, nu);
+        }
+        int[][] f = new int[max + 1][2];
+        for (int i = 1; i <= max; i++) {
+            f[i][0] = Math.max(f[i - 1][0], f[i - 1][1]);
+            f[i][1] = f[i - 1][0] + i * cnts[i];
+        }
+        return Math.max(f[max][0], f[max][1]);
+    }
+
+    // 最长湍流子数组
+    public int maxTurbulenceSize(int[] arr) {
+        int n = arr.length, ans = 1;
+        int[][] f = new int[n][2];
+        f[0][0] = f[0][1] = 1;
+        for (int i = 1; i < n; i++) {
+            f[i][0] = f[i][1] = 1;
+            if (arr[i] > arr[i - 1]) {
+                f[i][0] = f[i - 1][1] + 1;
+            } else if (arr[i] < arr[i - 1]) {
+                f[i][1] = f[i - 1][0] + 1;
+            }
+            ans = Math.max(ans, Math.max(f[i][0], f[i][1]));
+        }
+        return ans;
     }
 }
