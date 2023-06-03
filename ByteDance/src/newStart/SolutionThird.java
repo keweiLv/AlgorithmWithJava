@@ -218,4 +218,47 @@ public class SolutionThird {
         }
         return ans;
     }
+
+    // 单字符重复子串的最大长度
+    public int maxRepOpt1(String text) {
+        int[] cnt = new int[26];
+        int n = text.length();
+        for (int i = 0; i < n; i++) {
+            cnt[text.charAt(i) - 'a']++;
+        }
+        int ans = 0, i = 0;
+        while (i < n) {
+            int j = i;
+            while (j < n && text.charAt(j) == text.charAt(i)) {
+                j++;
+            }
+            int l = j - i;
+            int k = j + 1;
+            while (k < n && text.charAt(k) == text.charAt(i)) {
+                k++;
+            }
+            int r = k - j - 1;
+            ans = Math.max(ans, Math.min(l + r + 1, cnt[text.charAt(i) - 'a']));
+        }
+        return ans;
+    }
+
+    // 最长公共子序列
+    public int longestCommonSubsequence(String text1, String text2) {
+        int n = text1.length(), m = text2.length();
+        text1 = " " + text1;
+        text2 = " " + text2;
+        char[] cs1 = text1.toCharArray(), cs2 = text2.toCharArray();
+        int[][] f = new int[n + 1][m + 1];
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                if (cs1[i] == cs2[j]) {
+                    f[i][j] = f[i - 1][j - 1] + 1;
+                } else {
+                    f[i][j] = Math.max(f[i - 1][j], f[i][j - 1]);
+                }
+            }
+        }
+        return f[n][m];
+    }
 }
