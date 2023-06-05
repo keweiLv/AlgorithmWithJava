@@ -267,8 +267,8 @@ public class SolutionThird {
         Arrays.sort(nums);
         Set<Integer> set = new HashSet<>();
         int n = nums.length;
-        for (int i = 0;i< n >> 1;i++){
-            set.add(nums[i] + nums[n-i-1]);
+        for (int i = 0; i < n >> 1; i++) {
+            set.add(nums[i] + nums[n - i - 1]);
         }
         return set.size();
     }
@@ -277,23 +277,42 @@ public class SolutionThird {
     public int minDistance(String word1, String word2) {
         char[] cs1 = word1.toCharArray();
         char[] cs2 = word2.toCharArray();
-        int n = word1.length(),m = word2.length();
-        int[][] f = new int[n+1][m+1];
-        for (int i = 0;i<=n;i++){
+        int n = word1.length(), m = word2.length();
+        int[][] f = new int[n + 1][m + 1];
+        for (int i = 0; i <= n; i++) {
             f[i][0] = 1;
         }
-        for (int j = 0;j<=m;j++){
+        for (int j = 0; j <= m; j++) {
             f[0][j] = 1;
         }
-        for (int i = 1;i <= n;i++){
-            for (int j = 1;j<= m;j++){
-                f[i][j] = Math.max(f[i-1][j],f[i][j-1]);
-                if (cs1[i-1] == cs2[j-1]){
-                    f[i][j] = Math.max(f[i][j],f[i-1][j-1] + 1);
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                f[i][j] = Math.max(f[i - 1][j], f[i][j - 1]);
+                if (cs1[i - 1] == cs2[j - 1]) {
+                    f[i][j] = Math.max(f[i][j], f[i - 1][j - 1] + 1);
                 }
             }
         }
         int max = f[n][m] - 1;
         return n - max + m - max;
+    }
+
+    // 对数组执行操作
+    public int[] applyOperations(int[] nums) {
+        int n = nums.length;
+        for (int i = 0; i < n - 1; i++) {
+            if (nums[i] == nums[i + 1]) {
+                nums[i] <<= 1;
+                nums[i + 1] = 0;
+            }
+        }
+        int[] ans = new int[n];
+        int i = 0;
+        for (int x : nums) {
+            if (x > 0) {
+                ans[i++] = x;
+            }
+        }
+        return ans;
     }
 }
