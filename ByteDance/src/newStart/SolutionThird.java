@@ -315,4 +315,90 @@ public class SolutionThird {
         }
         return ans;
     }
+
+    // 相等行列对
+    public int equalPairs(int[][] grid) {
+        int n = grid.length;
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                int ok = 1;
+                for (int k = 0; k < n; k++) {
+                    if (grid[i][k] != grid[k][j]) {
+                        ok = 0;
+                        break;
+                    }
+                }
+                ans += ok;
+            }
+        }
+        return ans;
+    }
+
+    // 翻转链表
+    public ListNode reverseList(ListNode head) {
+        ListNode pre = null, cur = head;
+        while (cur != null) {
+            ListNode tmp = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = tmp;
+        }
+        return pre;
+    }
+
+    // 链表中倒数第K个节点
+    public ListNode getKthFromEnd(ListNode head, int k) {
+        ListNode fast = head, slow = head;
+        for (int i = 0; i < k; i++) {
+            fast = fast.next;
+        }
+        while (fast != null) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+
+    // 复杂链表的复制
+    class Node {
+        int val;
+        Node next;
+        Node random;
+
+        public Node(int val) {
+            this.val = val;
+            this.next = null;
+            this.random = null;
+        }
+    }
+
+    public Node copyRandomList(Node head) {
+        if (head == null) {
+            return head;
+        }
+        Node cur = head;
+        Map<Node, Node> map = new HashMap<>();
+        while (cur != null) {
+            map.put(cur, new Node(cur.val));
+            cur = cur.next;
+        }
+        cur = head;
+        while (cur != null) {
+            map.get(cur).next = map.get(cur.next);
+            map.get(cur).random = map.get(cur.random);
+            cur = cur.next;
+        }
+        return map.get(head);
+    }
+
+    // 两个链表的第一个公共节点
+    ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        ListNode A = headA, B = headB;
+        while (A != B) {
+            A = A != null ? A.next : headA;
+            B = B != null ? B.next : headA;
+        }
+        return A;
+    }
 }
