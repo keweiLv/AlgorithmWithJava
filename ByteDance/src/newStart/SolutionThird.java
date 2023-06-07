@@ -401,4 +401,59 @@ public class SolutionThird {
         }
         return A;
     }
+
+    // 从上到下打印二叉数二
+    public List<List<Integer>> levelOrderTwo(TreeNode root) {
+        if (root == null) {
+            return new ArrayList<>();
+        }
+        List<List<Integer>> res = new ArrayList<>();
+        Deque<TreeNode> stack = new LinkedList<>();
+        stack.offerLast(root);
+        while (!stack.isEmpty()) {
+            List<Integer> list = new ArrayList<>();
+            int n = stack.size();
+            for (int i = 0; i < n; i++) {
+                TreeNode node = stack.pollFirst();
+                list.add(node.val);
+                if (node.left != null) {
+                    stack.offerLast(node.left);
+                }
+                if (node.right != null) {
+                    stack.offerLast(node.right);
+                }
+            }
+            res.add(list);
+        }
+        return res;
+    }
+
+    // 从上到下打印二叉数三
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        if (root == null) {
+            return new ArrayList<>();
+        }
+        List<List<Integer>> res = new ArrayList<>();
+        Deque<TreeNode> stack = new LinkedList<>();
+        stack.add(root);
+        int n = stack.size();
+        while (!stack.isEmpty()) {
+            List<Integer> list = new ArrayList<>();
+            for (int i = 0; i < n; i++) {
+                TreeNode node = stack.poll();
+                list.add(node.val);
+                if (node.left != null) {
+                    stack.add(node.left);
+                }
+                if (node.right != null) {
+                    stack.add(node.right);
+                }
+            }
+            if (res.size() % 2 == 1) {
+                Collections.reverse(list);
+            }
+            res.add(list);
+        }
+        return res;
+    }
 }
