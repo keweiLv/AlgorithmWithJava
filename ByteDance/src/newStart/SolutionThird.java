@@ -456,4 +456,22 @@ public class SolutionThird {
         }
         return res;
     }
+
+    // 有界数组中指定下标处的最大值
+    public int maxValue(int n, int index, int maxSum) {
+        int left = 1, right = maxSum;
+        while (left < right) {
+            int mid = (left + right + 1) / 2;
+            if (sum(mid - 1, index) + sum(mid, n - index) <= maxSum) {
+                left = mid;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return left;
+    }
+
+    private long sum(long x, int cnt) {
+        return x >= cnt ? (x + x - cnt + 1) * cnt / 2 : (x + 1) * x / 2 + cnt - x;
+    }
 }
