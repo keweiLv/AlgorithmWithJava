@@ -474,4 +474,59 @@ public class SolutionThird {
     private long sum(long x, int cnt) {
         return x >= cnt ? (x + x - cnt + 1) * cnt / 2 : (x + 1) * x / 2 + cnt - x;
     }
+
+    // 路径总和
+    int pathAns, t;
+
+    public int pathSum(TreeNode root, int targetSum) {
+        t = targetSum;
+        dfs1(root);
+        return pathAns;
+    }
+
+    private void dfs1(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        dfs2(root, root.val);
+        dfs1(root.left);
+        dfs1(root.right);
+    }
+
+    private void dfs2(TreeNode root, long val) {
+        if (val == t) {
+            pathAns++;
+        }
+        if (root.left != null) {
+            dfs2(root.left, val + root.left.val);
+        }
+        if (root.right != null) {
+            dfs2(root.right, val + root.right.val);
+        }
+    }
+
+    // 目标和
+    public int findTargetSumWays(int[] nums, int target) {
+        int sum = 0;
+        for (int num : nums) {
+            sum += num;
+        }
+        int diff = sum - target;
+        if (diff < 0 || diff % 2 == 1) {
+            return 0;
+        }
+        int n = nums.length, neg = diff / 2;
+        int[][] dp = new int[n + 1][neg + 1];
+        dp[0][0] = 1;
+        for (int i = 1; i <= n; i++) {
+            int num = nums[i - 1];
+            for (int j = 0; j <= neg; j++) {
+                dp[i][j] = dp[i - 1][j];
+                if (j >= num) {
+                    dp[i][j] += dp[i - 1][j - num];
+                }
+            }
+        }
+        return dp[n][neg];
+    }
 }
