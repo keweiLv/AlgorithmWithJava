@@ -580,4 +580,53 @@ public class SolutionThird {
         }
         return pq.peek();
     }
+
+    // 从链表中删去总和值为零的连续节点
+    public ListNode removeZeroSumSublists(ListNode head) {
+        ListNode dummy = new ListNode(0, head);
+        Map<Integer, ListNode> last = new HashMap<>();
+        int s = 0;
+        ListNode cur = dummy;
+        while (cur != null) {
+            s += cur.val;
+            last.put(s, cur);
+            cur = cur.next;
+        }
+        s = 0;
+        cur = dummy;
+        while (cur != null) {
+            s += cur.val;
+            cur.next = last.get(s).next;
+            cur = cur.next;
+        }
+        return dummy.next;
+    }
+
+    // 找到字符串中所有字母异位词
+    public List<Integer> findAnagrams(String s, String p) {
+        List<Integer> ans = new ArrayList<>();
+        int n = s.length(), m = p.length();
+        int[] cnt = new int[26];
+        for (int i = 0; i < m; i++) {
+            cnt[p.charAt(i) - 'a']++;
+        }
+        int a = 0;
+        for (int i = 0; i < 26; i++) {
+            if (cnt[i] > 0) {
+                a++;
+            }
+        }
+        for (int l = 0, r = 0, b = 0; r < n; r++) {
+            if (--cnt[s.charAt(r) - 'a'] == 0) {
+                b++;
+            }
+            if (r - l + 1 > m && ++cnt[s.charAt(l++) - 'a'] == 1) {
+                b--;
+            }
+            if (a == b) {
+                ans.add(l);
+            }
+        }
+        return ans;
+    }
 }
