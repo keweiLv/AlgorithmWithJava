@@ -629,4 +629,39 @@ public class SolutionThird {
         }
         return ans;
     }
+
+    // 二维数组中的查找
+    public boolean findNumberIn2DArray(int[][] matrix, int target) {
+        int i = matrix.length - 1,j = 0;
+        while (i >= 0 && j < matrix[0].length) {
+            if (matrix[i][j] > target) {
+                i--;
+            }else if (matrix[i][j] < target){
+                j++;
+            }else {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // 袋子里最少数目的球
+    public int minimumSize(int[] nums, int maxOperations) {
+        int left = 1, right = Arrays.stream(nums).max().getAsInt();
+        int ans = 0;
+        while (left <= right){
+            int mid = left + (right - left) / 2;
+            long ops = 0;
+            for(int x : nums){
+                ops += (x - 1) / mid;
+            }
+            if (ops <= maxOperations) {
+                ans = mid;
+                right = mid - 1;
+            }else {
+                left = mid + 1;
+            }
+        }
+        return ans;
+    }
 }
