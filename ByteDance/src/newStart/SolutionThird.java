@@ -632,13 +632,13 @@ public class SolutionThird {
 
     // 二维数组中的查找
     public boolean findNumberIn2DArray(int[][] matrix, int target) {
-        int i = matrix.length - 1,j = 0;
+        int i = matrix.length - 1, j = 0;
         while (i >= 0 && j < matrix[0].length) {
             if (matrix[i][j] > target) {
                 i--;
-            }else if (matrix[i][j] < target){
+            } else if (matrix[i][j] < target) {
                 j++;
-            }else {
+            } else {
                 return true;
             }
         }
@@ -649,19 +649,55 @@ public class SolutionThird {
     public int minimumSize(int[] nums, int maxOperations) {
         int left = 1, right = Arrays.stream(nums).max().getAsInt();
         int ans = 0;
-        while (left <= right){
+        while (left <= right) {
             int mid = left + (right - left) / 2;
             long ops = 0;
-            for(int x : nums){
+            for (int x : nums) {
                 ops += (x - 1) / mid;
             }
             if (ops <= maxOperations) {
                 ans = mid;
                 right = mid - 1;
-            }else {
+            } else {
                 left = mid + 1;
             }
         }
         return ans;
+    }
+
+
+    // 二进制字符串前缀一致的次数
+    public int numTimesAllBlue(int[] flips) {
+        int ans = 0, mx = 0, n = flips.length;
+        for (int i = 0; i < n; i++) {
+            mx = Math.max(mx, flips[i]);
+            if (mx == i + 1) {
+                ans++;
+            }
+        }
+        return ans;
+    }
+
+    // 最多可以参加的会议数目二
+    public int maxValue(int[][] events, int k) {
+        int n = events.length;
+        Arrays.sort(events, (a, b) -> a[1] - b[1]);
+        int[][] f = new int[n + 1][k + 1];
+        for (int i = 1; i <= n; i++) {
+            int[] item = events[i - 1];
+            int s = item[0], e = item[1], v = item[2];
+            int last = 0;
+            for (int p = i - 1; p >= 1; p--) {
+                int[] pre = events[p - 1];
+                if (pre[1] < s) {
+                    last = p;
+                    break;
+                }
+            }
+            for (int j = 1; j <= k; j++) {
+                f[i][j] = Math.max(f[i - 1][j], f[last][j - 1] + v);
+            }
+        }
+        return f[n][k];
     }
 }
