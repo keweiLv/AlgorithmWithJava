@@ -700,4 +700,57 @@ public class SolutionThird {
         }
         return f[n][k];
     }
+
+    // 构建回文串检测
+    public List<Boolean> canMakePaliQueries(String s, int[][] queries) {
+        int n = s.length();
+        int[][] sum = new int[n + 1][26];
+        for (int i = 0; i < n; i++) {
+            sum[i + 1] = sum[i].clone();
+            sum[i + 1][s.charAt(i) - 'a']++;
+        }
+        List<Boolean> ans = new ArrayList<>(queries.length);
+        for (int[] q : queries) {
+            int left = q[0], right = q[1], k = q[2], m = 0;
+            for (int i = 0; i < 26; i++) {
+                m += (sum[right + 1][i] - sum[left][i]) % 2;
+            }
+            ans.add(m / 2 <= k);
+        }
+        return ans;
+    }
+
+    // 字符串的排列
+    List<String> res = new ArrayList<>();
+    char[] c;
+
+    public String[] permutation(String s) {
+        c = s.toCharArray();
+        dfs(0);
+        return res.toArray(new String[res.size()]);
+    }
+
+    private void dfs(int idx) {
+        if (idx == c.length - 1) {
+            res.add(String.valueOf(c));
+        }
+        HashSet<Character> set = new HashSet<>();
+        for (int i = idx; i < c.length; i++) {
+            if (set.contains(c[i])) {
+                continue;
+            }
+            set.add(c[i]);
+            swap(i, idx);
+            dfs(idx + 1);
+            swap(i, idx);
+        }
+    }
+
+    private void swap(int i, int idx) {
+        char tmp = c[i];
+        c[i] = c[idx];
+        c[idx] = tmp;
+    }
+
+
 }
