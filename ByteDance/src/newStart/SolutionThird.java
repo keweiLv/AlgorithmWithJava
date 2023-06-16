@@ -751,6 +751,4 @@ public class SolutionThird {
         c[i] = c[idx];
         c[idx] = tmp;
     }
-
-
 }
