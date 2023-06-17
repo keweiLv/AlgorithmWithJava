@@ -1,7 +1,9 @@
 package newStart;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class SolutionFourth {
 
@@ -26,5 +28,32 @@ public class SolutionFourth {
         recur(node.left, target);
         recur(node.right, target);
         path.removeLast();
+    }
+
+    // 分割圆的最少切割次数
+    public int numberOfCuts(int n) {
+        return n > 1 && n % 2 == 1 ? n : n >> 1;
+    }
+
+    // 二叉树最大宽度
+    Map<Integer, Integer> map = new HashMap<>();
+    int ans;
+
+    public int widthOfBinaryTree(TreeNode root) {
+        dfs(root, 1, 0);
+        return ans;
+    }
+
+    private void dfs(TreeNode root, int val, int depth) {
+        if (root == null) {
+            return;
+        }
+        if (!map.containsKey(depth)) {
+            map.put(depth, val);
+        }
+        ans = Math.max(ans, val - map.get(depth) + 1);
+        val = val - map.get(depth) + 1;
+        dfs(root.left, val << 1, depth + 1);
+        dfs(root.right, val << 1 | 1, depth + 1);
     }
 }
