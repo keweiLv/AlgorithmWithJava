@@ -56,4 +56,36 @@ public class SolutionFourth {
         dfs(root.left, val << 1, depth + 1);
         dfs(root.right, val << 1 | 1, depth + 1);
     }
+
+    // 统计封闭岛屿的数目
+    private int n, m;
+    private int[][] grid;
+
+    public int closedIsland(int[][] grid) {
+        n = grid.length;
+        m = grid[0].length;
+        this.grid = grid;
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == 0) {
+                    ans += dfs(i, j);
+                }
+            }
+        }
+        return ans;
+    }
+
+    private int dfs(int i, int j) {
+        int res = i > 0 && i < n - 1 && j > 0 && j < m - 1 ? 1 : 0;
+        grid[i][j] = 1;
+        int[][] dirt = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+        for (int[] ints : dirt) {
+            int x = i + ints[0], y = j + ints[1];
+            if (x >= 0 && x < n && y >= 0 && y < m && grid[x][y] == 0) {
+                res &= dfs(x, y);
+            }
+        }
+        return res;
+    }
 }
