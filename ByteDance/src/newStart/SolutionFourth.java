@@ -1,9 +1,6 @@
 package newStart;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SolutionFourth {
 
@@ -87,5 +84,79 @@ public class SolutionFourth {
             }
         }
         return res;
+    }
+
+    /**
+     * 可被三整除的最大和
+     * f[0],f[1],f[2]分别代表前 n-1 项取余为 0，为 1，为 2 的情况
+     */
+    public int maxSumDivThree(int[] nums) {
+        final int inf = 1 << 30;
+        int[] f = new int[]{0, -inf, -inf};
+        for (int num : nums) {
+            int[] g = f.clone();
+            for (int j = 0; j < 3; j++) {
+                g[j] = Math.max(f[j], f[(j - num % 3 + 3) % 3] + num);
+            }
+            f = g;
+        }
+        return f[0];
+    }
+
+    // 有效的括号字符串
+    public boolean checkValidString(String s) {
+        Deque<Integer> leftStack = new LinkedList<>();
+        Deque<Integer> startStack = new LinkedList<>();
+        int n = s.length();
+        for (int i = 0; i < n; i++) {
+            char c = s.charAt(i);
+            if (c == '(') {
+                leftStack.push(i);
+            } else if (c == '*') {
+                startStack.push(i);
+            } else {
+                if (!leftStack.isEmpty()) {
+                    leftStack.pop();
+                } else if (!startStack.isEmpty()) {
+                    startStack.pop();
+                } else {
+                    return false;
+                }
+            }
+        }
+        while (!leftStack.isEmpty() && !startStack.isEmpty()) {
+            int leftIndex = leftStack.pop();
+            int startIndex = startStack.pop();
+            if (leftIndex > startIndex) {
+                return false;
+            }
+        }
+        return leftStack.isEmpty();
+    }
+
+    // 骑士在棋盘上的概率
+    int[][] dirs = new int[][]{{-1, -2}, {-1, 2}, {1, -2}, {1, 2}, {-2, 1}, {-2, -1}, {2, 1}, {2, -1}};
+
+    public double knightProbability(int n, int k, int row, int column) {
+        double[][][] f = new double[n][n][k + 1];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                f[i][j][0] = 1;
+            }
+        }
+        for (int p = 1; p <= k; p++) {
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    for (int[] d : dirs) {
+                        int nx = i + d[0], ny = j + d[1];
+                        if (nx < 0 || nx >= n || ny < 0 || ny >= n) {
+                            continue;
+                        }
+                        f[i][j][p] += f[nx][ny][p - 1] / 8;
+                    }
+                }
+            }
+        }
+        return f[row][column][k];
     }
 }
