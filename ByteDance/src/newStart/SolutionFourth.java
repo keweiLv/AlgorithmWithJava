@@ -159,4 +159,35 @@ public class SolutionFourth {
         }
         return f[row][column][k];
     }
+
+    // 消除游戏
+    public int lastRemaining(int n) {
+        int head = 1;
+        int step = 1;
+        boolean left = true;
+        while (n > 1) {
+            if (left || n % 2 == 1) {
+                head += step;
+            }
+            step *= 2;
+            left = !left;
+            n /= 2;
+        }
+        return head;
+    }
+
+    // 平衡二叉树
+    public boolean isBalanced(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        return Math.abs(depth(root.left) - depth(root.right)) <= 1 && isBalanced(root.left) && isBalanced(root.right);
+    }
+
+    private int depth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        return Math.max(depth(root.left), depth(root.right)) + 1;
+    }
 }
