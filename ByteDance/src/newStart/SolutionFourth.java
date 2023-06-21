@@ -190,4 +190,13 @@ public class SolutionFourth {
         }
         return Math.max(depth(root.left), depth(root.right)) + 1;
     }
+
+    // 找出游戏的获胜者
+    public int findTheWinner(int n, int k) {
+        int pos = 0;
+        for (int i = 2; i < n + 1; i++) {
+            pos = (pos + k) % i;
+        }
+        return pos + 1;
+    }
 }
