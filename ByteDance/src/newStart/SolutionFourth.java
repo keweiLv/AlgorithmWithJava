@@ -199,4 +199,32 @@ public class SolutionFourth {
         }
         return pos + 1;
     }
+
+    //水域大小
+    public int[] pondSizes(int[][] land) {
+        int n = land.length, m = land[0].length;
+        var ans = new ArrayList<Integer>();
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (land[i][j] == 0) {
+                    ans.add(landDfs(land, i, j));
+                }
+            }
+        }
+        return ans.stream().sorted().mapToInt(i -> i).toArray();
+    }
+
+    private Integer landDfs(int[][] land, int x, int y) {
+        if (x < 0 || x >= land.length || y < 0 || y >= land[0].length || land[x][y] != 0) {
+            return 0;
+        }
+        land[x][y] = 1;
+        int cnt = 1;
+        for (int i = x - 1; i <= x + 1; i++) {
+            for (int j = y - 1; j <= y + 1; j++) {
+                cnt += landDfs(land, i, j);
+            }
+        }
+        return cnt;
+    }
 }
