@@ -227,4 +227,42 @@ public class SolutionFourth {
         }
         return cnt;
     }
+
+    // 数组中字符串的最大值
+    public int maximumValue(String[] strs) {
+        int ans = 0;
+        for (String str : strs) {
+            boolean flag = true;
+            for (int i = 0; i < str.length(); i++) {
+                if (Character.isDigit(str.charAt(i))) {
+                    continue;
+                } else {
+                    flag = false;
+                }
+            }
+            ans = Math.max(ans, flag ? Integer.parseInt(str) : str.length());
+        }
+        return ans;
+    }
+
+    // 排序数组中只出现一次的数字
+    public int singleNonDuplicate(int[] nums) {
+        int ans = 0;
+        for (int num : nums) {
+            ans ^= num;
+        }
+        return ans;
+    }
+
+    // 两两交换链表中的节点
+    public ListNode swapPairs(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode next = head.next;
+        head.next = swapPairs(next.next);
+        next.next = head;
+        return next;
+    }
+
 }
