@@ -265,4 +265,38 @@ public class SolutionFourth {
         return next;
     }
 
+    // 优势洗牌
+    public int[] advantageCount(int[] nums1, int[] nums2) {
+        Arrays.sort(nums1);
+        int n = nums2.length;
+        Integer[] idx = new Integer[n];
+        int[] ans = new int[n];
+        for (int i = 0; i < n; i++) {
+            idx[i] = i;
+        }
+        Arrays.sort(idx, (a, b) -> nums2[a] - nums2[b]);
+        int left = 0, right = n - 1;
+        for (int num : nums1) {
+            int i = num > nums2[idx[left]] ? idx[left++] : idx[right--];
+            ans[i] = num;
+        }
+        return ans;
+    }
+
+    // 二分查找
+    // 循环不变量：nums[left-1] < target,nums[right+1] >= target
+    public int search(int[] nums, int target) {
+        int left = 0, right = nums.length - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        System.out.println("l:" + left);
+        return left < nums.length && nums[left] == target ? left : -1;
+    }
+
 }
