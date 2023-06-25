@@ -34,11 +34,12 @@ public class Solution {
 
     // 构造最长的子字符串
     public int longestString(int x, int y, int z) {
-        return 0;
+        return (Math.min(x, y) * 2 + (x != y ? 1 : 0) + z) * 2;
     }
 
     // 字符串连接删减字母
     public int minimizeConcatenatedLength(String[] words) {
         return 0;
     }
+
 }

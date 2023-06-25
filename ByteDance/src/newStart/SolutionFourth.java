@@ -299,4 +299,63 @@ public class SolutionFourth {
         return left < nums.length && nums[left] == target ? left : -1;
     }
 
+    // 从尾到头打印链表
+    public int[] reversePrint(ListNode head) {
+        LinkedList<Integer> stack = new LinkedList<>();
+        while (head != null) {
+            stack.addLast(head.val);
+            head = head.next;
+        }
+        int n = stack.size();
+        int[] ans = new int[n];
+        for (int i = 0; i < n; i++) {
+            ans[i] = stack.pollLast();
+        }
+        return ans;
+    }
+
+    // 二叉树的中序遍历
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> res = new LinkedList<>();
+        dfs(res, root);
+        return res;
+    }
+
+    private void dfs(List<Integer> res, TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        dfs(res, root.left);
+        res.add(root.val);
+        dfs(res, root.right);
+    }
+
+    // 全排列
+    private int[] nums;
+    private List<Integer> paths = new ArrayList<>();
+    private boolean[] vis;
+    private List<List<Integer>> list = new ArrayList<>();
+
+    public List<List<Integer>> permute(int[] nums) {
+        this.nums = nums;
+        vis = new boolean[nums.length];
+        dfs(0);
+        return list;
+    }
+
+    private void dfs(int i) {
+        if (i == nums.length) {
+            list.add(new ArrayList<>(paths));
+            return;
+        }
+        for (int j = 0; j < nums.length; j++) {
+            if (!vis[j]) {
+                paths.add(nums[j]);
+                vis[j] = true;
+                dfs(i + 1);
+                paths.remove(paths.size() - 1);
+                vis[j] = false;
+            }
+        }
+    }
 }
