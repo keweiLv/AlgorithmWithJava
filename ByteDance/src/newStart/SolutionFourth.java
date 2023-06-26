@@ -358,4 +358,54 @@ public class SolutionFourth {
             }
         }
     }
+
+    // 找出中枢整数
+    public int pivotInteger(int n) {
+        for (int i = 1; i <= n; i++) {
+            int lSum = (1 + i) * i / 2;
+            int rSum = (i + n) * (n - i + 1) / 2;
+            if (lSum == rSum) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    // 找出缺失的观测数据
+    public int[] missingRolls(int[] rolls, int mean, int n) {
+        int m = rolls.length;
+        int sum = (n + m) * mean;
+        int missing = sum;
+        for (int roll : rolls) {
+            missing -= roll;
+        }
+        if (missing < n || missing > n * 6) {
+            return new int[0];
+        }
+        int p = missing / n, remainder = missing % n;
+        int[] ans = new int[n];
+        for (int i = 0; i < n; i++) {
+            ans[i] = p + (i < remainder ? 1 : 0);
+        }
+        return ans;
+    }
+
+    // 任务调度器
+    public int leastInterval(char[] tasks, int n) {
+        int count[] = new int[26];
+        for (char task : tasks) {
+            count[task - 'A']++;
+        }
+        Arrays.sort(count);
+        int max = count[25];
+        int maxNum = 0;
+        for (int i = 25; i >= 0; i--) {
+            if (count[i] == max) {
+                maxNum++;
+            } else {
+                break;
+            }
+        }
+        return n * (max - 1) <= tasks.length - max - (maxNum - 1) ? tasks.length : (n + 1) * (max - 1) + maxNum;
+    }
 }
