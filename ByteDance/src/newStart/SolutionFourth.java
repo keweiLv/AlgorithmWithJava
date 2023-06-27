@@ -408,4 +408,46 @@ public class SolutionFourth {
         }
         return n * (max - 1) <= tasks.length - max - (maxNum - 1) ? tasks.length : (n + 1) * (max - 1) + maxNum;
     }
+
+    // 删除一次得到子数组最大和
+    private int[] arr;
+    private int[][] memo;
+
+    public int maximumSum(int[] arr) {
+        this.arr = arr;
+        int ans = Integer.MIN_VALUE, n = arr.length;
+        memo = new int[n][2];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(memo[i], Integer.MIN_VALUE);
+        }
+        for (int i = 0; i < n; i++) {
+            ans = Math.max(ans, Math.max(maxSumDfs(i, 0), maxSumDfs(i, 1)));
+        }
+        return ans;
+    }
+
+    private int maxSumDfs(int i, int j) {
+        if (i < 0) {
+            return Integer.MIN_VALUE / 2;
+        }
+        if (memo[i][j] != Integer.MIN_VALUE) {
+            return memo[i][j];
+        }
+        if (j == 0) {
+            return memo[i][j] = Math.max(maxSumDfs(i - 1, 0), 0) + arr[i];
+        }
+        return memo[i][j] = Math.max(maxSumDfs(i - 1, 1) + arr[i], maxSumDfs(i - 1, 0));
+    }
+
+    // 打家劫舍
+    public int rob(int[] nums) {
+        int pre = 0;
+        int cur = 0;
+        for (int num : nums) {
+            int temp = Math.max(cur, pre + num);
+            pre = cur;
+            cur = temp;
+        }
+        return cur;
+    }
 }
