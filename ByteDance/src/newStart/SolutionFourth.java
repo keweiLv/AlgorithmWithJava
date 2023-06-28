@@ -450,4 +450,59 @@ public class SolutionFourth {
         }
         return cur;
     }
+
+    // 不同的二叉搜索树二
+    public List<TreeNode> generateTrees(int n) {
+        if (n == 0) {
+            return new LinkedList<TreeNode>();
+        }
+        return generateTrees(1, n);
+    }
+
+    public List<TreeNode> generateTrees(int start, int end) {
+        List<TreeNode> allTrees = new LinkedList<>();
+        if (start > end) {
+            allTrees.add(null);
+            return allTrees;
+        }
+        for (int i = start; i <= end; i++) {
+            List<TreeNode> leftTrees = generateTrees(start, i - 1);
+            List<TreeNode> rightTrees = generateTrees(i + 1, end);
+            for (TreeNode left : leftTrees) {
+                for (TreeNode right : rightTrees) {
+                    TreeNode cur = new TreeNode(i);
+                    cur.left = left;
+                    cur.right = right;
+                    allTrees.add(cur);
+                }
+            }
+        }
+        return allTrees;
+    }
+
+    // 最长回文子串
+    public String longestPalindrome(String s) {
+        if (s == null || s.length() < 1) {
+            return "";
+        }
+        int start = 0, end = 0;
+        for (int i = 0; i < s.length(); i++) {
+            int len1 = expandAroundCenter(s, i, i);
+            int len2 = expandAroundCenter(s, i, i + 1);
+            int len = Math.max(len1, len2);
+            if (len > end - start) {
+                start = i - (len - 1) / 2;
+                end = i + len / 2;
+            }
+        }
+        return s.substring(start, end + 1);
+    }
+
+    private int expandAroundCenter(String s, int left, int right) {
+        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+            --left;
+            ++right;
+        }
+        return right - left - 1;
+    }
 }
