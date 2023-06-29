@@ -505,4 +505,63 @@ public class SolutionFourth {
         }
         return right - left - 1;
     }
+
+    // 重构2 行二进制矩阵
+    public List<List<Integer>> reconstructMatrix(int upper, int lower, int[] colsum) {
+        int n = colsum.length;
+        List<Integer> first = new ArrayList<>();
+        List<Integer> second = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            int a = 0, b = 0;
+            if (colsum[i] == 2) {
+                a = b = 1;
+                upper--;
+                lower--;
+            } else if (colsum[i] == 1) {
+                if (upper > lower) {
+                    upper--;
+                    a = 1;
+                } else {
+                    lower--;
+                    b = 1;
+                }
+            }
+            if (upper < 0 || lower < 0) {
+                break;
+            }
+            first.add(a);
+            second.add(b);
+        }
+        return upper == 0 && lower == 0 ? List.of(first, second) : List.of();
+    }
+
+    // 子集二
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        Arrays.sort(nums);
+        List<List<Integer>> ans = new ArrayList<>();
+        List<Integer> path = new ArrayList<>();
+        dfs(nums, 0, path, ans);
+        return ans;
+    }
+
+    private void dfs(int[] nums, int i, List<Integer> path, List<List<Integer>> ans) {
+        int n = nums.length;
+        if (i == n) {
+            ans.add(new ArrayList<>(path));
+            return;
+        }
+        int t = nums[i];
+        int last = i;
+        while (last < n & nums[last] == nums[i]) {
+            last++;
+        }
+        dfs(nums, last, path, ans);
+        for (int j = i; j < last; j++) {
+            path.add(nums[j]);
+            dfs(nums, last, path, ans);
+        }
+        for (int j = i; j < last; j++) {
+            path.remove(path.size() - 1);
+        }
+    }
 }
