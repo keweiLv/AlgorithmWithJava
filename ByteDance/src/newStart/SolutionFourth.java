@@ -564,4 +564,44 @@ public class SolutionFourth {
             path.remove(path.size() - 1);
         }
     }
+
+    // 两数相加
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode pre = new ListNode(0);
+        ListNode cur = pre;
+        int carry = 0;
+        while (l1 != null || l2 != null) {
+            int x = l1 == null ? 0 : l1.val;
+            int y = l2 == null ? 0 : l2.val;
+            int sum = x + y + carry;
+            carry = sum / 10;
+            sum = sum % 10;
+            cur.next = new ListNode(sum);
+            cur = cur.next;
+            if (l1 != null) {
+                l1 = l1.next;
+            }
+            if (l2 != null) {
+                l2 = l2.next;
+            }
+        }
+        if (carry == 1) {
+            cur.next = new ListNode(carry);
+        }
+        return pre.next;
+    }
+
+    // 查找插入位置
+    public int searchInsert(int[] nums, int target) {
+        int left = 0, right = nums.length;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return left;
+    }
 }
