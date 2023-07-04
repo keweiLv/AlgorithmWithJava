@@ -636,4 +636,32 @@ public class SolutionFourth {
         l1.next = addTwo(l1.next, (l2 != null ? l2.next : null), carry / 10);
         return l1;
     }
+
+    // 矩阵中的和
+    public int matrixSum(int[][] nums) {
+        for (int[] num : nums) {
+            Arrays.sort(num);
+        }
+        int ans = 0;
+        for (int i = 0; i < nums[0].length; i++) {
+            int mx = 0;
+            for (int[] num : nums) {
+                mx = Math.max(mx, num[i]);
+            }
+            ans += mx;
+        }
+        return ans;
+    }
+
+    // 航班预定统计
+    public int[] corpFlightBookings(int[][] bookings, int n) {
+        int[] ans = new int[n];
+        for (int[] book : bookings) {
+            int first = book[0], last = book[1], seats = book[2];
+            for (int i = first - 1; i < last; i++) {
+                ans[i] += seats;
+            }
+        }
+        return ans;
+    }
 }
