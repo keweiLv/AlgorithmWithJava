@@ -664,4 +664,32 @@ public class SolutionFourth {
         }
         return ans;
     }
+
+    // k件物品的最大和
+    public int kItemsWithMaximumSum(int numOnes, int numZeros, int numNegOnes, int k) {
+        return Math.min(numOnes, k) - Math.max(0, k - numOnes - numZeros);
+    }
+
+    // 前 k 个高频元素
+    public int[] topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> counter = new HashMap<>();
+        for (int num : nums) {
+            counter.put(num, counter.getOrDefault(num, 0) + 1);
+        }
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> counter.get(a) - counter.get(b));
+        counter.forEach((num, cnt) -> {
+            if (pq.size() < k) {
+                pq.offer(num);
+            } else if (counter.get(pq.peek()) < cnt) {
+                pq.poll();
+                pq.offer(num);
+            }
+        });
+        int[] ans = new int[k];
+        int idx = 0;
+        for (int num : pq) {
+            ans[idx++] = num;
+        }
+        return ans;
+    }
 }
