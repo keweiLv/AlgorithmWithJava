@@ -1,8 +1,6 @@
 package newStart;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 public class LRUCache {
 
@@ -38,29 +36,5 @@ public class LRUCache {
         int val = cache.get(key);
         cache.remove(key);
         cache.put(key, val);
-    }
-
-    // 拆分成数目最多的偶整数之和
-    public List<Long> maximumEvenSplit(long finalSum) {
-        List<Long> ans = new ArrayList<>();
-        if (finalSum % 2 == 1) {
-            return ans;
-        }
-        for (long i = 2; i <= finalSum; i += 2) {
-            ans.add(i);
-            finalSum -= i;
-        }
-        ans.set(ans.size() - 1, ans.get(ans.size() - 1) + finalSum);
-        return ans;
-    }
-
-    // 连续子数组的最大和
-    public int maxSubArray(int[] nums) {
-        int ans = nums[0];
-        for (int i = 1; i < nums.length; i++) {
-            nums[i] += Math.max(0, nums[i - 1]);
-            ans = Math.max(ans, nums[i]);
-        }
-        return ans;
     }
 }

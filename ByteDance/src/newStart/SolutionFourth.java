@@ -692,4 +692,64 @@ public class SolutionFourth {
         }
         return ans;
     }
+
+    // 拆分成数目最多的偶整数之和
+    public List<Long> maximumEvenSplit(long finalSum) {
+        List<Long> ans = new ArrayList<>();
+        if (finalSum % 2 == 1) {
+            return ans;
+        }
+        for (long i = 2; i <= finalSum; i += 2) {
+            ans.add(i);
+            finalSum -= i;
+        }
+        ans.set(ans.size() - 1, ans.get(ans.size() - 1) + finalSum);
+        return ans;
+    }
+
+    // 连续子数组的最大和
+    public int maxSubArray(int[] nums) {
+        int ans = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            nums[i] += Math.max(0, nums[i - 1]);
+            ans = Math.max(ans, nums[i]);
+        }
+        return ans;
+    }
+
+    // 螺旋矩阵
+    public List<Integer> spiralOrder(int[][] matrix) {
+        LinkedList<Integer> res = new LinkedList<>();
+        if (matrix == null || matrix.length == 0) {
+            return res;
+        }
+        int left = 0;
+        int right = matrix[0].length - 1;
+        int top = 0;
+        int bottom = matrix.length - 1;
+        int eleNum = matrix.length * matrix[0].length;
+        while (eleNum >= 1) {
+            for (int i = left; i <= right && eleNum >= 1; i++) {
+                res.add(matrix[top][i]);
+                eleNum--;
+            }
+            top++;
+            for (int i = top; i <= bottom && eleNum >= 1; i++) {
+                res.add(matrix[i][right]);
+                eleNum--;
+            }
+            right--;
+            for (int i = right; i >= left && eleNum >= 1; i--) {
+                res.add(matrix[bottom][i]);
+                eleNum--;
+            }
+            bottom--;
+            for (int i = bottom; i >= top && eleNum >= 1; i--) {
+                res.add(matrix[i][left]);
+                eleNum--;
+            }
+            left++;
+        }
+        return res;
+    }
 }
