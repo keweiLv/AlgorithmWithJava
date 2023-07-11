@@ -866,4 +866,33 @@ public class SolutionFourth {
         return sb.reverse().toString();
     }
 
+    // 最大子序列交替和
+    public long maxAlternatingSum(int[] nums) {
+        long f = 0, g = 0;
+        for (int x : nums) {
+            long ff = Math.max(g - x, f);
+            long gg = Math.max(f + x, g);
+            f = ff;
+            g = gg;
+        }
+        return Math.max(f, g);
+    }
+
+    // 杨辉三角二
+    public List<Integer> getRow(int rowIndex) {
+        List<Integer> res = new ArrayList<>();
+        for (int i = 0; i <= rowIndex; i++) {
+            List<Integer> cur = new ArrayList<>();
+            for (int j = 0; j <= i; j++) {
+                if (j == 0 || j == i) {
+                    cur.add(1);
+                } else {
+                    cur.add(res.get(j - 1) + res.get(j));
+                }
+            }
+            res = cur;
+        }
+        return res;
+    }
+
 }
