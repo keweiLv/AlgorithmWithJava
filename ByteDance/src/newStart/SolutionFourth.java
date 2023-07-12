@@ -895,4 +895,86 @@ public class SolutionFourth {
         return res;
     }
 
+    // 交替数字和
+    public int alternateDigitSum(int n) {
+        int ans = 0, sign = 1;
+        for (char c : String.valueOf(n).toCharArray()) {
+            int x = c - '0';
+            ans += sign * x;
+            sign *= -1;
+        }
+        return ans;
+    }
+
+    // 排序数组中两个数字之和
+    public int[] twoSum(int[] numbers, int target) {
+        int l = 0, r = numbers.length - 1;
+        while (l < r) {
+            if (numbers[l] + numbers[r] < target) {
+                l++;
+            } else if (numbers[l] + numbers[r] > target) {
+                r--;
+            } else {
+                return new int[]{l, r};
+            }
+        }
+        return new int[0];
+    }
+
+    // 后缀表达式
+    public int evalRPN(String[] tokens) {
+        Deque<Integer> deque = new ArrayDeque<>();
+        for (int i = 0; i < tokens.length; i++) {
+            String s = tokens[i];
+            if (s.equals("+")) {
+                int b = deque.pop();
+                int a = deque.pop();
+                deque.push(a + b);
+                continue;
+            }
+            if (s.equals("-")) {
+                int b = deque.pop();
+                int a = deque.pop();
+                deque.push(a - b);
+                continue;
+            }
+            if (s.equals("*")) {
+                int b = deque.pop();
+                int a = deque.pop();
+                deque.push(a * b);
+                continue;
+            }
+            if (s.equals("/")) {
+                int b = deque.pop();
+                int a = deque.pop();
+                deque.push(a / b);
+                continue;
+            }
+            deque.push(Integer.valueOf(s));
+        }
+        return deque.pop();
+    }
+
+    // 小行星碰撞
+    public int[] asteroidCollision(int[] asteroids) {
+        Deque<Integer> deque = new ArrayDeque<>();
+        for (int aster : asteroids) {
+            boolean alive = true;
+            while (alive && aster < 0 && !deque.isEmpty() && deque.peek() > 0) {
+                alive = deque.peek() < -aster;
+                if (deque.peek() <= -aster) {
+                    deque.pop();
+                }
+            }
+            if (alive) {
+                deque.push(aster);
+            }
+        }
+        int size = deque.size();
+        int[] ans = new int[size];
+        for (int i = size - 1; i >= 0; i--) {
+            ans[i] = deque.pop();
+        }
+        return ans;
+    }
 }
