@@ -977,4 +977,60 @@ public class SolutionFourth {
         }
         return ans;
     }
+
+    // 下降路径最小和
+    private int[][] matrix;
+
+    public int minFallingPathSum(int[][] matrix) {
+        this.matrix = matrix;
+        int n = matrix.length;
+        memo = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(memo[i], Integer.MIN_VALUE);
+        }
+        int ans = Integer.MAX_VALUE;
+        for (int c = 0; c < n; c++) {
+            ans = Math.min(ans, minFallingPathSumDfs(n - 1, c));
+        }
+        return ans;
+    }
+
+    private int minFallingPathSumDfs(int r, int c) {
+        if (c < 0 || c >= matrix.length) {
+            return Integer.MAX_VALUE;
+        }
+        if (r == 0) {
+            return matrix[0][c];
+        }
+        if (memo[r][c] != Integer.MIN_VALUE) {
+            return memo[r][c];
+        }
+        return memo[r][c] = Math.min(Math.min(minFallingPathSumDfs(r - 1, c - 1), minFallingPathSumDfs(r - 1, c)), minFallingPathSumDfs(r - 1, c + 1)) + matrix[r][c];
+    }
+
+
+    // 单词长度的最大乘积
+    public int maxProduct(String[] words) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (String word : words) {
+            int t = 0, n = word.length();
+            for (int i = 0; i < n; i++) {
+                int u = word.charAt(i) - 'a';
+                t |= (1 << u);
+            }
+            if (!map.containsKey(t) || map.get(t) < n) {
+                map.put(t, n);
+            }
+        }
+        int ans = 0;
+        for (int a : map.keySet()) {
+            for (int b : map.keySet()) {
+                if ((a & b) == 0) {
+                    ans = Math.max(ans, map.get(a) * map.get(b));
+                }
+            }
+        }
+        return ans;
+    }
+
 }
