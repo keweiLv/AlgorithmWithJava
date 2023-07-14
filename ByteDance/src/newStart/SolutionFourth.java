@@ -1033,4 +1033,19 @@ public class SolutionFourth {
         return ans;
     }
 
+
+    // 在二叉树中分配硬币
+    public int distributeCoins(TreeNode root) {
+        dfs(root);
+        return ans;
+    }
+
+    private int dfs(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int d = dfs(root.left) + dfs(root.right) + root.val - 1;
+        ans += Math.abs(d);
+        return d;
+    }
 }
