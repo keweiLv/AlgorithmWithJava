@@ -1048,4 +1048,44 @@ public class SolutionFourth {
         ans += Math.abs(d);
         return d;
     }
+
+    // 零钱兑换
+    int INF = Integer.MAX_VALUE;
+
+    public int coinChange(int[] coins, int amount) {
+        int n = coins.length;
+        int[][] f = new int[n + 1][amount + 1];
+        for (int i = 1; i <= amount; i++) {
+            f[0][i] = INF;
+        }
+        for (int i = 1; i <= n; i++) {
+            int val = coins[i - 1];
+            for (int j = 0; j <= amount; j++) {
+                f[i][j] = f[i - 1][j];
+                for (int k = 1; k * val <= j; k++) {
+                    if (f[i - 1][j - k * val] != INF) {
+                        f[i][j] = Math.min(f[i][j], f[i - 1][j - k * val] + k);
+                    }
+                }
+            }
+        }
+        return f[n][amount] == INF ? -1 : f[n][amount];
+    }
+
+    // 零钱兑换二
+    public int change(int amount, int[] coins) {
+        int n = coins.length;
+        int[][] f = new int[n + 1][amount + 1];
+        f[0][0] = 1;
+        for (int i = 1; i <= n; i++) {
+            int val = coins[i - 1];
+            for (int j = 0; j <= amount; j++) {
+                f[i][j] = f[i - 1][j];
+                for (int k = 1; k * val <= j; k++) {
+                    f[i][j] += f[i - 1][j - k * val];
+                }
+            }
+        }
+        return f[n][amount];
+    }
 }
