@@ -1,5 +1,9 @@
 package again230717;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * 2023-07-17 another again
  */
@@ -46,5 +50,83 @@ public class Solution {
             }
         }
         return dp[target];
+    }
+
+    // 狒狒吃香蕉
+    public int minEatingSpeed(int[] piles, int h) {
+        int l = 1, r = Arrays.stream(piles).max().getAsInt();
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+            if (getTime(piles, mid) > h) {
+                l = mid + 1;
+            } else {
+                r = mid - 1;
+            }
+        }
+        return l;
+    }
+
+    private int getTime(int[] piles, int k) {
+        int cnt = 0;
+        for (int p : piles) {
+            cnt += p / k;
+            if (p % k > 0) {
+                cnt++;
+            }
+        }
+        return cnt;
+    }
+
+    // 展平二叉搜索树
+    public TreeNode increasingBST(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        inOrder(root, res);
+        TreeNode dummy = new TreeNode(-1);
+        TreeNode cur = dummy;
+        for (int val : res) {
+            cur.right = new TreeNode(val);
+            cur = cur.right;
+        }
+        return dummy.right;
+    }
+
+    private void inOrder(TreeNode root, List<Integer> res) {
+        if (root == null) {
+            return;
+        }
+        inOrder(root.left, res);
+        res.add(root.val);
+        inOrder(root.right, res);
+    }
+
+    // 数组中和为0 的三个数
+    public List<List<Integer>> threeSum(int[] nums) {
+        Arrays.sort(nums);
+        int n = nums.length;
+        List<List<Integer>> ans = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
+            int j = i + 1, k = n - 1;
+            while (j < k) {
+                while (j > i + 1 && j < n && nums[j] == nums[j - 1]) {
+                    j++;
+                }
+                if (j >= k) {
+                    break;
+                }
+                int sum = nums[i] + nums[j] + nums[k];
+                if (sum == 0) {
+                    ans.add(Arrays.asList(nums[i], nums[j], nums[k]));
+                    j++;
+                } else if (sum > 0) {
+                    k--;
+                } else {
+                    j++;
+                }
+            }
+        }
+        return ans;
     }
 }
