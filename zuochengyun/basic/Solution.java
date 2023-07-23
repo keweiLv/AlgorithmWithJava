@@ -1,7 +1,10 @@
 package zuochengyun.basic;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * 左程云基础课 s
+ * 左程云基础课
  */
 public class Solution {
 
@@ -25,5 +28,43 @@ public class Solution {
             fast = fast.next;
         }
         return slow;
+    }
+
+    // 二叉树的最大宽度
+    Map<Integer, Integer> map = new HashMap<>();
+    int ans = 0;
+
+    public int widthOfBinaryTree(TreeNode root) {
+        dfs(root, 1, 0);
+        return ans;
+    }
+
+    private void dfs(TreeNode root, int u, int depth) {
+        if (root == null){
+            return;
+        }
+        if (!map.containsKey(depth)){
+            map.put(depth,u);
+        }
+        ans = Math.max(ans,u - map.get(depth) + 1);
+        u = u - map.get(depth) + 1;
+        dfs(root.left,u << 1,depth + 1);
+        dfs(root.right,u << 1 | 1,depth + 1);
+    }
+
+    // 验证二叉搜索树
+    long pre = Long.MIN_VALUE;
+    public boolean isValidBST(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        if (!isValidBST(root.left)){
+            return false;
+        }
+        if (root.val <= pre){
+            return false;
+        }
+        pre = root.val;
+        return isValidBST(root.right);
     }
 }
