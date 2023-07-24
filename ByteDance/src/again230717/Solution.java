@@ -1,8 +1,6 @@
 package again230717;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * 2023-07-17 another again
@@ -149,5 +147,36 @@ public class Solution {
         dfs(root.left, depth + 1);
     }
 
-    //
+    // 宝石与石头
+    public int numJewelsInStones(String jewels, String stones) {
+        int ans = 0;
+        Set<Character> set = new HashSet<>();
+        int m = jewels.length(), n = stones.length();
+        for (int i = 0; i < m; i++) {
+            char c = jewels.charAt(i);
+            set.add(c);
+        }
+        for (int i = 0; i < n; i++) {
+            char c = stones.charAt(i);
+            if (set.contains(c)) {
+                ans++;
+            }
+        }
+        return ans;
+    }
+
+    // 每日温度
+    public int[] dailyTemperatures(int[] temperatures) {
+        Deque<Integer> deque = new ArrayDeque<>();
+        int n = temperatures.length;
+        int[] ans = new int[n];
+        for (int i = 0; i < n; i++) {
+            while (!deque.isEmpty() && temperatures[deque.peek()] < temperatures[i]){
+                int idx = deque.pop();
+                ans[idx] = i - idx;
+            }
+            deque.push(i);
+        }
+        return ans;
+    }
 }
