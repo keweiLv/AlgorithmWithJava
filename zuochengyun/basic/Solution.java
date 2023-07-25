@@ -2,7 +2,6 @@ package zuochengyun.basic;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.PriorityQueue;
 
 /**
  * 左程云基础课
@@ -101,22 +100,4 @@ public class Solution {
         return root;
     }
 
-    // 将数组和减半的最少操作次数
-    public int halveArray(int[] nums) {
-        double s = 0;
-        PriorityQueue<Double> pq = new PriorityQueue<>((a, b) -> Double.compare(b, a));
-        for (int v : nums) {
-            pq.offer(v * 1.0);
-            s += v;
-        }
-        s /= 2.0;
-        int ans = 0;
-        while (s > 0) {
-            double t = pq.poll();
-            s -= t / 2.0;
-            pq.offer(t / 2.0);
-            ++ans;
-        }
-        return ans;
-    }
 }
