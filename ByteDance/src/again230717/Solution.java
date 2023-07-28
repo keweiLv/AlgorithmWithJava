@@ -9,8 +9,7 @@ public class Solution {
 
 
     public static void main(String[] args) {
-        String num1 = "11", num2 = "123";
-        System.out.println(addStrings(num1, num2));
+
     }
 
     // 字符串相加
@@ -171,7 +170,7 @@ public class Solution {
         int n = temperatures.length;
         int[] ans = new int[n];
         for (int i = 0; i < n; i++) {
-            while (!deque.isEmpty() && temperatures[deque.peek()] < temperatures[i]){
+            while (!deque.isEmpty() && temperatures[deque.peek()] < temperatures[i]) {
                 int idx = deque.pop();
                 ans[idx] = i - idx;
             }
@@ -197,5 +196,17 @@ public class Solution {
             ++ans;
         }
         return ans;
+    }
+
+    // 解决智力问题
+    public long mostPoints(int[][] questions) {
+        var n = questions.length;
+        long[] f = new long[n + 1];
+        for (int i = n - 1; i >= 0; i--) {
+            int[] q = questions[i];
+            int j = i + q[1] + 1;
+            f[i] = Math.max(f[i + 1], q[0] + (j < n ? f[j] : 0));
+        }
+        return f[0];
     }
 }
