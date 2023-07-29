@@ -209,4 +209,57 @@ public class Solution {
         }
         return f[0];
     }
+
+    // 环形链表
+    public boolean hasCycle(ListNode head) {
+        if (head == null || head.next == null) {
+            return false;
+        }
+        ListNode slow = head;
+        ListNode fast = head.next;
+        while (slow != fast) {
+            if (fast.next == null || fast.next.next == null) {
+                return false;
+            }
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return true;
+    }
+
+    // 环形链表二
+    public ListNode detectCycle(ListNode head) {
+        if (head == null || head.next == null || head.next.next == null) {
+            return null;
+        }
+        ListNode slow = head.next;
+        ListNode fast = head.next.next;
+        while (slow != fast) {
+            if (fast.next == null || fast.next.next == null) {
+                return null;
+            }
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        fast = head;
+        while (slow != fast) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+        return slow;
+    }
+
+    // 爬楼梯
+    public int climbStairs(int n) {
+        if (n <= 2) {
+            return n;
+        }
+        int[] f = new int[n + 1];
+        f[1] = 1;
+        f[2] = 2;
+        for (int i = 3; i <= n; i++) {
+            f[i] = f[i - 1] + f[i - 2];
+        }
+        return f[n];
+    }
 }
