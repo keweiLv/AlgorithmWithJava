@@ -269,7 +269,7 @@ public class Solution {
     public int coinChange(int[] coins, int amount) {
         int[] dp = new int[amount + 1];
         // 除以二是为了防止下面+1 后溢出
-        Arrays.fill(dp, INF/2);
+        Arrays.fill(dp, INF / 2);
         dp[0] = 0;
         for (int i = 1; i <= amount; i++) {
             for (int coin : coins) {
@@ -278,6 +278,34 @@ public class Solution {
                 }
             }
         }
-        return dp[amount] == INF/2 ? -1 : dp[amount];
+        return dp[amount] == INF / 2 ? -1 : dp[amount];
+    }
+
+    // 重排链表
+    public void reorderList(ListNode head) {
+        ListNode slow = head, fast = head;
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        ListNode cur = slow.next;
+        slow.next = null;
+        // 反转 cur
+        ListNode pre = null;
+        while (cur != null) {
+            ListNode t = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = t;
+        }
+        cur = head;
+        //合并
+        while (pre != null) {
+            ListNode t = pre.next;
+            pre.next = cur.next;
+            cur.next = pre;
+            cur = pre.next;
+            pre = t;
+        }
     }
 }
