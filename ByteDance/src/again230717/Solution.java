@@ -315,10 +315,10 @@ public class Solution {
         int n = citations.length;
         for (int i = 0; i < n; i++) {
             int remain = n - i;
-            if (remain >= citations[i]){
-                return i;
+            if (remain <= citations[i]){
+                return remain;
             }
         }
-        return -1;
+        return 0;
     }
 }
