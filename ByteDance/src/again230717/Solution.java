@@ -308,4 +308,17 @@ public class Solution {
             pre = t;
         }
     }
+
+    // H 指数
+    public int hIndex(int[] citations) {
+        Arrays.sort(citations);
+        int n = citations.length;
+        for (int i = 0; i < n; i++) {
+            int remain = n - i;
+            if (remain >= citations[i]){
+                return i;
+            }
+        }
+        return -1;
+    }
 }
