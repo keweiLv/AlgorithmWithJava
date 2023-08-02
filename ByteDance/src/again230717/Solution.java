@@ -315,10 +315,86 @@ public class Solution {
         int n = citations.length;
         for (int i = 0; i < n; i++) {
             int remain = n - i;
-            if (remain <= citations[i]){
+            if (remain <= citations[i]) {
                 return remain;
             }
         }
         return 0;
+    }
+
+    // 翻转卡片游戏
+    public int flipgame(int[] fronts, int[] backs) {
+        Set<Integer> forbidden = new HashSet<>();
+        for (int i = 0; i < fronts.length; i++) {
+            if (fronts[i] == backs[i]) {
+                forbidden.add(fronts[i]);
+            }
+        }
+        int ans = Integer.MAX_VALUE;
+        for (int x : fronts) {
+            if (!forbidden.contains(x)) {
+                ans = Math.min(ans, x);
+            }
+        }
+        for (int x : backs) {
+            if (!forbidden.contains(x)) {
+                ans = Math.min(ans, x);
+            }
+        }
+        return ans == Integer.MAX_VALUE ? 0 : ans;
+    }
+
+    // 乘积小于 k 的子数组
+    public int numSubarrayProductLessThanK(int[] nums, int k) {
+        int n = nums.length, ans = 0;
+        if (k < 1) {
+            return 0;
+        }
+        for (int i = 0, j = 0, cur = 1; i < n; i++) {
+            cur *= nums[i];
+            while (cur >= k) {
+                cur /= nums[j++];
+            }
+            ans += i - j + 1;
+        }
+        return ans;
+    }
+
+    // 和为 k 的子数组
+    public int subarraySum(int[] nums, int k) {
+        int n = nums.length, ans = 0;
+        int[] sum = new int[n + 1];
+        for (int i = 1; i <= n; i++) {
+            sum[i] = sum[i - 1] + nums[i - 1];
+        }
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, 1);
+        for (int i = 1; i <= n; i++) {
+            int t = sum[i], d = t - k;
+            ans += map.getOrDefault(d, 0);
+            map.put(t, map.getOrDefault(t, 0) + 1);
+        }
+        return ans;
+    }
+
+    // 0 和 1个数相同的子数组
+    public int findMaxLength(int[] nums) {
+        int n = nums.length, ans = 0;
+        int[] sum = new int[n + 10];
+        for (int i = 1; i <= n; i++) {
+            sum[i] = sum[i - 1] + (nums[i - 1] == 0 ? -1 : 1);
+        }
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, 0);
+        for (int i = 1; i <= n; i++) {
+            int t = sum[i];
+            if (map.containsKey(t)) {
+                ans = Math.max(ans, i - map.get(t));
+            }
+            if (!map.containsKey(t)) {
+                map.put(t, i);
+            }
+        }
+        return ans;
     }
 }
