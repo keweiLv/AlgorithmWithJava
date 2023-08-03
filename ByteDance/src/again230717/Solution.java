@@ -397,4 +397,43 @@ public class Solution {
         }
         return ans;
     }
+
+    // 数字序列中某一位的数字
+    public int findNthDigit(int n) {
+        int digit = 1;
+        long start = 1;
+        long count = 9;
+        while (n > count) {
+            n -= count;
+            digit += 1;
+            start *= 10;
+            count = digit * start * 9;
+        }
+        long num = start + (n - 1) / digit;
+        return Long.toString(num).charAt((n - 1) % digit) - '0';
+    }
+
+    // 最大单词长度乘积
+    public int maxProduct(String[] words) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (String w : words) {
+            int t = 0, m = w.length();
+            for (int i = 0; i < m; i++) {
+                int u = w.charAt(i) - 'a';
+                t |= (1 << u);
+            }
+            if (!map.containsKey(t) || map.get(t) < m) {
+                map.put(t, m);
+            }
+        }
+        int ans = 0;
+        for (int a : map.keySet()) {
+            for (int b : map.keySet()) {
+                if ((a & b) == 0) {
+                    ans = Math.max(ans, map.get(a) * map.get(b));
+                }
+            }
+        }
+        return ans;
+    }
 }
