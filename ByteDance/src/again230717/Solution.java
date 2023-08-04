@@ -436,4 +436,39 @@ public class Solution {
         }
         return ans;
     }
+
+    // 寻找重复数
+    public int findDuplicate(int[] nums) {
+        int slow = 0;
+        int fast = 0;
+        slow = nums[slow];
+        fast = nums[nums[fast]];
+        while (slow != fast) {
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+        }
+        int pre1 = 0;
+        int pre2 = slow;
+        while (pre1 != pre2) {
+            pre1 = nums[pre1];
+            pre2 = nums[pre2];
+        }
+        return pre1;
+    }
+
+    // 找到所有数组中消失的数字
+    public List<Integer> findDisappearedNumbers(int[] nums) {
+        int n = nums.length;
+        for (int num : nums) {
+            int x = (num - 1) % n;
+            nums[x] += n;
+        }
+        List<Integer> res = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            if (nums[i] <= n) {
+                res.add(i + 1);
+            }
+        }
+        return res;
+    }
 }
