@@ -471,4 +471,41 @@ public class Solution {
         }
         return res;
     }
+
+    // 缺失的第一个正数
+    public int firstMissingPositive(int[] nums) {
+        int n = nums.length;
+        for (int i = 0; i < n; i++) {
+            while (nums[i] > 0 && nums[i] <= n && nums[nums[i] - 1] != nums[i]) {
+                swap(nums, nums[i] - 1, i);
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            if (nums[i] != i + 1) {
+                return i + 1;
+            }
+        }
+        return n + 1;
+    }
+
+    private void swap(int[] nums, int index, int index2) {
+        int temp = nums[index];
+        nums[index] = nums[index2];
+        nums[index2] = temp;
+    }
+
+    // 合并两个有序链表
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        if (list1 == null) {
+            return list2;
+        } else if (list2 == null) {
+            return list1;
+        } else if (list1.val < list2.val) {
+            list1.next = mergeTwoLists(list1.next, list2);
+            return list1;
+        } else {
+            list2.next = mergeTwoLists(list1, list2.next);
+            return list2;
+        }
+    }
 }
