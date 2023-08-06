@@ -508,4 +508,28 @@ public class Solution {
             return list2;
         }
     }
+
+    // 两两交换链表中的节点
+    public ListNode swapPairs(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode next = head.next;
+        head.next = swapPairs(next.next);
+        next.next = head;
+        return next;
+    }
+
+    // 合并两个有序数组
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int len = m + n - 1;
+        m--;
+        n--;
+        while (n >= 0) {
+            while (m >= 0 && nums1[m] > nums2[n]) {
+                nums1[len--] = nums1[m--];
+            }
+            nums1[len--] = nums2[n--];
+        }
+    }
 }
