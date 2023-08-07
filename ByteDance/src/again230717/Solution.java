@@ -532,4 +532,109 @@ public class Solution {
             nums1[len--] = nums2[n--];
         }
     }
+
+    // 翻转字符串
+    public void reverseString(char[] s) {
+        int n = s.length;
+        for (int i = 0; i < n / 2; i++) {
+            char temp = s[i];
+            s[i] = s[n - 1 - i];
+            s[n - 1 - i] = temp;
+        }
+    }
+
+
+    // 搜索推荐系统
+    int[][] tr = new int[20010][26];
+    int idx = 0;
+    Map<Integer, Integer> min = new HashMap<>(), max = new HashMap<>();
+
+    void add(String s, int num) {
+        int p = 0;
+        for (int i = 0; i < s.length(); i++) {
+            int u = s.charAt(i) - 'a';
+            if (tr[p][u] == 0) {
+                tr[p][u] = ++idx;
+                min.put(tr[p][u], num);
+            }
+            max.put(tr[p][u], num);
+            p = tr[p][u];
+        }
+    }
+
+    int[] query(String s) {
+        int a = -1, b = -1, p = 0;
+        for (int i = 0; i < s.length(); i++) {
+            int u = s.charAt(i) - 'a';
+            if (tr[p][u] == 0) {
+                return new int[]{-1, -1};
+            }
+            a = min.get(tr[p][u]);
+            b = max.get(tr[p][u]);
+            p = tr[p][u];
+        }
+        return new int[]{a, b};
+    }
+
+    public List<List<String>> suggestedProducts(String[] products, String searchWord) {
+        Arrays.sort(products);
+        List<List<String>> ans = new ArrayList<>();
+        for (int i = 0; i < products.length; i++) {
+            add(products[i], i);
+        }
+        for (int i = 0; i < searchWord.length(); i++) {
+            List<String> list = new ArrayList<>();
+            int[] info = query(searchWord.substring(0, i + 1));
+            int l = info[0], r = info[1];
+            for (int j = l; j <= Math.min(l + 2, r) && l != -1; j++) {
+                list.add(products[j]);
+            }
+            ans.add(list);
+        }
+        return ans;
+    }
+
+    // 数组中两个数的最大异或值
+    class Node {
+        Node[] ns = new Node[2];
+    }
+
+    Node root = new Node();
+
+    void add(int x) {
+        Node p = root;
+        for (int i = 31; i >= 0; i--) {
+            int u = (x >> i) & 1;
+            if (p.ns[u] == null) {
+                p.ns[u] = new Node();
+            }
+            p = p.ns[u];
+        }
+    }
+
+    int getVal(int x) {
+        int ans = 0;
+        Node p = root;
+        for (int i = 31; i >= 0; i++) {
+            int a = (x >> i) & 1, b = 1 - a;
+            if (p.ns[b] != null) {
+                ans |= (b << i);
+                p = p.ns[b];
+            } else {
+                ans |= (a << i);
+                p = p.ns[a];
+            }
+        }
+        return ans;
+    }
+
+    public int findMaximumXOR(int[] nums) {
+        int ans = 0;
+        for (int i : nums) {
+            add(i);
+            int j = getVal(i);
+            ans = Math.max(ans, i ^ j);
+        }
+        return ans;
+    }
 }
