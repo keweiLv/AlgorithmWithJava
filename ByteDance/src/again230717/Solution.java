@@ -697,13 +697,75 @@ public class Solution {
 
     // 整数的各位积和之差
     public int subtractProductAndSum(int n) {
-        int x = 1,y = 0;
-        for (;n>0;n/=10){
+        int x = 1, y = 0;
+        for (; n > 0; n /= 10) {
             int v = n % 10;
             x *= v;
             y += v;
         }
-        return x -y;
+        return x - y;
+    }
+
+    // 下降路径最小和二
+    public int minFallingPathSum(int[][] grid) {
+        int n = grid.length;
+        int first_min_sum = 0;
+        int second_min_sum = 0;
+        int first_min_index = -1;
+        for (int i = 0; i < n; i++) {
+            int cur_first_min_sum = Integer.MAX_VALUE;
+            int cur_second_min_sum = Integer.MAX_VALUE;
+            int cur_first_min_index = -1;
+            for (int j = 0; j < n; j++) {
+                int cur_sum = (j != first_min_index ? first_min_sum : second_min_sum) + grid[i][j];
+                if (cur_sum < cur_first_min_sum) {
+                    cur_second_min_sum = cur_first_min_sum;
+                    cur_first_min_sum = cur_sum;
+                    cur_first_min_index = j;
+                } else if (cur_sum < cur_second_min_sum) {
+                    cur_second_min_sum = cur_sum;
+                }
+            }
+            first_min_sum = cur_first_min_sum;
+            second_min_sum = cur_second_min_sum;
+            first_min_index = cur_first_min_index;
+        }
+        return first_min_sum;
+    }
+
+    // 戳气球
+    public int maxCoins(int[] nums) {
+        int n = nums.length;
+        int[] temp = new int[n + 2];
+        temp[0] = temp[n + 1] = 1;
+        for (int i = 0; i < n; i++) {
+            temp[i + 1] = nums[i];
+        }
+        int[][] dp = new int[n + 2][n + 2];
+        for (int len = 3; len <= n + 2; len++) {
+            for (int l = 0; l + len - 1 <= n + 1; l++) {
+                int r = l + len - 1;
+                for (int k = l + 1; k <= r - 1; k++) {
+                    dp[l][r] = Math.max(dp[l][r], dp[l][k] + dp[k][r] + temp[l] + temp[k] + temp[r]);
+                }
+            }
+        }
+        return dp[0][n + 1];
+    }
+
+    // 粉刷房子
+    public int minCost(int[][] costs) {
+        int n = costs.length;
+        int a = costs[0][0], b = costs[0][1], c = costs[0][2];
+        for (int i = 1; i < n; i++) {
+            int d = Math.min(b, c) + costs[i][0];
+            int e = Math.min(a, c) + costs[i][1];
+            int f = Math.min(a, b) + costs[i][2];
+            a = d;
+            b = e;
+            c = f;
+        }
+        return Math.min(a, Math.min(b, c));
     }
 
 }
