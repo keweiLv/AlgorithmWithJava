@@ -768,4 +768,61 @@ public class Solution {
         return Math.min(a, Math.min(b, c));
     }
 
+    // 矩阵对角线元素的和
+    public int diagonalSum(int[][] mat) {
+        int ans = 0;
+        int n = mat.length;
+        for (int i = 0; i < n; i++) {
+            int j = n - i - 1;
+            ans += mat[i][i] + ((i == j) ? 0 : mat[i][j]);
+        }
+        return ans;
+    }
+
+    // 删除链表的倒数第 N 个节点
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode dummy = new ListNode(0, head);
+        ListNode first = head;
+        ListNode second = dummy;
+        for (int i = 0; i < n; i++) {
+            first = first.next;
+        }
+        while (first != null) {
+            first = first.next;
+            second = second.next;
+        }
+        second.next = second.next.next;
+        return dummy.next;
+    }
+
+    // 循环有序链表的插入
+    public again230717.Node insert(again230717.Node head, int insertVal) {
+        again230717.Node t = new again230717.Node(insertVal);
+        t.next = t;
+        if (head == null) {
+            return t;
+        }
+        again230717.Node ans = head;
+        int min = head.val, max = head.val;
+        while (head.next != ans) {
+            head = head.next;
+            min = Math.min(min, head.val);
+            max = Math.max(max, head.val);
+        }
+        if (min == max) {
+            t.next = ans.next;
+            ans.next = t;
+        } else {
+            while (!(head.val == max && head.next.val == min)) {
+                head = head.next;
+            }
+            while (!(insertVal <= min || insertVal >= max) && !(head.val <= insertVal && insertVal <= head.next.val)) {
+                head = head.next;
+            }
+            t.next = head.next;
+            head.next = t;
+        }
+        return ans;
+    }
+
 }
