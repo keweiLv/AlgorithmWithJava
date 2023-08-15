@@ -9,7 +9,6 @@ public class Solution {
 
 
     public static void main(String[] args) {
-
     }
 
     // 字符串相加
@@ -837,6 +836,30 @@ public class Solution {
         root1.left = mergeTrees(root1.left, root2.left);
         root1.right = mergeTrees(root1.right, root2.right);
         return root1;
+    }
+
+    // 字符串中查找与替换
+    public String findReplaceString(String s, int[] indices, String[] sources, String[] targets) {
+        int n = s.length();
+        String[] replaceStr = new String[n];
+        int[] replaceLen = new int[n];
+        Arrays.fill(replaceLen, 1);
+        for (int i = 0; i < indices.length; i++) {
+            int idx = indices[i];
+            if (s.startsWith(sources[i], idx)) {
+                replaceStr[idx] = targets[i];
+                replaceLen[idx] = sources[i].length();
+            }
+        }
+        StringBuilder res = new StringBuilder();
+        for (int i = 0; i < n; i += replaceLen[i]) {
+            if (replaceStr[i] == null) {
+                res.append(s.charAt(i));
+            } else {
+                res.append(replaceStr[i]);
+            }
+        }
+        return res.toString();
     }
 
 }
