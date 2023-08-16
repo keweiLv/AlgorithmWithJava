@@ -862,4 +862,42 @@ public class Solution {
         return res.toString();
     }
 
+    // 找出转圈游戏输家
+    public int[] circularGameLosers(int n, int k) {
+        boolean[] vis = new boolean[n];
+        int cnt = 0;
+        for (int i = 0, p = 1; !vis[i]; p++) {
+            vis[i] = true;
+            cnt++;
+            i = (i + p * k) % n;
+        }
+        int[] ans = new int[n - cnt];
+        for (int i = 0, j = 0; i < n; i++) {
+            if (!vis[i]) {
+                ans[j++] = i + 1;
+            }
+        }
+        return ans;
+    }
+
+    // 二叉树展开为链表
+    public void flatten(TreeNode root) {
+        List<TreeNode> list = new ArrayList<>();
+        preOrderTraversal(root, list);
+        int size = list.size();
+        for (int i = 1; i < size; i++) {
+            TreeNode pre = list.get(i - 1), cur = list.get(i);
+            pre.left = null;
+            pre.right = cur;
+        }
+    }
+
+    private void preOrderTraversal(TreeNode root, List<TreeNode> list) {
+        if (root != null) {
+            list.add(root);
+            preOrderTraversal(root.left, list);
+            preOrderTraversal(root.right, list);
+        }
+    }
+
 }
