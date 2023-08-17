@@ -360,21 +360,21 @@ public class Solution {
     }
 
     // 和为 k 的子数组
-    public int subarraySum(int[] nums, int k) {
-        int n = nums.length, ans = 0;
-        int[] sum = new int[n + 1];
-        for (int i = 1; i <= n; i++) {
-            sum[i] = sum[i - 1] + nums[i - 1];
-        }
-        Map<Integer, Integer> map = new HashMap<>();
-        map.put(0, 1);
-        for (int i = 1; i <= n; i++) {
-            int t = sum[i], d = t - k;
-            ans += map.getOrDefault(d, 0);
-            map.put(t, map.getOrDefault(t, 0) + 1);
-        }
-        return ans;
-    }
+//    public int subarraySum(int[] nums, int k) {
+//        int n = nums.length, ans = 0;
+//        int[] sum = new int[n + 1];
+//        for (int i = 1; i <= n; i++) {
+//            sum[i] = sum[i - 1] + nums[i - 1];
+//        }
+//        Map<Integer, Integer> map = new HashMap<>();
+//        map.put(0, 1);
+//        for (int i = 1; i <= n; i++) {
+//            int t = sum[i], d = t - k;
+//            ans += map.getOrDefault(d, 0);
+//            map.put(t, map.getOrDefault(t, 0) + 1);
+//        }
+//        return ans;
+//    }
 
     // 0 和 1个数相同的子数组
     public int findMaxLength(int[] nums) {
@@ -900,4 +900,36 @@ public class Solution {
         }
     }
 
+    // 除自身以外数组的乘积
+    public int[] productExceptSelf(int[] nums) {
+        int[] res = new int[nums.length];
+        int k = 1;
+        for (int i = 0; i < res.length; i++) {
+            res[i] = k;
+            k *= nums[i];
+        }
+        k = 1;
+        for (int i = res.length - 1; i >= 0; i--) {
+            res[i] *= k;
+            k *= nums[i];
+        }
+        return res;
+    }
+
+    // 和为 K 的子数组
+    public int subarraySum(int[] nums, int k) {
+        int n = nums.length, ans = 0;
+        int[] sum = new int[n + 10];
+        for (int i = 1; i <= n; i++) {
+            sum[i] = sum[i - 1] + nums[i - 1];
+        }
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, 1);
+        for (int i = 1; i <= n; i++) {
+            int t = sum[i], d = t - k;
+            ans += map.getOrDefault(d, 0);
+            map.put(t, map.getOrDefault(t, 0) + 1);
+        }
+        return ans;
+    }
 }
