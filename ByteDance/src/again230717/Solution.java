@@ -932,4 +932,54 @@ public class Solution {
         }
         return ans;
     }
+
+    // 寻找重复元素二
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = 1; j <= k && i + j < nums.length; j++) {
+                int next = nums[i + j];
+                if (nums[i] == next) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    // 存在重复元素三
+    public boolean containsNearbyAlmostDuplicate(int[] nums, int indexDiff, int valueDiff) {
+        int n = nums.length;
+        TreeSet<Long> ts = new TreeSet<>();
+        for (int i = 0; i < n; i++) {
+            Long u = (long) nums[i];
+            Long l = ts.floor(u);
+            Long r = ts.ceiling(u);
+            if (l != null && u - l <= valueDiff) {
+                return true;
+            }
+            if (r != null && r - u <= valueDiff) {
+                return true;
+            }
+            ts.add(u);
+            if (i >= indexDiff) {
+                ts.remove((long) nums[i - indexDiff]);
+            }
+        }
+        return false;
+    }
+
+    // 最短无序连续子数组
+    public int findUnsortedSubarray(int[] nums) {
+        int n = nums.length;
+        int[] arr = nums.clone();
+        Arrays.sort(arr);
+        int i = 0, j = n - 1;
+        while (i <= j && nums[i] == arr[i]) {
+            i++;
+        }
+        while (i <= j && nums[j] == arr[j]) {
+            j--;
+        }
+        return j - i + 1;
+    }
 }
