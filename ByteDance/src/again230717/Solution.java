@@ -982,4 +982,26 @@ public class Solution {
         }
         return j - i + 1;
     }
+
+    // 判断根节点是否等于子节点之和
+    public boolean checkTree(TreeNode root) {
+        return root.left.val + root.right.val == root.val;
+    }
+
+    //长度最小的子数组
+    public int minSubArrayLen(int target, int[] nums) {
+        int n = nums.length;
+        long sum = 0;
+        int res = n + 1;
+        int l = 0, r = 0;
+        while (r < n) {
+            sum += nums[r];
+            while (sum >= target) {
+                res = Math.min(res, r - l + 1);
+                sum -= nums[l++];
+            }
+            r++;
+        }
+        return res == n + 1 ? 0 : res;
+    }
 }
