@@ -263,7 +263,7 @@ public class Solution {
     }
 
     // 零钱兑换
-    int INF = Integer.MAX_VALUE;
+    final static int INF = 0x3f3f3f3f;
 
     public int coinChange(int[] coins, int amount) {
         int[] dp = new int[amount + 1];
@@ -1057,5 +1057,52 @@ public class Solution {
             }
         }
         return Math.max(d / 2, Math.max(first, n - 1 - last));
+    }
+
+    // 统计参与通信的服务器
+    public int countServers(int[][] grid) {
+        int m = grid.length, n = grid[0].length;
+        Map<Integer, Integer> rows = new HashMap<>();
+        Map<Integer, Integer> cols = new HashMap<>();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 1) {
+                    rows.put(i, rows.getOrDefault(i, 0) + 1);
+                    cols.put(j, cols.getOrDefault(j, 0) + 1);
+                }
+            }
+        }
+        int ans = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 1 && (rows.get(i) > 1 || cols.get(j) > 1)) {
+                    ans++;
+                }
+            }
+        }
+        return ans;
+    }
+
+    // 奇怪的打印机
+    public int strangePrinter(String s) {
+        int n = s.length();
+        char[] cs = s.toCharArray();
+        int[][] dp = new int[n + 10][n + 10];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(dp[i], INF);
+        }
+        for (int i = n - 1; i >= 0; i--) {
+            dp[i][i] = 1;
+            for (int j = i + 1; j < n; j++) {
+                if (cs[i] == cs[j]) {
+                    dp[i][j] = dp[i][j - 1];
+                } else {
+                    for (int k = i; k < j; k++) {
+                        dp[i][j] = Math.min(dp[i][j], dp[i][k] + dp[k + 1][j]);
+                    }
+                }
+            }
+        }
+        return dp[0][n - 1];
     }
 }
