@@ -1105,4 +1105,49 @@ public class Solution {
         }
         return dp[0][n - 1];
     }
+
+    // 统计二叉树中好节点的数目
+    public int goodNodes(TreeNode root) {
+        return goodNodesDfs(root, Integer.MIN_VALUE);
+    }
+
+    private int goodNodesDfs(TreeNode root, int max) {
+        if (root == null) {
+            return 0;
+        }
+        int left = goodNodesDfs(root.left, Math.max(max, root.val));
+        int right = goodNodesDfs(root.right, Math.max(max, root.val));
+        return left + right + (max <= root.val ? 1 : 0);
+    }
+
+    // 二叉搜索树的最近公共祖先
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == p || root == q) {
+            return root;
+        }
+        int a = root.val, b = Math.min(p.val, q.val), c = Math.max(p.val, q.val);
+        if (a > b && a < c) {
+            return root;
+        } else if (a < b) {
+            return lowestCommonAncestor(root.right, p, q);
+        } else {
+            return lowestCommonAncestor(root.left, p, q);
+        }
+    }
+
+    // 二叉树的最近公共祖先
+    public TreeNode lowestCommonAncestorTwo(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null || root == p || root == q) {
+            return root;
+        }
+        TreeNode left = lowestCommonAncestorTwo(root.left, p, q);
+        TreeNode right = lowestCommonAncestorTwo(root.right, p, q);
+        if (left == null) {
+            return right;
+        }
+        if (right == null) {
+            return left;
+        }
+        return root;
+    }
 }
