@@ -1150,4 +1150,75 @@ public class Solution {
         }
         return root;
     }
+
+    // 汇总区间
+    public List<String> summaryRanges(int[] nums) {
+        List<String> ans = new ArrayList<>();
+        int i = 0;
+        int n = nums.length;
+        while (i < n) {
+            int low = i;
+            i++;
+            while (i < n && nums[i] == nums[i - 1] + 1) {
+                i++;
+            }
+            int high = i - 1;
+            StringBuffer sb = new StringBuffer(Integer.toString(nums[low]));
+            if (low < high) {
+                sb.append("->");
+                sb.append(Integer.toString(nums[high]));
+            }
+            ans.add(sb.toString());
+        }
+        return ans;
+    }
+
+    // Dota2参议院
+    public String predictPartyVictory(String senate) {
+        int n = senate.length();
+        Queue<Integer> radiant = new LinkedList<>();
+        Queue<Integer> dire = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            if (senate.charAt(i) == 'R') {
+                radiant.offer(i);
+            } else {
+                dire.offer(i);
+            }
+        }
+        while (!radiant.isEmpty() && !dire.isEmpty()) {
+            int ra = radiant.poll(), di = dire.poll();
+            if (ra < di) {
+                radiant.offer(ra + n);
+            } else {
+                dire.offer(di + n);
+            }
+        }
+        return !radiant.isEmpty() ? "Radiant" : "Dire";
+    }
+
+    // 优势洗牌
+    public int[] advantageCount(int[] nums1, int[] nums2) {
+        int n = nums1.length;
+        TreeSet<Integer> set = new TreeSet<>();
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num : nums1) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+            if (map.get(num) == 1) {
+                set.add(num);
+            }
+        }
+        int[] ans = new int[n];
+        for (int i = 0; i < n; i++) {
+            Integer ceiling = set.ceiling(nums2[i] + 1);
+            if (ceiling == null) {
+                ceiling = set.ceiling(-1);
+            }
+            ans[i] = ceiling;
+            map.put(ceiling, map.get(ceiling) - 1);
+            if (map.get(ceiling) == 0) {
+                set.remove(ceiling);
+            }
+        }
+        return ans;
+    }
 }
