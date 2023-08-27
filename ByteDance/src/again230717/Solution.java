@@ -7,10 +7,6 @@ import java.util.*;
  */
 public class Solution {
 
-
-    public static void main(String[] args) {
-    }
-
     // 字符串相加
     public static String addStrings(String num1, String num2) {
         StringBuilder sb = new StringBuilder();
@@ -1221,4 +1217,21 @@ public class Solution {
         }
         return ans;
     }
+
+    // 合并区间
+    public int[][] merge(int[][] intervals) {
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+        int[][] ans = new int[intervals.length][2];
+        int idx = -1;
+        for (int[] interval : intervals) {
+            if (idx == -1 || interval[0] > ans[idx][1]) {
+                ans[++idx] = interval;
+            } else {
+                ans[idx][1] = Math.max(ans[idx][1], interval[1]);
+            }
+        }
+        return Arrays.copyOf(ans, idx + 1);
+    }
+
+
 }
