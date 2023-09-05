@@ -33,6 +33,34 @@ public class Solution {
         return n;
     }
 
+    // 从两个数字数组里生成最小数字
+    public int minNumber(int[] nums1, int[] nums2) {
+        int ans = 100;
+        for (int a : nums1) {
+            for (int b : nums2) {
+                if (a == b) {
+                    ans = Math.min(ans, a);
+                } else {
+                    ans = Math.min(ans, Math.min(a * 10 + b, b * 10 + a));
+                }
+            }
+        }
+        return ans;
+    }
 
+    // 最多可以摧毁的敌人堡垒数目
+    public int captureForts(int[] forts) {
+        int n = forts.length;
+        int ans = 0, pre = -1;
+        for (int i = 0; i < n; i++) {
+            if (forts[i] == 1 || forts[i] == -1) {
+                if (pre >= 0 && forts[i] != forts[pre]) {
+                    ans = Math.max(ans, i - pre - 1);
+                }
+                pre = i;
+            }
+        }
+        return ans;
+    }
 
 }
