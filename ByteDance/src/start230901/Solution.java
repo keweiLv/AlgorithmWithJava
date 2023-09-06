@@ -63,4 +63,25 @@ public class Solution {
         return ans;
     }
 
+    // 最深叶节点的最近公共祖先
+    private TreeNode treeNodeAns;
+    private int maxDepth = -1;
+
+    public TreeNode lcaDeepestLeaves(TreeNode root) {
+        dfs(root, 0);
+        return treeNodeAns;
+    }
+
+    private int dfs(TreeNode root, int depth) {
+        if (root == null) {
+            maxDepth = Math.max(maxDepth, depth);
+            return depth;
+        }
+        int leftDepth = dfs(root.left, depth + 1);
+        int rightDepth = dfs(root.right, depth + 1);
+        if (leftDepth == rightDepth && leftDepth == maxDepth) {
+            treeNodeAns = root;
+        }
+        return Math.max(leftDepth, rightDepth);
+    }
 }
