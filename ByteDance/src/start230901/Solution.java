@@ -84,4 +84,51 @@ public class Solution {
         }
         return Math.max(leftDepth, rightDepth);
     }
+
+    // 修车的最少时间
+    public long repairCars(int[] ranks, int cars) {
+        long l = 0, r = 1L * ranks[0] * cars * cars;
+        while (l < r) {
+            long m = l + r >> 1;
+            if (check(ranks, cars, m)) {
+                r = m;
+            } else {
+                l = m + 1;
+            }
+        }
+        return l;
+    }
+
+    private boolean check(int[] ranks, int cars, long m) {
+        long cnt = 0;
+        for (int x : ranks) {
+            cnt += (long) Math.sqrt(m / x);
+        }
+        return cnt >= cars;
+    }
+
+    // 每个小孩最多能分到多少糖果
+    public int maximumCandies(int[] candies, long k) {
+        int max = Arrays.stream(candies).max().getAsInt();
+        int left = 0, right = max;
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (getKids(candies, mid) < k) {
+                right = mid - 1;
+            } else {
+                left = mid;
+            }
+        }
+        return left;
+    }
+
+    private long getKids(int[] candies, int mid) {
+        long cnt = 0;
+        for (int candy : candies) {
+            cnt += candy / mid;
+        }
+        return cnt;
+    }
 }
+
+
