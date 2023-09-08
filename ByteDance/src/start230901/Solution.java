@@ -1,6 +1,8 @@
 package start230901;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Solution {
 
@@ -128,6 +130,42 @@ public class Solution {
             cnt += candy / mid;
         }
         return cnt;
+    }
+
+    // 计算列车到站时间
+    public int findDelayedArrivalTime(int arrivalTime, int delayedTime) {
+        return (arrivalTime + delayedTime) % 24;
+    }
+
+    // 最长回文串
+    public int longestPalindrome(String s) {
+        int[] arr = new int[128];
+        for (char c : s.toCharArray()) {
+            arr[c]++;
+        }
+        int count = 0;
+        for (int i : arr) {
+            count += (i % 2);
+        }
+        return count == 0 ? s.length() : (s.length() - count + 1);
+    }
+
+    // 多个数组求交集
+    public List<Integer> intersection(int[][] nums) {
+        int[] cnt = new int[10001];
+        int n = nums.length;
+        for (int[] num : nums) {
+            for (int x : num) {
+                cnt[x]++;
+            }
+        }
+        List<Integer> ans = new ArrayList<>();
+        for (int i = 0; i <= 1000; i++) {
+            if (cnt[i] == n) {
+                ans.add(i);
+            }
+        }
+        return ans;
     }
 }
 
