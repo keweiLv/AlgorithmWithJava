@@ -1,8 +1,6 @@
 package start230901;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class Solution {
 
@@ -164,6 +162,55 @@ public class Solution {
             if (cnt[i] == n) {
                 ans.add(i);
             }
+        }
+        return ans;
+    }
+
+    // 课程表
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        if (numCourses <= 0) {
+            return new int[0];
+        }
+        HashSet<Integer>[] adj = new HashSet[numCourses];
+        for (int i = 0; i < numCourses; i++) {
+            adj[i] = new HashSet<>();
+        }
+        int[] inDegree = new int[numCourses];
+        for (int[] p : prerequisites) {
+            adj[p[1]].add(p[0]);
+            inDegree[p[0]]++;
+        }
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < numCourses; i++) {
+            if (inDegree[i] == 0) {
+                queue.offer(i);
+            }
+        }
+        int[] res = new int[numCourses];
+        int count = 0;
+        while (!queue.isEmpty()) {
+            Integer poll = queue.poll();
+            res[count++] = poll;
+            Set<Integer> tmp = adj[poll];
+            for (Integer num : tmp) {
+                inDegree[num]--;
+                if (inDegree[num] == 0) {
+                    queue.offer(num);
+                }
+            }
+        }
+        if (count == numCourses) {
+            return res;
+        }
+        return new int[0];
+    }
+
+    // 最大子数组和
+    public int maxSubArray(int[] nums) {
+        int ans = nums[0], pre = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            pre = Math.max(pre + nums[i], nums[i]);
+            ans = Math.max(ans, pre);
         }
         return ans;
     }
