@@ -230,6 +230,69 @@ public class Solution {
         second.next = second.next.next;
         return dummy.next;
     }
+
+    // 课程表四
+    public List<Boolean> checkIfPrerequisite(int numCourses, int[][] prerequisites, int[][] queries) {
+        boolean[][] f = new boolean[numCourses][numCourses];
+        List<Integer>[] g = new List[numCourses];
+        int[] indeg = new int[numCourses];
+        Arrays.setAll(g, i -> new ArrayList<>());
+        for (int[] p : prerequisites) {
+            g[p[0]].add(p[1]);
+            ++indeg[p[1]];
+        }
+        Deque<Integer> deque = new ArrayDeque<>();
+        for (int i = 0; i < numCourses; i++) {
+            if (indeg[i] == 0) {
+                deque.offer(i);
+            }
+        }
+        while (!deque.isEmpty()) {
+            Integer i = deque.poll();
+            for (int j : g[i]) {
+                f[i][j] = true;
+                for (int h = 0; h < numCourses; h++) {
+                    f[h][j] |= f[h][i];
+                }
+                if (--indeg[j] == 0) {
+                    deque.offer(j);
+                }
+            }
+        }
+        List<Boolean> ans = new ArrayList<>();
+        for (int[] q : queries) {
+            ans.add(f[q[0]][q[1]]);
+        }
+        return ans;
+    }
+
+    // 子集二
+    List<List<Integer>> ans;
+    List<Integer> path;
+
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        ans = new ArrayList<>();
+        path = new ArrayList<>();
+        Arrays.sort(nums);
+        int n = nums.length;
+        boolean[] vis = new boolean[n];
+        backtrace(nums, 0, vis, 0);
+        return ans;
+    }
+
+    private void backtrace(int[] nums, int start, boolean[] vis, int n) {
+        ans.add(new ArrayList<>(path));
+        for (int i = start; i < n; i++) {
+            if (i > 0 && nums[i - 1] == nums[i] && !vis[i - 1]) {
+                continue;
+            }
+            vis[i] = true;
+            path.add(nums[i]);
+            backtrace(nums, i + 1, vis, n);
+            vis[i] = false;
+            path.remove(path.size() - 1);
+        }
+    }
 }
 
 
