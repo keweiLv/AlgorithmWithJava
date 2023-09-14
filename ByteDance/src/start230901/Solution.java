@@ -293,6 +293,61 @@ public class Solution {
             path.remove(path.size() - 1);
         }
     }
+
+    // 可以攻击国王的皇后
+    private final static int[][] directions = {{1, 0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}, {-1, -1}, {0, -1}, {1, -1}};
+
+    public List<List<Integer>> queensAttacktheKing(int[][] queens, int[] king) {
+        boolean[][] check = new boolean[8][8];
+        for (int[] q : queens) {
+            check[q[0]][q[1]] = true;
+        }
+        List<List<Integer>> ans = new ArrayList<>();
+        for (int[] d : directions) {
+            int x = king[0] + d[0];
+            int y = king[1] + d[1];
+            while (0 <= x && x < 8 && 0 <= y && y < 8) {
+                if (check[x][y]) {
+                    ans.add(List.of(x, y));
+                    break;
+                }
+                x += d[0];
+                y += d[1];
+            }
+        }
+        return ans;
+    }
+
+    // 划分字母区间
+    public List<Integer> partitionLabels(String s) {
+        List<Integer> ans = new ArrayList<>();
+        int n = s.length();
+        int[] maxIndex = new int[26];
+        for (int i = 0; i < n; i++) {
+            maxIndex[s.charAt(i) - 'a'] = i;
+        }
+        int start = 0, end = 0;
+        for (int i = 0; i < n; i++) {
+            end = Math.max(end, maxIndex[s.charAt(i) - 'a']);
+            if (i == end) {
+                ans.add(end - start + 1);
+                start = end + 1;
+            }
+        }
+        return ans;
+    }
+
+    // 反转链表
+    public ListNode reverseList(ListNode head) {
+        ListNode cur = head, pre = null;
+        while (cur != null) {
+            ListNode tmp = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = tmp;
+        }
+        return pre;
+    }
 }
 
 
