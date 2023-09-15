@@ -348,6 +348,78 @@ public class Solution {
         }
         return pre;
     }
+
+    // 宝石补给
+    public int giveGem(int[] gem, int[][] operations) {
+        for (int[] op : operations) {
+            int tmp = gem[op[0]] / 2;
+            gem[op[0]] -= tmp;
+            gem[op[1]] += tmp;
+        }
+        return Arrays.stream(gem).max().getAsInt() - Arrays.stream(gem).min().getAsInt();
+    }
+
+    // 单词的压缩编码
+    Trie trie = new Trie();
+
+    public int minimumLengthEncoding(String[] words) {
+        for (String word : words) {
+            trie.insert(word);
+        }
+        int res = 0;
+        Set<String> set = new HashSet<>();
+        for (String word : words) {
+            if (set.contains(word)) {
+                continue;
+            }
+            set.add(word);
+            boolean maxWord = trie.search(word);
+            if (maxWord) {
+                res = res + word.length() + 1;
+            }
+        }
+        return res;
+    }
+
+    class Trie {
+        TrieNode root = new TrieNode();
+
+        public void insert(String word) {
+            TrieNode cur = root;
+            boolean newBranch = false;
+            for (int i = word.length() - 1; i >= 0; i--) {
+                char c = word.charAt(i);
+                if (cur.next[c - 'a'] == null) {
+                    cur.next[c - 'a'] = new TrieNode();
+                    newBranch = true;
+                }
+                cur = cur.next[c - 'a'];
+                if (cur.isEnd && i != 0) {
+                    cur.isEnd = false;
+                }
+            }
+            if (newBranch) {
+                cur.isEnd = true;
+            }
+        }
+
+        public boolean search(String word) {
+            TrieNode cur = root;
+            for (int i = word.length() - 1; i >= 0; i--) {
+                char c = word.charAt(i);
+                if (cur.next[c - 'a'] == null) {
+                    return false;
+                }
+                cur = cur.next[c - 'a'];
+            }
+            return cur.isEnd;
+        }
+    }
+
+    class TrieNode {
+        TrieNode[] next = new TrieNode[26];
+        boolean isEnd;
+    }
 }
 
 
