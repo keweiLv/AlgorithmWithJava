@@ -420,6 +420,38 @@ public class Solution {
         TrieNode[] next = new TrieNode[26];
         boolean isEnd;
     }
+
+    // 打家劫舍
+    public int rob(int[] nums) {
+        int pre = 0, cur = 0;
+        for (int num : nums) {
+            int tmp = Math.max(cur, pre + num);
+            pre = cur;
+            cur = tmp;
+        }
+        return cur;
+    }
+
+    // 打家劫舍二
+    public int robG2(int[] nums) {
+        if (nums.length == 0) {
+            return 0;
+        }
+        if (nums.length == 1) {
+            return nums[0];
+        }
+        return Math.max(myRob(Arrays.copyOfRange(nums, 0, nums.length - 1)), myRob(Arrays.copyOfRange(nums, 1, nums.length)));
+    }
+
+    public int myRob(int[] nums) {
+        int pre = 0, cur = 0;
+        for (int num : nums) {
+            int tmp = Math.max(pre + num, cur);
+            pre = cur;
+            cur = tmp;
+        }
+        return cur;
+    }
 }
 
 
