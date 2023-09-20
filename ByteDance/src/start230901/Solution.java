@@ -452,6 +452,40 @@ public class Solution {
         }
         return cur;
     }
+
+    // 七进制数
+    public String convertToBase7(int num) {
+        boolean flag = num < 0;
+        if (flag) {
+            num = -num;
+        }
+        StringBuffer sb = new StringBuffer();
+        do {
+            sb.append(num % 7);
+            num /= 7;
+        } while (num != 0);
+        sb.reverse();
+        return flag ? "-" + sb.toString() : sb.toString();
+    }
+
+    // 拿硬币
+    public int minCount(int[] coins) {
+        int ans = 0;
+        for (int num : coins) {
+            ans += (num + 1) / 2;
+        }
+        return ans;
+    }
+
+    // 二叉数的最大深度
+    public int maxDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int left = maxDepth(root.left);
+        int right = maxDepth(root.right);
+        return Math.max(left, right) + 1;
+    }
 }
 
 
