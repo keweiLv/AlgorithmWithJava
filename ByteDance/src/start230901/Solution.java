@@ -534,6 +534,23 @@ public class Solution {
         }
         return num1 + num2;
     }
+
+    // 移动机器人
+    public int sumDistance(int[] nums, String s, int d) {
+        final long MOD = (long) 1e9 + 7;
+        int n = nums.length;
+        long[] a = new long[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = (long) nums[i] + (s.charAt(i) == 'L' ? -d : d);
+        }
+        Arrays.sort(a);
+        long ans = 0, sum = 0;
+        for (int i = 0; i < n; i++) {
+            ans = (ans + i * a[i] - sum) % MOD;
+            sum += a[i];
+        }
+        return (int) ans;
+    }
 }
 
 
