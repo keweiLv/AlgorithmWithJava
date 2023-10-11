@@ -551,6 +551,32 @@ public class Solution {
         }
         return (int) ans;
     }
+
+    // 奖励最顶尖的K名学生
+    public List<Integer> topStudents(String[] positive_feedback, String[] negative_feedback, String[] report, int[] student_id, int k) {
+        Set<String> ps = new HashSet<>(Arrays.asList(positive_feedback));
+        Set<String> ns = new HashSet<>(Arrays.asList(negative_feedback));
+        int n = report.length;
+        int[][] arr = new int[n][2];
+        for (int i = 0; i < n; i++) {
+            int sid = student_id[i];
+            int s = 0;
+            for (String t : report[i].split(" ")) {
+                if (ps.contains(t)) {
+                    s += 3;
+                } else if (ns.contains(t)) {
+                    s -= 1;
+                }
+            }
+            arr[i] = new int[]{s, sid};
+        }
+        Arrays.sort(arr, (a, b) -> a[0] == b[0] ? a[1] - b[1] : b[0] - a[0]);
+        List<Integer> ans = new ArrayList<>();
+        for (int i = 0; i < k; i++) {
+            ans.add(arr[i][1]);
+        }
+        return ans;
+    }
 }
 
 
