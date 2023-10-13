@@ -118,4 +118,32 @@ public class Solution {
         }
         return stack.size() == 1;
     }
+
+    // 字符串解码
+    public String decodeString(String s) {
+        StringBuilder ans = new StringBuilder();
+        int multi = 0;
+        LinkedList<Integer> stack_multi = new LinkedList<>();
+        LinkedList<String> stack_str = new LinkedList<>();
+        for (Character c : s.toCharArray()) {
+            if (c == '[') {
+                stack_multi.addLast(multi);
+                stack_str.addLast(ans.toString());
+                multi = 0;
+                ans = new StringBuilder();
+            } else if (c == ']') {
+                StringBuilder tmp = new StringBuilder();
+                int cur_multi = stack_multi.removeLast();
+                for (int i = 0; i < cur_multi; i++) {
+                    tmp.append(ans);
+                }
+                ans = new StringBuilder(stack_str.removeLast() + tmp);
+            } else if (c >= '0' && c <= '9') {
+                multi = multi * 10 + Integer.parseInt(c + "");
+            } else {
+                ans.append(c);
+            }
+        }
+        return ans.toString();
+    }
 }

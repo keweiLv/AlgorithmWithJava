@@ -590,6 +590,33 @@ public class Solution {
         }
         return ans;
     }
+
+    // 避免洪水泛滥
+    public int[] avoidFlood(int[] rains) {
+        int n = rains.length;
+        int[] ans = new int[n];
+        Arrays.fill(ans, -1);
+        TreeSet<Integer> sunny = new TreeSet<>();
+        Map<Integer, Integer> rainy = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            int rain = rains[i];
+            if (rain > 0) {
+                if (rainy.containsKey(rain)) {
+                    Integer higher = sunny.higher(rainy.get(rain));
+                    if (higher == null) {
+                        return new int[0];
+                    }
+                    ans[higher] = rain;
+                    sunny.remove(higher);
+                }
+                rainy.put(rain, i);
+            } else {
+                sunny.add(i);
+                ans[i] = 1;
+            }
+        }
+        return ans;
+    }
 }
 
 
