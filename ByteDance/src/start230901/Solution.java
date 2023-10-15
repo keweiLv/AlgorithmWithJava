@@ -617,6 +617,43 @@ public class Solution {
         }
         return ans;
     }
+
+
+    // 只出现一次的数字二
+    public int singleNumber(int[] nums) {
+        int[] counts = new int[32];
+        for (int num : nums) {
+            for (int j = 0; j < 32; j++) {
+                counts[j] += num & 1;
+                num >>>= 1;
+            }
+        }
+        int res = 0, m = 3;
+        for (int i = 0; i < 32; i++) {
+            res <<= 1;
+            res |= counts[31 - i] % m;
+        }
+        return res;
+    }
+
+    // 有效的字母异位词
+    public boolean isAnagram(String s, String t) {
+        if (s.length() != t.length()) {
+            return false;
+        }
+        int[] table = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            table[s.charAt(i) - 'a']++;
+        }
+        for (int i = 0; i < t.length(); i++) {
+            table[t.charAt(i) - 'a']--;
+            if (table[t.charAt(i) - 'a'] < 0) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
+
 
 
