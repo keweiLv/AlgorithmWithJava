@@ -146,4 +146,19 @@ public class Solution {
         }
         return ans.toString();
     }
+
+    // 字符串中的第一个唯一字符
+    public int firstUniqChar(String s) {
+        HashMap<Character, Boolean> dic = new HashMap<>();
+        char[] sc = s.toCharArray();
+        for (char c : sc) {
+            dic.put(c, !dic.containsKey(c));
+        }
+        for (int i = 0; i < sc.length; i++) {
+            if (dic.get(sc[i])) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }

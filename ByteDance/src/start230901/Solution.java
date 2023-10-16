@@ -653,6 +653,24 @@ public class Solution {
         }
         return true;
     }
+
+    // 只出现一次的数字三
+    public int[] singleNumberThree(int[] nums) {
+        int xor = 0;
+        for (int num : nums) {
+            xor ^= num;
+        }
+        int lsb = (xor == Integer.MIN_VALUE ? xor : xor & (-xor));
+        int t1 = 0, t2 = 0;
+        for (int num : nums) {
+            if ((num & lsb) != 0) {
+                t1 ^= num;
+            } else {
+                t2 ^= num;
+            }
+        }
+        return new int[]{t1, t2};
+    }
 }
 
 
