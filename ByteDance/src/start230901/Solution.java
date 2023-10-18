@@ -671,6 +671,21 @@ public class Solution {
         }
         return new int[]{t1, t2};
     }
+
+    // 执行K此操作后的最大分数
+    public long maxKelements(int[] nums, int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> (b - a));
+        for (int num : nums) {
+            pq.add(num);
+        }
+        long ans = 0;
+        for (int i = 0; i < k; i++) {
+            int x = pq.poll();
+            ans += x;
+            pq.add((x + 2) / 3);
+        }
+        return ans;
+    }
 }
 
 
