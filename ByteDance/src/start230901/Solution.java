@@ -741,6 +741,31 @@ public class Solution {
         }
         return f[n][target];
     }
+
+    // 求一个整数的惩罚数
+    public int punishmentNumber(int n) {
+        int ans = 0;
+        for (int i = 1; i <= n; i++) {
+            if (check(i * i, i)) {
+                ans += i * i;
+            }
+        }
+        return ans;
+    }
+
+    boolean check(int c, int t) {
+        if (c == t) {
+            return true;
+        }
+        int d = 10;
+        while (c >= d && c % d <= t) {
+            if (check(c / d, t - (c % d))) {
+                return true;
+            }
+            d *= 10;
+        }
+        return false;
+    }
 }
 
 
