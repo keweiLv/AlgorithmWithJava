@@ -766,6 +766,16 @@ public class Solution {
         }
         return false;
     }
+
+    // 统计能整除数字的位数
+    public int countDigits(int num) {
+        int n = num, ans = 0;
+        while (num != 0) {
+            ans += n % (num % 10) == 0 ? 1 : 0;
+            num /= 10;
+        }
+        return ans;
+    }
 }
 
 
