@@ -776,6 +776,21 @@ public class Solution {
         }
         return ans;
     }
+
+    // 切割后面积最大的蛋糕
+    public int maxArea(int h, int w, int[] horizontalCuts, int[] verticalCuts) {
+        Arrays.sort(horizontalCuts);
+        Arrays.sort(verticalCuts);
+        int n = horizontalCuts.length, m = verticalCuts.length;
+        int mh = Math.max(horizontalCuts[0], h - horizontalCuts[n - 1]), mv = Math.max(verticalCuts[0], w - verticalCuts[m - 1]);
+        for (int i = 1; i < n; i++) {
+            mh = Math.max(mh, horizontalCuts[i] - horizontalCuts[i - 1]);
+        }
+        for (int i = 1; i < m; i++) {
+            mv = Math.max(mv, verticalCuts[i] - verticalCuts[i - 1]);
+        }
+        return (int) (((long) mh * mv) % MOD);
+    }
 }
 
 
