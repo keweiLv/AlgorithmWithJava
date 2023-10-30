@@ -816,6 +816,40 @@ public class Solution {
         }
         return ans >= mid;
     }
+
+    // H指数二
+    public int hIndex_TWO(int[] citations) {
+        int n = citations.length;
+        int[] cnt = new int[n + 10];
+        for (int c : citations) {
+            cnt[Math.min(c, n)]++;
+        }
+        for (int i = n, tol = 0; i >= 0; i--) {
+            tol += cnt[i];
+            if (tol >= i) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    // 从数量最多的堆取走礼物
+    public long pickGifts(int[] gifts, int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> (b - a));
+        for (int gift : gifts) {
+            pq.offer(gift);
+        }
+        while (k > 0) {
+            k--;
+            int poll = pq.poll();
+            pq.offer((int) Math.sqrt(poll));
+        }
+        long ans = 0;
+        while (!pq.isEmpty()) {
+            ans += pq.poll();
+        }
+        return ans;
+    }
 }
 
 
