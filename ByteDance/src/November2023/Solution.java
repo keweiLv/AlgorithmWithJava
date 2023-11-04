@@ -132,7 +132,7 @@ public class Solution {
     public int findMaximumXOR(int[] nums) {
         int res = 0;
         int mask = 0;
-        for (int i = 30; i >= 0; i++) {
+        for (int i = 30; i >= 0; i--) {
             mask = mask | (1 << i);
 
             Set<Integer> set = new HashSet<>();
