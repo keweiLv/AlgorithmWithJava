@@ -1,9 +1,6 @@
 package November2023;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Solution {
 
@@ -146,6 +143,22 @@ public class Solution {
                     break;
                 }
             }
+        }
+        return res;
+    }
+
+    // 重复的DNA序列
+    public List<String> findRepeatedDnaSequences(String s) {
+        List<String> res = new ArrayList<>();
+        int n = s.length();
+        Map<String, Integer> map = new HashMap<>();
+        for (int i = 0; i + 10 <= n; i++) {
+            String cur = s.substring(i, i + 10);
+            int cnt = map.getOrDefault(cur, 0);
+            if (cnt == 1) {
+                res.add(cur);
+            }
+            map.put(cur, cnt + 1);
         }
         return res;
     }
