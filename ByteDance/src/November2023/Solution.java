@@ -1,6 +1,7 @@
 package November2023;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 public class Solution {
 
@@ -159,6 +160,55 @@ public class Solution {
                 res.add(cur);
             }
             map.put(cur, cnt + 1);
+        }
+        return res;
+    }
+
+    // 最大单词长度乘积
+    public int maxProduct(String[] words) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (String word : words) {
+            int t = 0, n = word.length();
+            for (int i = 0; i < n; i++) {
+                int c = word.charAt(i) - 'a';
+                t |= (1 << c);
+            }
+            if (!map.containsKey(t) || map.get(t) < n) {
+                map.put(t, n);
+            }
+        }
+        int ans = 0;
+        for (int a : map.keySet()) {
+            for (int b : map.keySet()) {
+                if ((a & b) == 0) {
+                    ans = Math.max(ans, map.get(a) * map.get(b));
+                }
+            }
+        }
+        return ans;
+    }
+
+    // 优势洗牌
+    public int[] advantageCount(int[] nums1, int[] nums2) {
+        int n = nums1.length;
+        int[] ans = new int[n];
+        Arrays.sort(nums1);
+        Integer[] array = IntStream.range(0, n).boxed().toArray(Integer[]::new);
+        Arrays.sort(array, (i, j) -> nums2[i] - nums2[j]);
+        int left = 0, right = n - 1;
+        for (int num : nums1) {
+            ans[num > nums2[array[left]] ? array[left++] : array[right--]] = num;
+        }
+        return ans;
+    }
+
+    // 盛最多水的容器
+    public int maxArea(int[] height) {
+        int i = 0, j = height.length - 1, res = 0;
+        while (i < j) {
+            res = height[i] < height[j] ?
+                    Math.max(res, (j - i) * height[i++]) :
+                    Math.max(res, (j - i) * height[j--]);
         }
         return res;
     }
