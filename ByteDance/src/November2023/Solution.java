@@ -212,4 +212,37 @@ public class Solution {
         }
         return res;
     }
+
+    // 统计范围内的元音字符串数
+    public int vowelStrings(String[] words, int left, int right) {
+        int ans = 0;
+        for (int i = left; i <= right; i++) {
+            String s = words[i];
+            char a = s.charAt(0), b = s.charAt(s.length() - 1);
+            if ("aeiou".indexOf(a) != -1 && "aeiou".indexOf(b) != -1) {
+                ans++;
+            }
+        }
+        return ans;
+    }
+
+    // 超级洗衣机
+    public int findMinMoves(int[] machines) {
+        int n = machines.length;
+        int sum = Arrays.stream(machines).sum();
+        if (sum % n != 0) {
+            return -1;
+        }
+        int t = sum / n;
+        int ls = 0, rs = sum;
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            rs -= machines[i];
+            int a = Math.max(t * i - ls, 0);
+            int b = Math.max((n - i - 1) * t - rs, 0);
+            ans = Math.max(ans, a + b);
+            ls += machines[i];
+        }
+        return ans;
+    }
 }
