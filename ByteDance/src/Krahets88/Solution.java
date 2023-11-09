@@ -250,7 +250,7 @@ public class Solution {
             while (i >= 0 && s.charAt(i) != ' ') {
                 i--;
             }
-            sb.append(s.substring(i + 1, j + 1) + ' ');
+            sb.append(s, i + 1, j + 1).append(' ');
             while (i >= 0 && s.charAt(i) == ' ') {
                 i--;
             }
