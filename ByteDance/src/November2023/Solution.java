@@ -278,4 +278,67 @@ public class Solution {
         }
         return stack.size();
     }
+
+    // 咒语和药水的成功对数
+    public int[] successfulPairs(int[] spells, int[] potions, long success) {
+        int n = spells.length, m = potions.length;
+        int[] ans = new int[n];
+        Arrays.sort(potions);
+        for (int i = 0; i < n; i++) {
+            double cur = success * 1.0 / spells[i];
+            int l = 0, r = m - 1;
+            while (l < r) {
+                int mid = l + r >> 1;
+                if ((long) potions[mid] * spells[i] >= success) {
+                    r = mid;
+                } else {
+                    l = mid + 1;
+                }
+            }
+            if ((long) potions[r] * spells[i] >= success) {
+                ans[i] = m - r;
+            }
+        }
+        return ans;
+    }
+
+    // 袋子里最少数目的球
+    public int minimumSize(int[] nums, int maxOperations) {
+        int l = 1, r = 0x3f3f3f3f;
+        while (l < r) {
+            int mid = l + r >> 1;
+            if (chaeck(nums, mid, maxOperations)) {
+                r = mid;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return r;
+    }
+
+    private boolean chaeck(int[] nums, int mid, int maxOperations) {
+        int cnt = 0;
+        for (int num : nums) {
+            cnt += Math.ceil(num * 1.0 / mid) - 1;
+        }
+        return cnt <= maxOperations;
+    }
+
+    // 有界数组中指定下标的最大值
+    public int maxValue(int n, int index, int maxSum) {
+        int left = 1, right = maxSum;
+        while (left < right) {
+            int mid = (left + right + 1) >> 1;
+            if (sum(mid - 1, index) + sum(mid, n - index) <= maxSum) {
+                left = mid;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return left;
+    }
+
+    private long sum(long x, int cnt) {
+        return x >= cnt ? (x + x - cnt + 1) * cnt / 2 : (x + 1) * x / 2 + cnt - x;
+    }
 }
