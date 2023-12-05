@@ -444,4 +444,17 @@ public class Solution {
         return ans;
     }
 
+    // 雪糕的最大数量
+    public int maxIceCream(int[] costs, int coins) {
+        int n = costs.length;
+        int ans = 0;
+        Arrays.sort(costs);
+        for (int cost : costs) {
+            if (coins >= cost) {
+                ans++;
+                coins -= cost;
+            }
+        }
+        return ans;
+    }
 }
