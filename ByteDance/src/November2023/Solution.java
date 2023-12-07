@@ -496,4 +496,95 @@ public class Solution {
         }
         return ans;
     }
+
+    // 重新规划路线
+    public int minReorder(int n, int[][] connections) {
+        List<int[]>[] e = new List[n];
+        for (int i = 0; i < n; i++) {
+            e[i] = new ArrayList<>();
+        }
+        for (int[] edge : connections) {
+            e[edge[0]].add(new int[]{edge[1], 1});
+            e[edge[1]].add(new int[]{edge[0], 0});
+        }
+        return dfs(0, -1, e);
+    }
+
+    private int dfs(int x, int parent, List<int[]>[] e) {
+        int res = 0;
+        for (int[] edge : e[x]) {
+            if (edge[0] == parent) {
+                continue;
+            }
+            res += edge[1] + dfs(edge[0], x, e);
+        }
+        return res;
+    }
+
+    // 奇偶树
+    public boolean isEvenOddTree(TreeNode root) {
+        Deque<TreeNode> deque = new ArrayDeque<>();
+        boolean flag = true;
+        deque.addLast(root);
+        while (!deque.isEmpty()) {
+            int size = deque.size(), pre = flag ? 0 : 0x3f3f3f3f;
+            while (size-- > 0) {
+                TreeNode node = deque.pollFirst();
+                int cur = node.val;
+                if (flag && (cur % 2 == 0 || cur <= pre)) {
+                    return false;
+                }
+                if (!flag && (cur % 2 != 0 || cur >= pre)) {
+                    return false;
+                }
+                pre = cur;
+                if (node.left != null) {
+                    deque.addLast(node.left);
+                }
+                if (node.right != null) {
+                    deque.addLast(node.right);
+                }
+            }
+            flag = !flag;
+        }
+        return true;
+    }
+
+    // 输出二叉树
+    int h, m, n;
+    List<List<String>> ans;
+
+    public List<List<String>> printTree(TreeNode root) {
+        dfs1(root, 0);
+        m = h + 1;
+        n = (1 << (h + 1)) - 1;
+        ans = new ArrayList<>();
+        for (int i = 0; i < m; i++) {
+            List<String> cur = new ArrayList<>();
+            for (int j = 0; j < n; j++) {
+                cur.add("");
+            }
+            ans.add(cur);
+        }
+        dfs2(root, 0, (n - 1) / 2);
+        return ans;
+    }
+
+    private void dfs2(TreeNode root, int x, int y) {
+        if (root == null) {
+            return;
+        }
+        ans.get(x).set(y, String.valueOf(root.val));
+        dfs2(root.left, x + 1, y - (1 << (h - x - 1)));
+        dfs2(root.right, x + 1, y + (1 << (h - x - 1)));
+    }
+
+    private void dfs1(TreeNode root, int depth) {
+        if (root == null) {
+            return;
+        }
+        h = Math.max(h, depth);
+        dfs1(root.left, depth + 1);
+        dfs1(root.right, depth + 1);
+    }
 }
