@@ -587,4 +587,27 @@ public class Solution {
         dfs1(root.left, depth + 1);
         dfs1(root.right, depth + 1);
     }
+
+    // 最大二叉树
+    public TreeNode constructMaximumBinaryTree(int[] nums) {
+        Deque<TreeNode> deque = new ArrayDeque<>();
+        for (int i = 0; i < nums.length; i++) {
+            TreeNode node = new TreeNode(nums[i]);
+            while (!deque.isEmpty()) {
+                TreeNode topNode = deque.peekLast();
+                if (topNode.val > node.val) {
+                    deque.addLast(node);
+                    topNode.right = node;
+                    break;
+                } else {
+                    deque.removeLast();
+                    node.left = topNode;
+                }
+            }
+            if (deque.isEmpty()) {
+                deque.addLast(node);
+            }
+        }
+        return deque.peek();
+    }
 }
