@@ -638,4 +638,33 @@ public class Solution {
         }
         return new String(cs);
     }
+
+
+    // 彩灯装饰记录三
+    public List<List<Integer>> decorateRecord(TreeNode root) {
+        List<List<Integer>> ans = new ArrayList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        if (root != null) {
+            queue.add(root);
+        }
+        while (!queue.isEmpty()) {
+            LinkedList<Integer> tmp = new LinkedList<>();
+            for (int i = queue.size(); i > 0; i--) {
+                TreeNode poll = queue.poll();
+                if (ans.size() % 2 == 0) {
+                    tmp.addLast(poll.val);
+                } else {
+                    tmp.addFirst(poll.val);
+                }
+                if (poll.left != null) {
+                    queue.add(poll.left);
+                }
+                if (poll.right != null) {
+                    queue.add(poll.right);
+                }
+            }
+            ans.add(tmp);
+        }
+        return ans;
+    }
 }

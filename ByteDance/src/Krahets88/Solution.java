@@ -1,5 +1,6 @@
 package Krahets88;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -312,4 +313,17 @@ public class Solution {
         return pre1;
     }
 
+
+    // 寻找数组中心下标
+    public int pivotIndex(int[] nums) {
+        int total = Arrays.stream(nums).sum();
+        int sum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (2 * sum + nums[i] == total) {
+                return i;
+            }
+            sum += nums[i];
+        }
+        return -1;
+    }
 }
