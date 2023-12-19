@@ -667,4 +667,44 @@ public class Solution {
         }
         return ans;
     }
+
+    // 寻找峰值一
+    public int findPeakElement(int[] nums) {
+        int left = 0, right = nums.length - 1;
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] > nums[mid + 1]) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+
+    // 寻找峰值二
+    public int[] findPeakGrid(int[][] mat) {
+        int l = 0, r = mat.length - 1;
+        int n = mat[0].length;
+        while (l < r) {
+            int mid = (l + r) >> 1;
+            int j = maxPos(mat[mid]);
+            if (mat[mid][j] > mat[mid + 1][j]) {
+                r = mid;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return new int[]{l, maxPos(mat[l])};
+    }
+
+    private int maxPos(int[] arr) {
+        int j = 0;
+        for (int i = 1; i < arr.length; ++i) {
+            if (arr[j] < arr[i]) {
+                j = i;
+            }
+        }
+        return j;
+    }
 }
