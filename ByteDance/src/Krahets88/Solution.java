@@ -326,4 +326,18 @@ public class Solution {
         }
         return -1;
     }
+
+    // 买卖股票的最佳时机二
+    public int maxProfitTwo(int[] prices) {
+        int ans = 0, pre = prices[0];
+        for (int i = 1; i < prices.length; i++) {
+            if (prices[i] > pre && pre != -1){
+                ans += prices[i] - pre;
+                pre = prices[i];
+            }else {
+                pre = prices[i];
+            }
+        }
+        return ans;
+    }
 }
