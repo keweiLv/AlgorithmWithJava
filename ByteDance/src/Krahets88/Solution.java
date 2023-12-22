@@ -1,9 +1,6 @@
 package Krahets88;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 public class Solution {
 
@@ -357,5 +354,30 @@ public class Solution {
             }
         }
         return grid[grid.length - 1][grid[0].length - 1];
+    }
+
+    // 二叉树的层数遍历
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> ans = new ArrayList<>();
+        Deque<TreeNode> deque = new ArrayDeque<>();
+        if (root != null){
+            deque.add(root);
+        }
+        while (!deque.isEmpty()) {
+            int size = deque.size();
+            List<Integer> tmp = new ArrayList<>();
+            for (int i = 0; i < size; i++) {
+                TreeNode poll = deque.poll();
+                tmp.add(poll.val);
+                if (poll.left != null) {
+                    deque.add(poll.left);
+                }
+                if (poll.right != null) {
+                    deque.add(poll.right);
+                }
+            }
+            ans.add(tmp);
+        }
+        return ans;
     }
 }
