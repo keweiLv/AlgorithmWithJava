@@ -734,4 +734,81 @@ public class Solution {
         }
         return root.val == 0 ? null : root;
     }
+
+    // 不浪费原料的汉堡制作方案
+    public List<Integer> numOfBurgers(int tomatoSlices, int cheeseSlices) {
+        if (tomatoSlices % 2 != 0 || tomatoSlices < 2 * cheeseSlices || cheeseSlices * 4 < tomatoSlices) {
+            return new ArrayList<>();
+        }
+        List<Integer> ans = new ArrayList<>();
+        ans.add(tomatoSlices / 2 - cheeseSlices);
+        ans.add(cheeseSlices * 2 - tomatoSlices / 2);
+        return ans;
+    }
+
+    // 笨阶乘
+    public int clumsy(int n) {
+        Deque<Integer> nums = new ArrayDeque<>();
+        Deque<Character> ops = new ArrayDeque<>();
+        Map<Character, Integer> map = new HashMap<>() {{
+            put('*', 2);
+            put('/', 2);
+            put('+', 1);
+            put('-', 1);
+        }};
+        char[] cs = new char[]{'*', '/', '+', '-'};
+        for (int i = n, j = 0; i > 0; i--, j++) {
+            char op = cs[j % 4];
+            nums.addLast(i);
+            while (!ops.isEmpty() && map.get(ops.peekLast()) >= map.get(op)) {
+                deal(nums, ops);
+            }
+            if (i != 1) {
+                ops.add(op);
+            }
+        }
+        while (!ops.isEmpty()) {
+            deal(nums, ops);
+        }
+        return nums.peekLast();
+    }
+
+    private void deal(Deque<Integer> nums, Deque<Character> ops) {
+        int b = nums.pollLast(), a = nums.pollLast();
+        int op = ops.pollLast();
+        int ans = 0;
+        if (op == '+') {
+            ans = a + b;
+        } else if (op == '-') {
+            ans = a - b;
+        } else if (op == '*') {
+            ans = a * b;
+        } else if (op == '/') {
+            ans = a / b;
+        }
+        nums.addLast(ans);
+    }
+
+    // 最简分数
+    public List<String> simplifiedFractions(int n) {
+        List<String> ans = new ArrayList<>();
+        for (int i = 1; i < n; i++) {
+            for (int j = i + 1; j <= n; j++) {
+                if (gcd(i, j) == 1) {
+                    ans.add(i + "/" + j);
+                }
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 欧几里得方法，求最大公约数GCD
+     * @param a
+     * @param b
+     * @return gcd
+     */
+    private int gcd(int a, int b) {
+        return b == 0 ? a : gcd(b, a % b);
+    }
 }
