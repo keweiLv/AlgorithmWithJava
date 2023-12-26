@@ -804,11 +804,35 @@ public class Solution {
 
     /**
      * 欧几里得方法，求最大公约数GCD
+     *
      * @param a
      * @param b
      * @return gcd
      */
     private int gcd(int a, int b) {
         return b == 0 ? a : gcd(b, a % b);
+    }
+
+    // Dota2参议院
+    public String predictPartyVictory(String senate) {
+        int n = senate.length();
+        Deque<Integer> radiant = new LinkedList<>();
+        Deque<Integer> dire = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            if (senate.charAt(i) == 'R') {
+                radiant.offer(i);
+            } else {
+                dire.offer(i);
+            }
+        }
+        while (!radiant.isEmpty() && !dire.isEmpty()) {
+            int ra = radiant.poll(), di = dire.poll();
+            if (ra < di) {
+                radiant.offer(ra + n);
+            } else {
+                dire.offer(di + n);
+            }
+        }
+        return !radiant.isEmpty() ? "Radiant" : "Dire";
     }
 }

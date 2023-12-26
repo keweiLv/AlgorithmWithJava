@@ -360,7 +360,7 @@ public class Solution {
     public List<List<Integer>> levelOrder(TreeNode root) {
         List<List<Integer>> ans = new ArrayList<>();
         Deque<TreeNode> deque = new ArrayDeque<>();
-        if (root != null){
+        if (root != null) {
             deque.add(root);
         }
         while (!deque.isEmpty()) {
@@ -379,5 +379,34 @@ public class Solution {
             ans.add(tmp);
         }
         return ans;
+    }
+
+    // 全排列
+    List<List<Integer>> ans = new ArrayList<>();
+    List<Integer> path = new ArrayList<>();
+    int[] nums;
+    boolean[] vis;
+
+    public List<List<Integer>> permute(int[] nums) {
+        this.nums = nums;
+        vis = new boolean[nums.length];
+        dfs(0);
+        return ans;
+    }
+
+    private void dfs(int i) {
+        if (i == nums.length) {
+            ans.add(new ArrayList<>(path));
+            return;
+        }
+        for (int j = 0; j < nums.length; j++) {
+            if (!vis[j]) {
+                path.add(nums[j]);
+                vis[j] = true;
+                dfs(i + 1);
+                path.remove(path.size() - 1);
+                vis[j] = false;
+            }
+        }
     }
 }
