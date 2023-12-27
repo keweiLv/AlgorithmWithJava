@@ -835,4 +835,43 @@ public class Solution {
         }
         return !radiant.isEmpty() ? "Radiant" : "Dire";
     }
+
+    // 保龄球游戏的获胜者
+    public int isWinner(int[] player1, int[] player2) {
+        int a = f(player1), b = f(player2);
+        return a > b ? 1 : b > a ? 2 : 0;
+    }
+
+    private int f(int[] player) {
+        int sum = 0;
+        for (int i = 0; i < player.length; i++) {
+            int k = (i > 0 && player[i - 1] == 10) || (i > 1 && player[i - 2] == 10) ? 2 : 1;
+            sum += k * player[i];
+        }
+        return sum;
+    }
+
+
+    // 交错字符串
+    public boolean isInterleave(String s1, String s2, String s3) {
+        int m = s1.length(), n = s2.length();
+        if (s3.length() != m + n) {
+            return false;
+        }
+        boolean[][] dp = new boolean[m + 1][n + 1];
+        dp[0][0] = true;
+        for (int i = 1; i <= m && s1.charAt(i - 1) == s3.charAt(i - 1); i++) {
+            dp[i][0] = true;
+        }
+        for (int j = 1; j <= n && s2.charAt(j - 1) == s3.charAt(j - 1); j++) {
+            dp[0][j] = true;
+        }
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                dp[i][j] = (dp[i - 1][j] && s3.charAt(i + j - 1) == s1.charAt(i - 1))
+                        || (dp[i][j - 1] && s3.charAt(i + j - 1) == s2.charAt(j - 1));
+            }
+        }
+        return dp[m][n];
+    }
 }
