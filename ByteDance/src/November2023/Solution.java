@@ -874,4 +874,32 @@ public class Solution {
         }
         return dp[m][n];
     }
+
+    // 通过最少操作次数使数组和相等
+    public int minOperations(int[] nums1, int[] nums2) {
+        if (6 * nums1.length < nums2.length || 6 * nums2.length < nums1.length) {
+            return -1;
+        }
+        int d = Arrays.stream(nums2).sum() - Arrays.stream(nums1).sum();
+        if (d < 0) {
+            d = -d;
+            int[] temp = nums1;
+            nums1 = nums2;
+            nums2 = temp;
+        }
+        int[] cnt = new int[6];
+        for (int x : nums1) {
+            ++cnt[6 - x];
+        }
+        for (int x : nums2) {
+            ++cnt[x - 1];
+        }
+        for (int i = 5, ans = 0; ; i--) {
+            if (i * cnt[i] >= d) {
+                return ans + (d + i - 1) / i;
+            }
+            ans += cnt[i];
+            d -= i * cnt[i];
+        }
+    }
 }
