@@ -902,4 +902,52 @@ public class Solution {
             d -= i * cnt[i];
         }
     }
+
+    // 购买两块巧克力
+    public int buyChoco(int[] prices, int money) {
+        Arrays.sort(prices);
+        int res = money - prices[0] - prices[1];
+        return res >= 0 ? res : money;
+    }
+
+    // 出界的路径数
+    int MOD = (int) (1e9 + 7);
+    int tm, tn, max;
+    int[][][] cache;
+    int[][] dirs = new int[][]{{1, 0}, {-1, 0}, {0, -1}, {0, 1}};
+
+    public int findPaths(int _m, int _n, int maxMove, int startRow, int startColumn) {
+        tm = _m;
+        tn = _n;
+        max = maxMove;
+        cache = new int[tm][tn][max + 1];
+        for (int i = 0; i < tm; i++) {
+            for (int j = 0; j < tn; j++) {
+                for (int k = 0; k <= max; k++) {
+                    cache[i][j][k] = -1;
+                }
+            }
+        }
+        return dfs(startRow, startColumn, max);
+    }
+
+    private int dfs(int startRow, int startColumn, int max) {
+        if (startRow < 0 || startRow >= tm || startColumn < 0 || startColumn >= tn) {
+            return 1;
+        }
+        if (max == 0) {
+            return 0;
+        }
+        if (cache[startRow][startColumn][max] != -1) {
+            return cache[startRow][startColumn][max];
+        }
+        int ans = 0;
+        for (int[] d : dirs) {
+            int nx = startRow + d[0], ny = startColumn + d[1];
+            ans += dfs(nx, ny, max - 1);
+            ans %= MOD;
+        }
+        cache[startRow][startColumn][max] = ans;
+        return ans;
+    }
 }
