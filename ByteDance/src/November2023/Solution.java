@@ -950,4 +950,108 @@ public class Solution {
         cache[startRow][startColumn][max] = ans;
         return ans;
     }
+
+    // 一周中的第几天
+    static String[] ss = new String[]{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    static int[] nums = new int[]{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    public String dayOfTheWeek(int day, int month, int year) {
+        int ans = 4;
+        for (int i = 1971; i < year; i++) {
+            boolean isLeap = (i % 4 == 0 && i % 100 != 0) || i % 400 == 0;
+            ans += isLeap ? 366 : 365;
+        }
+        for (int i = 1; i < month; i++) {
+            ans += nums[i - 1];
+            if (i == 2 && ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0)) {
+                ans++;
+            }
+        }
+        ans += day;
+        return ss[ans % 7];
+    }
+
+    // 转换数字的最小运算符
+    public int minimumOperations(int[] nums, int start, int goal) {
+        Deque<Integer> deque = new ArrayDeque<>();
+        Map<Integer, Integer> map = new HashMap<>();
+        deque.addLast(start);
+        map.put(start, 0);
+        while (!deque.isEmpty()) {
+            int cur = deque.pollFirst();
+            int step = map.get(cur);
+            for (int i : nums) {
+                int[] result = new int[]{cur + i, cur - i, cur ^ i};
+                for (int next : result) {
+                    if (next == goal) {
+                        return step + 1;
+                    }
+                    if (next < 0 || next > 1000) {
+                        continue;
+                    }
+                    if (map.containsKey(next)) {
+                        continue;
+                    }
+                    map.put(next, step + 1);
+                    deque.addLast(next);
+                }
+            }
+        }
+        return -1;
+    }
+
+    // 太平洋大西洋水流问题
+    int[][] g;
+
+    public List<List<Integer>> pacificAtlantic(int[][] heights) {
+        g = heights;
+        m = g.length;
+        n = g[0].length;
+        Deque<int[]> d1 = new ArrayDeque<>(), d2 = new ArrayDeque<>();
+        boolean[][] res1 = new boolean[m][n], res2 = new boolean[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == 0 || j == 0) {
+                    res1[i][j] = true;
+                    d1.addLast(new int[]{i, j});
+                }
+                if (i == m - 1 || j == n - 1) {
+                    res2[i][j] = true;
+                    d2.addLast(new int[]{i, j});
+                }
+            }
+        }
+        bfs(d1, res1);
+        bfs(d2, res2);
+        List<List<Integer>> ans = new ArrayList<>();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (res1[i][j] && res2[i][j]) {
+                    List<Integer> list = new ArrayList<>();
+                    list.add(i);
+                    list.add(j);
+                    ans.add(list);
+                }
+            }
+        }
+        return ans;
+    }
+
+    private void bfs(Deque<int[]> d, boolean[][] res) {
+        while (!d.isEmpty()) {
+            int[] info = d.pollFirst();
+            int x = info[0], y = info[1], t = g[x][y];
+            for (int[] di : dirs) {
+                int nx = x + di[0], ny = y + di[1];
+                if (nx < 0 || nx >= m || ny < 0 || ny >= n) {
+                    continue;
+                }
+                if (res[nx][ny] || g[nx][ny] < t) {
+                    continue;
+                }
+                d.addLast(new int[]{nx, ny});
+                res[nx][ny] = true;
+            }
+        }
+    }
 }
