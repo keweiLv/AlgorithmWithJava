@@ -1,5 +1,7 @@
 package November2023;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -1053,5 +1055,12 @@ public class Solution {
                 res[nx][ny] = true;
             }
         }
+    }
+
+    // 一年中的第几天
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    public int dayOfYear(String date) {
+        return LocalDate.parse(date, formatter).getDayOfYear();
     }
 }
