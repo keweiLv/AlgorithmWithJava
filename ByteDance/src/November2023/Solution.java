@@ -1082,4 +1082,27 @@ public class Solution {
         }
         return ans;
     }
+
+    // 从链表中移除节点
+    public ListNode removeNodes(ListNode head) {
+        List<Integer> nums = new ArrayList<>();
+        while (head != null) {
+            nums.add(head.val);
+            head = head.next;
+        }
+        Deque<Integer> deque = new ArrayDeque<>();
+        for (int v : nums) {
+            while (!deque.isEmpty() && deque.peekLast() < v) {
+                deque.pollLast();
+            }
+            deque.addLast(v);
+        }
+        ListNode dummy = new ListNode();
+        head = dummy;
+        while (!deque.isEmpty()) {
+            head.next = new ListNode(deque.pollFirst());
+            head = head.next;
+        }
+        return dummy.next;
+    }
 }
