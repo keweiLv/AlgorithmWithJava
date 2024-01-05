@@ -1132,4 +1132,22 @@ public class Solution {
         }
         return ans;
     }
+
+    // 队列中可以看到的人数
+    public int[] canSeePersonsCount(int[] heights) {
+        int n = heights.length;
+        int[] ans = new int[n];
+        Deque<Integer> deque = new ArrayDeque<>();
+        for (int i = n - 1; i >= 0; i--) {
+            while (!deque.isEmpty() && deque.peekLast() < heights[i]) {
+                deque.pollLast();
+                ans[i]++;
+            }
+            if (!deque.isEmpty()) {
+                ans[i]++;
+            }
+            deque.offerLast(heights[i]);
+        }
+        return ans;
+    }
 }
