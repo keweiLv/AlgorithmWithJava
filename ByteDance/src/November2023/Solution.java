@@ -1150,4 +1150,36 @@ public class Solution {
         }
         return ans;
     }
+
+    // 在链表中插入最大公约数
+    public ListNode insertGreatestCommonDivisors(ListNode head) {
+        for (ListNode cur = head; cur.next != null; cur = cur.next.next) {
+            cur.next = new ListNode(gcd(cur.val, cur.next.val), cur.next);
+        }
+        return head;
+    }
+
+    // 二叉搜索树中第K小的元素
+    int res, k;
+
+    public int kthSmallest(TreeNode root, int k) {
+        this.k = k;
+        kthSmallestDfs(root);
+        return res;
+    }
+
+    private void kthSmallestDfs(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        kthSmallestDfs(root.left);
+        if (k == 0) {
+            return;
+        }
+        if (--k == 0) {
+            res = root.val;
+        }
+        kthSmallestDfs(root.right);
+    }
+
 }
