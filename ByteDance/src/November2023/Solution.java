@@ -1182,4 +1182,34 @@ public class Solution {
         kthSmallestDfs(root.right);
     }
 
+    // 回旋镖的数量
+    public int numberOfBoomerangs(int[][] points) {
+        int ans = 0;
+        for (int[] p : points) {
+            Map<Integer, Integer> cnt = new HashMap<>();
+            for (int[] q : points) {
+                int dis = (p[0] - q[0]) * (p[0] - q[0]) + (p[1] - q[1]) * (p[1] - q[1]);
+                cnt.put(dis, cnt.getOrDefault(dis, 0) + 1);
+            }
+            for (Map.Entry<Integer, Integer> entry : cnt.entrySet()) {
+                int m = entry.getValue();
+                ans += m * (m - 1);
+            }
+        }
+        return ans;
+    }
+
+    // 数组中的第K个最大元素
+    public int findKthLargest(int[] nums, int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        for (int num : nums) {
+            if (pq.size() < k) {
+                pq.offer(num);
+            } else if (num > pq.peek()) {
+                pq.poll();
+                pq.offer(num);
+            }
+        }
+        return pq.peek();
+    }
 }
