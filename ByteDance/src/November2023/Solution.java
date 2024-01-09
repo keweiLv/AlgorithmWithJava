@@ -1212,4 +1212,24 @@ public class Solution {
         }
         return pq.peek();
     }
+
+    // 字符串中的额外字符
+    public int minExtraChar(String s, String[] dictionary) {
+        Set<String> set = new HashSet<>();
+        for (String dic : dictionary) {
+            set.add(dic);
+        }
+        int n = s.length();
+        int[] f = new int[n + 1];
+        f[0] = 0;
+        for (int i = 1; i <= n; i++) {
+            f[i] = f[i - 1] + 1;
+            for (int j = 0; j < i; j++) {
+                if (set.contains(s.substring(j, i))) {
+                    f[i] = Math.min(f[i], f[j]);
+                }
+            }
+        }
+        return f[n];
+    }
 }

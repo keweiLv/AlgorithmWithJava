@@ -455,4 +455,47 @@ public class Solution {
         }
         return root;
     }
+
+    // 课程表
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        Map<Integer, Integer> in = new HashMap<>();
+        for (int i = 0; i < numCourses; i++) {
+            in.put(i, 0);
+        }
+        Map<Integer, List<Integer>> adj = new HashMap<>();
+        for (int[] pre : prerequisites) {
+            int next = pre[0];
+            int cur = pre[1];
+            in.put(next, in.get(next) + 1);
+            if (!adj.containsKey(cur)) {
+                adj.put(cur, new ArrayList<>());
+            }
+            adj.get(cur).add(next);
+        }
+        Deque<Integer> deque = new ArrayDeque<>();
+        for (int key : in.keySet()) {
+            if (in.get(key) == 0) {
+                deque.offerLast(key);
+            }
+        }
+        while (!deque.isEmpty()) {
+            int cur = deque.pollFirst();
+            if (!adj.containsKey(cur)) {
+                continue;
+            }
+            List<Integer> last = adj.get(cur);
+            for (int k : last) {
+                in.put(k, in.get(k) - 1);
+                if (in.get(k) == 0) {
+                    deque.offerLast(k);
+                }
+            }
+        }
+        for (int key : in.keySet()) {
+            if (in.get(key) != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
