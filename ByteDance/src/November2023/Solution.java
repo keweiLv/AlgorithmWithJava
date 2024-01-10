@@ -1232,4 +1232,18 @@ public class Solution {
         }
         return f[n];
     }
+
+    // 删除字串后的字符串最小长度
+    public int minLength(String s) {
+        Deque<Character> deque = new ArrayDeque<>();
+        deque.push(' ');
+        for (char c : s.toCharArray()) {
+            if ((c == 'B' && deque.peek() == 'A') || (c == 'D' && deque.peek() == 'C')) {
+                deque.pop();
+            } else {
+                deque.push(c);
+            }
+        }
+        return deque.size() - 1;
+    }
 }

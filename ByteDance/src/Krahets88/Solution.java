@@ -498,4 +498,15 @@ public class Solution {
         }
         return true;
     }
+
+    // 打家劫舍
+    public int rob(int[] nums) {
+        int pre = 0, cur = 0;
+        for (int num : nums) {
+            int tmp = Math.max(cur, pre + num);
+            pre = cur;
+            cur = tmp;
+        }
+        return cur;
+    }
 }
