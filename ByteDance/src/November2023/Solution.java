@@ -1246,4 +1246,16 @@ public class Solution {
         }
         return deque.size() - 1;
     }
+
+    // 构造有效字符串的最少插入数
+    public int addMinimum(String word) {
+        int t = 1;
+        char[] charArray = word.toCharArray();
+        for (int i = 1; i < charArray.length; i++) {
+            if (charArray[i - 1] >= charArray[i]) {
+                t++;
+            }
+        }
+        return t * 3 - word.length();
+    }
 }
