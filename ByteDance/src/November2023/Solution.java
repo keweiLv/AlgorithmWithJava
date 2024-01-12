@@ -1258,4 +1258,23 @@ public class Solution {
         }
         return t * 3 - word.length();
     }
+
+    // 统计出现过一次的公共字符串
+    public int countWords(String[] words1, String[] words2) {
+        Map<String, Integer> cnt1 = new HashMap<>();
+        Map<String, Integer> cnt2 = new HashMap<>();
+        for (String str : words1) {
+            cnt1.merge(str, 1, Integer::sum);
+        }
+        for (String str : words2) {
+            cnt2.merge(str, 1, Integer::sum);
+        }
+        int ans = 0;
+        for (Map.Entry<String, Integer> entry : cnt1.entrySet()) {
+            if (entry.getValue() == 1 && cnt2.getOrDefault(entry.getKey(), 0) == 1) {
+                ans++;
+            }
+        }
+        return ans;
+    }
 }
