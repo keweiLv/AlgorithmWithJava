@@ -1277,4 +1277,31 @@ public class Solution {
         }
         return ans;
     }
+
+    // 构造限制重复的字符串
+    public String repeatLimitedString(String s, int repeatLimit) {
+        int[] count = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            count[s.charAt(i) - 'a']++;
+        }
+        StringBuilder sb = new StringBuilder();
+        int m = 0;
+        for (int i = 25, j = 24; i >= 0 && j >= 0; ) {
+            if (count[i] == 0) {
+                m = 0;
+                i--;
+            } else if (m < repeatLimit) {
+                count[i]--;
+                sb.append((char) ('a' + i));
+                m++;
+            } else if (j >= i || count[j] == 0) {
+                j--;
+            } else {
+                count[j]--;
+                sb.append((char) ('a' + j));
+                m = 0;
+            }
+        }
+        return sb.toString();
+    }
 }
