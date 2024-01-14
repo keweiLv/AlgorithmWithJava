@@ -1304,4 +1304,30 @@ public class Solution {
         }
         return sb.toString();
     }
+
+    // 删除排序链表中的重复元素
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode cur = head;
+        while (cur != null && cur.next != null) {
+            if (cur.val == cur.next.val) {
+                cur.next = cur.next.next;
+            } else {
+                cur = cur.next;
+            }
+        }
+        return head;
+    }
+
+    // 上下翻转二叉树
+    public TreeNode upsideDownBinaryTree(TreeNode root) {
+        if (root == null || root.left == null) {
+            return root;
+        }
+        TreeNode left = root.left, right = root.right;
+        TreeNode ret = upsideDownBinaryTree(root.left);
+        left.left = right;
+        left.right = root;
+        root.left = root.right = null;
+        return ret;
+    }
 }

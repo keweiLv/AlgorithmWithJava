@@ -556,4 +556,18 @@ public class Solution {
         }
         return ans;
     }
+
+    // 验证栈序列
+    public boolean validateStackSequences(int[] pushed, int[] popped) {
+        Deque<Integer> deque = new ArrayDeque<>();
+        int n = pushed.length;
+        for (int i = 0, j = 0; i < n; i++) {
+            deque.push(pushed[i]);
+            while (!deque.isEmpty() && deque.peek() == popped[j]) {
+                deque.pop();
+                j++;
+            }
+        }
+        return deque.isEmpty();
+    }
 }
