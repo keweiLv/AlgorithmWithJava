@@ -1330,4 +1330,21 @@ public class Solution {
         root.left = root.right = null;
         return ret;
     }
+
+    // 删除排序链表中的重复元素二
+    public ListNode deleteDuplicatesTwo(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        if (head.val != head.next.val) {
+            head.next = deleteDuplicatesTwo(head.next);
+        } else {
+            ListNode next = head.next;
+            while (next != null && head.val == next.val) {
+                next = next.next;
+            }
+            return deleteDuplicatesTwo(next);
+        }
+        return head;
+    }
 }
