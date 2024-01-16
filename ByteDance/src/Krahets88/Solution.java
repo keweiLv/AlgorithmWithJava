@@ -606,4 +606,38 @@ public class Solution {
         }
         return Math.max(depth(root.left), depth(root.right)) + 1;
     }
+
+    // Z字形变换
+    public String convert(String s, int numRows) {
+        if (numRows < 2) {
+            return s;
+        }
+        List<StringBuilder> rows = new ArrayList<>();
+        for (int i = 0; i < numRows; i++) {
+            rows.add(new StringBuilder());
+        }
+        int i = 0, flag = -1;
+        for (char c : s.toCharArray()) {
+            rows.get(i).append(c);
+            if (i == 0 || i == numRows - 1) {
+                flag = -flag;
+            }
+            i += flag;
+        }
+        StringBuilder ans = new StringBuilder();
+        for (StringBuilder row : rows) {
+            ans.append(row);
+        }
+        return ans.toString();
+    }
+
+    // 位1的个数
+    public int hammingWeight(int n) {
+        int cnt = 0;
+        while (n != 0) {
+            n &= (n - 1);
+            cnt++;
+        }
+        return cnt;
+    }
 }
