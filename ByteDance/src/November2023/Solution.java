@@ -1347,4 +1347,20 @@ public class Solution {
         }
         return head;
     }
+
+    // 最大字符串配对数目
+    public int maximumNumberOfStringPairs(String[] words) {
+        int ans = 0;
+        boolean[][] map = new boolean[26][26];
+        for (String s : words) {
+            int x = s.charAt(0) - 'a';
+            int y = s.charAt(1) - 'a';
+            if (map[y][x]) {
+                ans++;
+            } else {
+                map[x][y] = true;
+            }
+        }
+        return ans;
+    }
 }
