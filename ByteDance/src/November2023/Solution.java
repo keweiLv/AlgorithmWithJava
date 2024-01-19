@@ -1363,4 +1363,16 @@ public class Solution {
         }
         return ans;
     }
+
+    // 拿出最少数目的魔法豆
+    public long minimumRemoval(int[] beans) {
+        Arrays.sort(beans);
+        long sum = 0, mx = 0;
+        int n = beans.length;
+        for (int i = 0; i < n; i++) {
+            sum += beans[i];
+            mx = Math.max(mx, (long) (n - i) * beans[i]);
+        }
+        return sum - mx;
+    }
 }
