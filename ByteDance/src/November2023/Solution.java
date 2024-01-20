@@ -3,6 +3,7 @@ package November2023;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
 public class Solution {
@@ -1374,5 +1375,27 @@ public class Solution {
             mx = Math.max(mx, (long) (n - i) * beans[i]);
         }
         return sum - mx;
+    }
+
+    // 按分隔符拆分字符串
+    public static List<String> splitWordsBySeparator(List<String> words, char separator) {
+        List<String> ans = new ArrayList<>();
+        for (String str : words) {
+            String[] split = str.split(Pattern.quote(String.valueOf(separator)),-1);
+            for (String sp : split){
+                if (!sp.isEmpty()){
+                    ans.add(sp);
+                }
+            }
+        }
+        return ans;
+    }
+
+    public static void main(String[] args) {
+        List<String> a = new ArrayList<>();
+        a.add("$easy$");
+        a.add("$problem$");
+        List<String> aa = splitWordsBySeparator(a, '$');
+        System.out.println(aa);
     }
 }
