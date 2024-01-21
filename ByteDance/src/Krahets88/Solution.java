@@ -649,4 +649,36 @@ public class Solution {
         }
         return ans;
     }
+
+    // 二叉树的锯齿形层序遍历
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> ans = new LinkedList<>();
+        if (root == null) {
+            return ans;
+        }
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);
+        boolean isLeft = true;
+        while (!queue.isEmpty()) {
+            Deque<Integer> levelList = new LinkedList<>();
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode cur = queue.poll();
+                if (isLeft) {
+                    levelList.addLast(cur.val);
+                } else {
+                    levelList.addFirst(cur.val);
+                }
+                if (cur.left != null) {
+                    queue.offer(cur.left);
+                }
+                if (cur.right != null) {
+                    queue.offer(cur.right);
+                }
+            }
+            ans.add(new LinkedList<>(levelList));
+            isLeft = !isLeft;
+        }
+        return ans;
+    }
 }
