@@ -1381,9 +1381,9 @@ public class Solution {
     public static List<String> splitWordsBySeparator(List<String> words, char separator) {
         List<String> ans = new ArrayList<>();
         for (String str : words) {
-            String[] split = str.split(Pattern.quote(String.valueOf(separator)),-1);
-            for (String sp : split){
-                if (!sp.isEmpty()){
+            String[] split = str.split(Pattern.quote(String.valueOf(separator)), -1);
+            for (String sp : split) {
+                if (!sp.isEmpty()) {
                     ans.add(sp);
                 }
             }
@@ -1391,11 +1391,26 @@ public class Solution {
         return ans;
     }
 
-    public static void main(String[] args) {
-        List<String> a = new ArrayList<>();
-        a.add("$easy$");
-        a.add("$problem$");
-        List<String> aa = splitWordsBySeparator(a, '$');
-        System.out.println(aa);
+    // 最大交换
+    public int maximumSwap(int num) {
+        char[] s = Integer.toString(num).toCharArray();
+        int maxIdx = s.length - 1;
+        int p = -1, q = 0;
+        for (int i = s.length - 2; i >= 0; i--) {
+            if (s[i] > s[maxIdx]) {
+                maxIdx = i;
+            } else if (s[i] < s[maxIdx]) {
+                p = i;
+                q = maxIdx;
+            }
+        }
+        if (p == -1) {
+            return num;
+        }
+        char temp = s[p];
+        s[p] = s[q];
+        s[q] = temp;
+        return Integer.parseInt(new String(s));
     }
+
 }
