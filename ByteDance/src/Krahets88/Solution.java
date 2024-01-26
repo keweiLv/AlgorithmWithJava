@@ -686,4 +686,26 @@ public class Solution {
     public boolean isPowerOfTwo(int n) {
         return n > 0 && (n & (n - 1)) == 0;
     }
+
+    // 路径总和二
+    List<List<Integer>> res = new LinkedList<>();
+    Deque<Integer> getPath = new LinkedList<>();
+    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+        dfs(root,targetSum);
+        return res;
+    }
+
+    private void dfs(TreeNode root, int targetSum) {
+        if (root == null){
+            return;
+        }
+        getPath.addLast(root.val);
+        targetSum -= root.val;
+        if (root.left == null && root.right == null && targetSum == 0){
+            res.add(new LinkedList<>(getPath));
+        }
+        dfs(root.left,targetSum);
+        dfs(root.right,targetSum);
+        getPath.pollLast();
+    }
 }
