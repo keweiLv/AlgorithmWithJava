@@ -1478,4 +1478,35 @@ public class Solution {
         }
         return ans;
     }
+
+    // 水壶问题
+    public boolean canMeasureWater(int x, int y, int targetCapacity) {
+        Deque<int[]> stack = new LinkedList<>();
+        stack.push(new int[]{0, 0});
+        Set<Long> seen = new HashSet<>();
+        while (!stack.isEmpty()) {
+            if (seen.contains(hash(stack.peek()))) {
+                stack.pop();
+                continue;
+            }
+            seen.add(hash(stack.peek()));
+
+            int[] state = stack.pop();
+            int remain_x = state[0], remain_y = state[1];
+            if (remain_x == targetCapacity || remain_y == targetCapacity || remain_x + remain_y == targetCapacity) {
+                return true;
+            }
+            stack.push(new int[]{x, remain_y});
+            stack.push(new int[]{remain_x, y});
+            stack.push(new int[]{0, remain_y});
+            stack.push(new int[]{remain_x, y});
+            stack.push(new int[]{remain_x - Math.min(remain_x, y - remain_y), remain_y + Math.min(remain_x, y - remain_y)});
+            stack.push(new int[]{remain_x + Math.min(remain_y, x - remain_x), remain_y - Math.min(remain_y, x - remain_x)});
+        }
+        return false;
+    }
+
+    private Long hash(int[] peek) {
+        return (long) peek[0] * 1000001 + peek[1];
+    }
 }
