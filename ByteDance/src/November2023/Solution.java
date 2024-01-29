@@ -1509,4 +1509,35 @@ public class Solution {
     private Long hash(int[] peek) {
         return (long) peek[0] * 1000001 + peek[1];
     }
+
+    // 统计同值子树
+    int count = 0;
+
+    public int countUnivalSubtrees(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        isUnivalSubtrees(root);
+        return count;
+    }
+
+    private boolean isUnivalSubtrees(TreeNode root) {
+        if (root.left == null && root.right == null) {
+            count++;
+            return true;
+        }
+        boolean isUnival = true;
+        if (root.left != null) {
+            isUnival = isUnivalSubtrees(root.left) && isUnival && root.left.val == root.val;
+        }
+        if (root.right != null) {
+            isUnival = isUnivalSubtrees(root.right) && isUnival && root.right.val == root.val;
+        }
+        if (isUnival) {
+            count++;
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

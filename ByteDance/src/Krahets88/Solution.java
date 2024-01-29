@@ -690,22 +690,72 @@ public class Solution {
     // 路径总和二
     List<List<Integer>> res = new LinkedList<>();
     Deque<Integer> getPath = new LinkedList<>();
+
     public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
-        dfs(root,targetSum);
+        dfs(root, targetSum);
         return res;
     }
 
     private void dfs(TreeNode root, int targetSum) {
-        if (root == null){
+        if (root == null) {
             return;
         }
         getPath.addLast(root.val);
         targetSum -= root.val;
-        if (root.left == null && root.right == null && targetSum == 0){
+        if (root.left == null && root.right == null && targetSum == 0) {
             res.add(new LinkedList<>(getPath));
         }
-        dfs(root.left,targetSum);
-        dfs(root.right,targetSum);
+        dfs(root.left, targetSum);
+        dfs(root.right, targetSum);
         getPath.pollLast();
+    }
+
+    // 将二叉搜索树转化为排序的双向链表
+    class DoublyListNode {
+        public int val;
+        public DoublyListNode left;
+        public DoublyListNode right;
+
+        public DoublyListNode() {
+        }
+
+        public DoublyListNode(int _val) {
+            val = _val;
+        }
+
+        public DoublyListNode(int _val, DoublyListNode _left, DoublyListNode _right) {
+            val = _val;
+            left = _left;
+            right = _right;
+        }
+    }
+
+    ;
+
+    DoublyListNode pre, head;
+
+    public DoublyListNode treeToDoublyList(DoublyListNode root) {
+        if (root == null) {
+            return null;
+        }
+        dfs(root);
+        head.left = pre;
+        pre.right = head;
+        return head;
+    }
+
+    private void dfs(DoublyListNode root) {
+        if (root == null) {
+            return;
+        }
+        dfs(root.left);
+        if (pre != null) {
+            pre.right = root;
+        } else {
+            head = root;
+        }
+        root.left = pre;
+        pre = root;
+        dfs(root.right);
     }
 }
