@@ -1540,4 +1540,23 @@ public class Solution {
             return false;
         }
     }
+
+    // 使循环数组所有元素相等
+    public int minimumSeconds(List<Integer> nums) {
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        int n = nums.size();
+        for (int i = 0; i < n; i++) {
+            map.computeIfAbsent(nums.get(i), k -> new ArrayList<>()).add(i);
+        }
+        int ans = 1 << 30;
+        for (List<Integer> idx : map.values()) {
+            int m = idx.size();
+            int t = idx.get(0) + n - idx.get(m - 1);
+            for (int i = 1; i < m; i++) {
+                t = Math.max(t, idx.get(i) - idx.get(i - 1));
+            }
+            ans = Math.min(ans, t / 2);
+        }
+        return ans;
+    }
 }
