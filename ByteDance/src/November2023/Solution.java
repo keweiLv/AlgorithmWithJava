@@ -1559,4 +1559,23 @@ public class Solution {
         }
         return ans;
     }
+
+    // 找出不同元素数目差数组
+    public int[] distinctDifferenceArray(int[] nums) {
+        int n = nums.length;
+        int[] suf = new int[n + 1];
+        Set<Integer> set = new HashSet<>();
+        for (int i = n - 1; i >= 0; i--) {
+            set.add(nums[i]);
+            suf[i] = set.size();
+        }
+        set.clear();
+        ;
+        int[] ans = new int[n];
+        for (int i = 0; i < n; i++) {
+            set.add(nums[i]);
+            ans[i] = set.size() - suf[i + 1];
+        }
+        return ans;
+    }
 }

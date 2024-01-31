@@ -758,4 +758,21 @@ public class Solution {
         pre = root;
         dfs(root.right);
     }
+
+    // 句子相似性
+    public boolean areSentencesSimilar(String[] sentence1, String[] sentence2, List<List<String>> similarPairs) {
+        if (sentence1.length != sentence2.length) {
+            return false;
+        }
+        Set<String> set = new HashSet<>();
+        for (List<String> pair : similarPairs) {
+            set.add(pair.get(0) + "#" + pair.get(1));
+        }
+        for (int i = 0; i < sentence1.length; i++) {
+            if (!sentence1[i].equals(sentence2[i]) && !set.contains(sentence1[i] + "#" + sentence2[i]) && !set.contains(sentence2[i] + "#" + sentence1[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
