@@ -1578,4 +1578,29 @@ public class Solution {
         }
         return ans;
     }
+
+    // 至多包含两个不同字符的最长子串
+    public int lengthOfLongestSubstringTwoDistinct(String s) {
+        int n = s.length();
+        if (n < 3) {
+            return n;
+        }
+        int left = 0;
+        int right = 0;
+        Map<Character, Integer> map = new HashMap<>();
+        int ans = 2;
+        while (right < n) {
+            if (map.size() < 3) {
+                map.put(s.charAt(right), right++);
+            }
+            if (map.size() == 3) {
+                Integer min = Collections.min(map.values());
+                map.remove(s.charAt(min));
+                left = min + 1;
+            }
+            ans = Math.max(ans,right - left);
+        }
+        return ans;
+    }
+
 }
