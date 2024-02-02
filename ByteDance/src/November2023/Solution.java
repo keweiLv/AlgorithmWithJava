@@ -1598,9 +1598,24 @@ public class Solution {
                 map.remove(s.charAt(min));
                 left = min + 1;
             }
-            ans = Math.max(ans,right - left);
+            ans = Math.max(ans, right - left);
         }
         return ans;
+    }
+
+    // 石子游戏六
+    public int stoneGameVI(int[] aliceValues, int[] bobValues) {
+        int n = aliceValues.length;
+        Integer[] ids = new Integer[n];
+        for (int i = 0; i < n; i++) {
+            ids[i] = i;
+        }
+        Arrays.sort(ids, (i, j) -> aliceValues[j] + bobValues[j] - aliceValues[i] - bobValues[i]);
+        int diff = 0;
+        for (int i = 0; i < n; i++) {
+            diff += i % 2 == 0 ? aliceValues[ids[i]] : -bobValues[ids[i]];
+        }
+        return Integer.compare(diff, 0);
     }
 
 }
