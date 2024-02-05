@@ -1618,4 +1618,23 @@ public class Solution {
         return Integer.compare(diff, 0);
     }
 
+    // 跳跃游戏六
+    public int maxResult(int[] nums, int k) {
+        int n = nums.length;
+        int[] f = new int[n];
+        f[0] = nums[0];
+        Deque<Integer> q = new ArrayDeque<>();
+        q.add(0);
+        for (int i = 1; i < n; i++) {
+            if (q.peekFirst() < i - k) {
+                q.pollFirst();
+            }
+            f[i] = f[q.peekFirst()] + nums[i];
+            while (!q.isEmpty() && f[i] >= f[q.peekLast()]) {
+                q.pollLast();
+            }
+            q.add(i);
+        }
+        return f[n - 1];
+    }
 }
