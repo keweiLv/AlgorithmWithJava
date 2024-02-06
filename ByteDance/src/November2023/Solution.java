@@ -1637,4 +1637,26 @@ public class Solution {
         }
         return f[n - 1];
     }
+
+    // 魔塔游戏
+    public int magicTower(int[] nums) {
+        long sum = Arrays.stream(nums).sum();
+        if (sum < 0) {
+            return -1;
+        }
+        int ans = 0;
+        long hp = 1;
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        for (int x : nums) {
+            if (x < 0) {
+                pq.offer(x);
+            }
+            hp += x;
+            if (hp < 1) {
+                hp -= pq.poll();
+                ans++;
+            }
+        }
+        return ans;
+    }
 }
