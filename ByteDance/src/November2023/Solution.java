@@ -1659,4 +1659,36 @@ public class Solution {
         }
         return ans;
     }
+
+    // 二叉树的堂兄弟节点二
+    public TreeNode replaceValueInTree(TreeNode root) {
+        root.val = 0;
+        List<TreeNode> nodes = new ArrayList<>();
+        nodes.add(root);
+        while (!nodes.isEmpty()) {
+            List<TreeNode> tmp = new ArrayList<>();
+            int s = 0;
+            for (TreeNode node : nodes) {
+                if (node.left != null) {
+                    tmp.add(node.left);
+                    s += node.left.val;
+                }
+                if (node.right != null) {
+                    tmp.add(node.right);
+                    s += node.right.val;
+                }
+            }
+            for (TreeNode node : nodes) {
+                int sub = (node.left == null ? 0 : node.left.val) + (node.right == null ? 0 : node.right.val);
+                if (node.left != null) {
+                    node.left.val = s - sub;
+                }
+                if (node.right != null) {
+                    node.right.val = s - sub;
+                }
+            }
+            nodes = tmp;
+        }
+        return root;
+    }
 }
