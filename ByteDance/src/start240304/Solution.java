@@ -1,8 +1,6 @@
 package start240304;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Solution {
 
@@ -80,5 +78,30 @@ public class Solution {
             cows += Math.min(cntS[i], cntG[i]);
         }
         return Integer.toString(bulls) + "A" + Integer.toString(cows) + "B";
+    }
+
+    // 二叉树的层平均值
+    public List<Double> averageOfLevels(TreeNode root) {
+        List<Double> averages = new ArrayList<>();
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            double sum = 0;
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode poll = queue.poll();
+                sum += poll.val;
+                TreeNode left = poll.left;
+                TreeNode right = poll.right;
+                if (left != null) {
+                    queue.offer(left);
+                }
+                if (right != null) {
+                    queue.offer(right);
+                }
+            }
+            averages.add(sum / size);
+        }
+        return averages;
     }
 }
