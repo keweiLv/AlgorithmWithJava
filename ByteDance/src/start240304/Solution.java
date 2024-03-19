@@ -121,5 +121,23 @@ public class Solution {
         return sum;
     }
 
-
+    // 好子数组的最大分数
+    public int maximumScore(int[] nums, int k) {
+        int n = nums.length;
+        int ans = nums[k];
+        int min = nums[k];
+        int left = k;
+        int right = k;
+        while (left > 0 || right + 1 < n) {
+            if (right + 1 >= n || (left > 0 && nums[left - 1] > nums[right + 1])) {
+                left--;
+                min = Math.min(min, nums[left]);
+            } else {
+                right++;
+                min = Math.min(min, nums[right]);
+            }
+            ans = Math.max(ans, (right - left + 1) * min);
+        }
+        return ans;
+    }
 }
