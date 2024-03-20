@@ -140,4 +140,34 @@ public class Solution {
         }
         return ans;
     }
+
+    // 柱装图中最大的矩形
+    public int largestRectangleArea(int[] heights) {
+        int n = heights.length;
+        int[] left = new int[n];
+        Deque<Integer> stack = new ArrayDeque<>();
+        for (int i = 0; i < n; i++) {
+            int x = heights[i];
+            while (!stack.isEmpty() && x <= heights[stack.peek()]) {
+                stack.pop();
+            }
+            left[i] = stack.isEmpty() ? -1 : stack.peek();
+            stack.push(i);
+        }
+        int[] right = new int[n];
+        stack.clear();
+        for (int i = n - 1; i >= 0; i--) {
+            int x = heights[i];
+            while (!stack.isEmpty() && x <= heights[stack.peek()]) {
+                stack.pop();
+            }
+            right[i] = stack.isEmpty() ? n : stack.peek();
+            stack.push(i);
+        }
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            ans = Math.max(ans, heights[i] * (right[i] - left[i] - 1));
+        }
+        return ans;
+    }
 }
