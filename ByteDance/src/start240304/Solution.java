@@ -182,4 +182,24 @@ public class Solution {
         }
         return dp[amount];
     }
+
+    // 二叉树的右视图
+    List<Integer> res = new ArrayList<>();
+
+    public List<Integer> rightSideView(TreeNode root) {
+        dfs(root, 0);
+        return res;
+    }
+
+    private void dfs(TreeNode root, int dep) {
+        if (root == null) {
+            return;
+        }
+        if (dep == res.size()) {
+            res.add(root.val);
+        }
+        dfs(root.right, dep + 1);
+        dfs(root.left, dep + 1);
+    }
 }
+
