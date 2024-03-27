@@ -201,5 +201,19 @@ public class Solution {
         dfs(root.right, dep + 1);
         dfs(root.left, dep + 1);
     }
+
+    // 统计将重叠区间合并的方案数
+    public int countWays(int[][] ranges) {
+        Arrays.sort(ranges, (a, b) -> a[0] - b[0]);
+        int ans = 1;
+        int maxR = -1;
+        for (int[] p : ranges) {
+            if (p[0] > maxR) {
+                ans = ans * 2 % 1000000007;
+            }
+            maxR = Math.max(maxR, p[1]);
+        }
+        return ans;
+    }
 }
 
