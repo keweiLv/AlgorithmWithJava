@@ -215,5 +215,17 @@ public class Solution {
         }
         return ans;
     }
+
+    // 访问完所有房间的第一天
+    public int firstDayBeenInAllRooms(int[] nextVisit) {
+        final long MOD = 1000000007;
+        int n = nextVisit.length;
+        long[] s = new long[n];
+        for (int i = 0; i < n - 1; i++) {
+            int j = nextVisit[i];
+            s[i + 1] = (s[i] * 2 - s[j] + 2 + MOD) % MOD;
+        }
+        return (int) s[n - 1];
+    }
 }
 
