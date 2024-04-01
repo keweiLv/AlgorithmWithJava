@@ -227,5 +227,28 @@ public class Solution {
         }
         return (int) s[n - 1];
     }
+
+    // 故障键盘
+    public String finalString(String s) {
+        Deque<Character> q = new ArrayDeque<>();
+        boolean tail = true;
+        for (char c : s.toCharArray()) {
+            if (c == 'i') {
+                tail = !tail;
+            } else if (tail) {
+                q.addLast(c);
+            } else {
+                q.addFirst(c);
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        for (char c : q) {
+            sb.append(c);
+        }
+        if (!tail) {
+            sb.reverse();
+        }
+        return sb.toString();
+    }
 }
 
