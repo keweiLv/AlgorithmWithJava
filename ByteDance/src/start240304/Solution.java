@@ -250,5 +250,26 @@ public class Solution {
         }
         return sb.toString();
     }
+
+    // 所有可能的二叉树
+    private static final List<TreeNode>[] f = new ArrayList[11];
+
+    static {
+        Arrays.setAll(f, i -> new ArrayList<>());
+        f[1].add(new TreeNode());
+        for (int i = 2; i < f.length; i++) { // 计算 f[i]
+            for (int j = 1; j < i; j++) { // 枚举左子树叶子数
+                for (TreeNode left : f[j]) { // 枚举左子树
+                    for (TreeNode right : f[i - j]) { // 枚举右子树
+                        f[i].add(new TreeNode(0, left, right));
+                    }
+                }
+            }
+        }
+    }
+    public List<TreeNode> allPossibleFBT(int n) {
+        return f[n % 2 > 0 ? (n + 1) / 2 : 0];
+    }
+
 }
 
