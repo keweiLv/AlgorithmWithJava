@@ -267,9 +267,41 @@ public class Solution {
             }
         }
     }
+
     public List<TreeNode> allPossibleFBT(int n) {
         return f[n % 2 > 0 ? (n + 1) / 2 : 0];
     }
 
+    // 找出克隆二叉树中的相同节点
+    public final TreeNode getTargetCopy(final TreeNode original, final TreeNode cloned, final TreeNode target) {
+        if (original == null || original == target) {
+            return cloned;
+        }
+        TreeNode left = getTargetCopy(original.left, cloned.left, target);
+        if (left != null) {
+            return left;
+        }
+        return getTargetCopy(original.right, cloned.right, target);
+    }
+
+    // 会议室
+    public int minMeetingRooms(int[][] intervals) {
+        if (intervals == null || intervals.length == 0) {
+            return 0;
+        }
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+        pq.add(intervals[0][1]);
+        for (int i = 1; i < intervals.length; i++) {
+            int last = pq.peek();
+            if (last <= intervals[i][0]) {
+                pq.poll();
+                pq.add(intervals[i][1]);
+            } else {
+                pq.add(intervals[i][1]);
+            }
+        }
+        return pq.size();
+    }
 }
 
