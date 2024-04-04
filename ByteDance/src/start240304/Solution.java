@@ -303,5 +303,37 @@ public class Solution {
         }
         return pq.size();
     }
+
+    // 有向无环图中一个节点的所有祖先
+    public List<List<Integer>> getAncestors(int n, int[][] edges) {
+        List<Integer>[] g = new ArrayList[n];
+        Arrays.setAll(g, i -> new ArrayList<>());
+        for (int[] e : edges) {
+            g[e[1]].add(e[0]);
+        }
+        List<Integer>[] ans = new ArrayList[n];
+        Arrays.setAll(ans, i -> new ArrayList<>());
+        boolean[] vis = new boolean[n];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(vis, false);
+            dfs(i, g, vis);
+            vis[i] = false;
+            for (int j = 0; j < n; j++) {
+                if (vis[j]) {
+                    ans[i].add(j);
+                }
+            }
+        }
+        return Arrays.asList(ans);
+    }
+
+    private void dfs(int i, List<Integer>[] g, boolean[] vis) {
+        vis[i] = true;
+        for (int y : g[i]) {
+            if (!vis[y]) {
+                dfs(y, g, vis);
+            }
+        }
+    }
 }
 
