@@ -335,5 +335,44 @@ public class Solution {
             }
         }
     }
+
+    // 节点与其祖先之间的最大差值
+    private int ans;
+
+    public int maxAncestorDiff(TreeNode root) {
+        dfs(root, root.val, root.val);
+        return ans;
+    }
+
+    private void dfs(TreeNode root, int min, int max) {
+        if (root == null) {
+            ans = Math.max(ans, max - min);
+            return;
+        }
+        min = Math.min(min, root.val);
+        max = Math.max(max, root.val);
+        dfs(root.left, min, max);
+        dfs(root.right, min, max);
+    }
+
+    // 简化路径
+    public String simplifyPath(String path) {
+        Deque<String> stack = new LinkedList<>();
+        String[] split = path.split("/");
+        for (String s : split) {
+            if (s.equals("..")) {
+                if (!stack.isEmpty()) {
+                    stack.pop();
+                }
+            } else if (!s.isEmpty() && !s.equals(".")) {
+                stack.push(s);
+            }
+        }
+        String res = "";
+        for (String d : stack) {
+            res = "/" + d + res;
+        }
+        return res.isEmpty() ? "/" : res;
+    }
 }
 
