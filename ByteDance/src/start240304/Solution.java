@@ -374,5 +374,22 @@ public class Solution {
         }
         return res.isEmpty() ? "/" : res;
     }
+
+    // 分发饼干
+    public int findContentChildren(int[] g, int[] s) {
+        Arrays.sort(g);
+        Arrays.sort(s);
+        int m = g.length, n = s.length;
+        int cnt = 0;
+        for (int i = 0, j = 0; i < m && j < n; j++, i++) {
+            while (j <n && g[i] > s[j]){
+                j++;
+            }
+            if (j<n){
+                cnt++;
+            }
+        }
+        return cnt;
+    }
 }
 
