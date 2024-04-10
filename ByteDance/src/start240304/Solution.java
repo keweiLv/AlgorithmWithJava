@@ -467,5 +467,40 @@ public class Solution {
         }
         return sign * res;
     }
+
+    // 修改后的最大二进制字符串
+    public String maximumBinaryString(String binary) {
+        int i = binary.indexOf('0');
+        if (i < 0) {
+            return binary;
+        }
+        char[] charArray = binary.toCharArray();
+        int cnt = 0;
+        for (i++; i < charArray.length; i++) {
+            cnt += charArray[i] - '0';
+        }
+        return "1".repeat(charArray.length - 1 - cnt) + "0" + "1".repeat(cnt);
+    }
+
+    // Power(x,n)
+    public double myPow(double x, int n) {
+        if (x == 0.0f) {
+            return 0.0d;
+        }
+        long b = n;
+        double res = 1.0d;
+        if (b < 0) {
+            x = 1 / x;
+            b = -b;
+        }
+        while (b > 0) {
+            if ((b & 1) == 1) {
+                res *= x;
+            }
+            x *= x;
+            b >>= 1;
+        }
+        return res;
+    }
 }
 
