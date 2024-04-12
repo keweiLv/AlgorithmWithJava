@@ -531,5 +531,16 @@ public class Solution {
             path.remove(path.size() - 1);
         }
     }
+
+    // 知道冠军一
+    public int findChampion(int[][] grid) {
+        int ans = 0;
+        for (int i = 1; i < grid.length; i++) {
+            if (grid[i][ans] == 1) {
+                ans = i;
+            }
+        }
+        return ans;
+    }
 }
 
