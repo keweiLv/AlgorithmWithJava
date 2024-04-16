@@ -543,6 +543,73 @@ public class Solution {
         return ans;
     }
 
-    //
+    //  暂时跳过，尽量减少恶意软件的传播
+    public int minMalwareSpread(int[][] graph, int[] initial) {
+        int n = graph.length;
+        boolean[] vis = new boolean[n];
+        boolean[] isInit = new boolean[n];
+        int mn = Integer.MAX_VALUE;
+        for (int x : initial) {
+            isInit[x] = true;
+            mn = Math.min(mn, x);
+        }
+        int ans = -1;
+        int maxSize = 0;
+        for (int x : initial) {
+            if (vis[x]) {
+                continue;
+            }
+            nodeId = -1;
+            size = 0;
+            dfs(x, graph, vis, isInit);
+            if (nodeId >= 0 && (size > maxSize || size == maxSize && nodeId < ans)) {
+                ans = nodeId;
+                maxSize = size;
+            }
+        }
+        return ans < 0 ? mn : ans;
+    }
+
+    private int nodeId, size;
+
+    private void dfs(int x, int[][] graph, boolean[] vis, boolean[] isInitial) {
+        vis[x] = true;
+        size++;
+        // 按照状态机更新 nodeId
+        if (nodeId != -2 && isInitial[x]) {
+            nodeId = nodeId == -1 ? x : -2;
+        }
+        for (int y = 0; y < graph[x].length; y++) {
+            if (graph[x][y] == 1 && !vis[y]) {
+                dfs(y, graph, vis, isInitial);
+            }
+        }
+    }
+
+    // 螺旋矩阵
+    public int[][] generateMatrix(int n) {
+        int l = 0, r = n - 1, t = 0, b = n - 1;
+        int[][] mat = new int[n][n];
+        int num = 1, tar = n * n;
+        while (num <= tar) {
+            for (int i = l; i <= r; i++) {
+                mat[t][i] = num++;
+            }
+            t++;
+            for (int i = t; i <= b; i++) {
+                mat[i][r] = num++;
+            }
+            r--;
+            for (int i = r; i >= l; i--) {
+                mat[b][i] = num++;
+            }
+            b--;
+            for (int i = b; i >= t; i--) {
+                mat[i][l] = num++;
+            }
+            l++;
+        }
+        return mat;
+    }
 }
 
