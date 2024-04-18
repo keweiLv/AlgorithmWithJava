@@ -632,5 +632,28 @@ public class Solution {
             }
         }
     }
+
+    // 从双倍数组中还原原数组
+    public int[] findOriginalArray(int[] changed) {
+        Arrays.sort(changed);
+        int[] ans = new int[changed.length / 2];
+        int idx = 0;
+        Map<Integer, Integer> cnt = new HashMap<>();
+        for (int x : changed) {
+            if (!cnt.containsKey(x)) {
+                if (idx == ans.length) {
+                    return new int[0];
+                }
+                ans[idx++] = x;
+                cnt.merge(x * 2, 1, Integer::sum);
+            } else {
+                int c = cnt.merge(x, -1, Integer::sum);
+                if (c == 0) {
+                    cnt.remove(x);
+                }
+            }
+        }
+        return ans;
+    }
 }
 
