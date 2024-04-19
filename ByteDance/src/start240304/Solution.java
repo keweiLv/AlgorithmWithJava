@@ -655,5 +655,29 @@ public class Solution {
         }
         return ans;
     }
+
+    // 组合总数
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> combine = new ArrayList<>();
+        dfs(candidates,target,res,combine,0);
+        return res;
+    }
+
+    private void dfs(int[] candidates, int target, List<List<Integer>> res, List<Integer> combine, int idx) {
+        if (idx == candidates.length) {
+            return;
+        }
+        if (target == 0){
+            res.add(new ArrayList<>(combine));
+            return;
+        }
+        dfs(candidates,target,res,combine,idx + 1);
+        if (target - candidates[idx] >= 0) {
+            combine.add(candidates[idx]);
+            dfs(candidates,target - candidates[idx],res,combine,idx);
+            combine.remove(combine.size() - 1);
+        }
+    }
 }
 
