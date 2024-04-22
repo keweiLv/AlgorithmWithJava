@@ -660,7 +660,7 @@ public class Solution {
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         List<List<Integer>> res = new ArrayList<>();
         List<Integer> combine = new ArrayList<>();
-        dfs(candidates,target,res,combine,0);
+        dfs(candidates, target, res, combine, 0);
         return res;
     }
 
@@ -668,15 +668,56 @@ public class Solution {
         if (idx == candidates.length) {
             return;
         }
-        if (target == 0){
+        if (target == 0) {
             res.add(new ArrayList<>(combine));
             return;
         }
-        dfs(candidates,target,res,combine,idx + 1);
+        dfs(candidates, target, res, combine, idx + 1);
         if (target - candidates[idx] >= 0) {
             combine.add(candidates[idx]);
-            dfs(candidates,target - candidates[idx],res,combine,idx);
+            dfs(candidates, target - candidates[idx], res, combine, idx);
             combine.remove(combine.size() - 1);
+        }
+    }
+
+    // 组合总数四
+    public int combinationSum4(int[] nums, int target) {
+        int[] dp = new int[target + 1];
+        dp[0] = 1;
+        for (int i = 1; i <= target; i++) {
+            for (int num : nums) {
+                if (num <= i) {
+                    dp[i] += dp[i - num];
+                }
+            }
+        }
+        return dp[target];
+    }
+
+    // 组合总数二
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> path = new ArrayList<>();
+        Arrays.sort(candidates);
+        dfsNew(candidates, target, res, path, 0);
+        return res;
+    }
+
+    private void dfsNew(int[] candidates, int target, List<List<Integer>> res, List<Integer> path, int idx) {
+        if (target == 0) {
+            res.add(new ArrayList<>(path));
+        }
+        Set<Integer> set = new HashSet<>();
+        for (int i = idx; i < candidates.length; i++) {
+            if (target - candidates[i] < 0) {
+                continue;
+            }
+            if (!set.add(candidates[i])) {
+                continue;
+            }
+            path.add(candidates[i]);
+            dfsNew(candidates, target - candidates[i], res, path, idx + 1);
+            path.remove(path.size() - 1);
         }
     }
 }
