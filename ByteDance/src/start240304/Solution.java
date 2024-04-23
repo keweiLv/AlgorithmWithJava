@@ -741,10 +741,6 @@ public class Solution {
         return ans + max;
     }
 
-    // 第N位数字
-    public int findNthDigit(int n) {
-
-    }
 
 }
 
