@@ -741,6 +741,34 @@ public class Solution {
         return ans + max;
     }
 
+    // 总行驶距离
+    public int distanceTraveled(int mainTank, int additionalTank) {
+        int ans = 0;
+        while (mainTank >= 5) {
+            int t = mainTank / 5;
+            ans += t * 50;
+            mainTank %= 5;
+            t = Math.min(t, additionalTank);
+            additionalTank -= t;
+            mainTank += t;
+        }
+        return ans + mainTank * 10;
+    }
 
+    // 寻找旋转排序数组中的最小值
+    public int findMin(int[] nums) {
+        int i = 0, j = nums.length - 1;
+        while (i < j) {
+            int mid = i + (j - i) / 2;
+            if (nums[mid] > nums[j]) {
+                i = mid + 1;
+            } else if (nums[mid] < nums[j]) {
+                j = mid;
+            } else {
+                j--;
+            }
+        }
+        return nums[i];
+    }
 }
 
