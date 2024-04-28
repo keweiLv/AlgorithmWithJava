@@ -45,4 +45,21 @@ public class SnapshotArray {
         return left;
     }
 
+    // 负二进制转换
+    public String baseNeg2(int n) {
+        if (n == 0) {
+            return "0";
+        }
+        StringBuilder sb = new StringBuilder();
+        while (n != 0) {
+            int mod = n % (-2);
+            n = n / (-2);
+            if (mod == -1) {
+                n++;
+                mod = 1;
+            }
+            sb.append(mod);
+        }
+        return sb.reverse().toString();
+    }
 }
