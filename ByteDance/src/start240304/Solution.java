@@ -770,5 +770,24 @@ public class Solution {
         }
         return nums[i];
     }
+
+    // 将矩阵按对角线排序
+    public int[][] diagonalSort(int[][] mat) {
+        int m = mat.length;
+        int n = mat[0].length;
+        int[] a = new int[Math.min(m, n)];
+        for (int k = 1 - n; k < m; k++) {
+            int left = Math.max(k, 0);
+            int right = Math.min(k + n, m);
+            for (int i = left; i < right; i++) {
+                a[i - left] = mat[i][i - k];
+            }
+            Arrays.sort(a, 0, right - left);
+            for (int i = left; i < right; i++) {
+                mat[i][i - k] = a[i - left];
+            }
+        }
+        return mat;
+    }
 }
 
