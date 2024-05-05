@@ -789,5 +789,23 @@ public class Solution {
         }
         return mat;
     }
+
+    // 拆炸弹
+    public int[] decrypt(int[] code, int k) {
+        int n = code.length;
+        int[] ans = new int[n];
+        int r = k > 0 ? k + 1 : n;
+        k = Math.abs(k);
+        int s = 0;
+        for (int i = r - k; i < r; i++) {
+            s += code[i];
+        }
+        for (int i = 0; i < n; i++) {
+            ans[i] = s;
+            s += code[r % n] - code[(r - k) % n];
+            r++;
+        }
+        return ans;
+    }
 }
 
