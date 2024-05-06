@@ -807,5 +807,58 @@ public class Solution {
         }
         return ans;
     }
+
+    // 单词搜索
+    private static final int[][] dir = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+    private int rows;
+    private int cols;
+    private int len;
+    private boolean[][] visited;
+    private char[] charArray;
+    private char[][] board;
+
+    public boolean exist(char[][] board, String word) {
+        rows = board.length;
+        if (rows == 0) {
+            return false;
+        }
+        cols = board[0].length;
+        visited = new boolean[rows][cols];
+        this.len = word.length();
+        this.charArray = word.toCharArray();
+        this.board = board;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (dfs(i, j, 0)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean dfs(int x, int y, int begin) {
+        if (begin == len - 1) {
+            return board[x][y] == charArray[begin];
+        }
+        if (board[x][y] == charArray[begin]) {
+            visited[x][y] = true;
+            for (int[] dir : dir) {
+                int newX = x + dir[0];
+                int newY = y + dir[1];
+                if (inArea(newX, newY) && !visited[newX][newY]) {
+                    if (dfs(newX, newY, begin + 1)) {
+                        return true;
+                    }
+                }
+            }
+            visited[x][y] = false;
+        }
+        return false;
+    }
+
+    private boolean inArea(int newX, int newY) {
+        return newX >= 0 && newX < rows && newY >= 0 && newY < cols;
+    }
 }
 
