@@ -886,5 +886,20 @@ public class Solution {
         root.right = myBuildTree(preorder, inorder, preorder_left + left_size + 1, preorder_right, inorder_root + 1, inorder_right);
         return root;
     }
+
+    // 给植物浇水
+    public int wateringPlants(int[] plants, int capacity) {
+        int n = plants.length;
+        int ans = n;
+        int water = capacity;
+        for (int i = 0; i < n; i++) {
+            if (water < plants[i]) {
+                ans += 2 * i;
+                water = capacity;
+            }
+            water -= plants[i];
+        }
+        return ans;
+    }
 }
 
