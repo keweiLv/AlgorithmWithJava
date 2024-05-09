@@ -901,5 +901,30 @@ public class Solution {
         }
         return ans;
     }
+
+    // 给植物浇水二
+    public int minimumRefill(int[] plants, int capacityA, int capacityB) {
+        int ans = 0;
+        int a = capacityA;
+        int b = capacityB;
+        int i = 0;
+        int j = plants.length - 1;
+        while (i < j) {
+            if (a < plants[i]) {
+                ans++;
+                a = capacityA;
+            }
+            a -= plants[i++];
+            if (b < plants[j]) {
+                ans++;
+                b = capacityB;
+            }
+            b -= plants[j--];
+        }
+        if (i == j && Math.max(a, b) < plants[i]) {
+            ans++;
+        }
+        return ans;
+    }
 }
 
