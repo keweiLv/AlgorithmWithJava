@@ -926,5 +926,19 @@ public class Solution {
         }
         return ans;
     }
+
+    // 测试已统计设备
+    public int countTestedDevices(int[] batteryPercentages) {
+        int ans = 0;
+        int cnt = 0;
+        for (int num : batteryPercentages) {
+            num = Math.max(0, num - cnt);
+            if (num > 0) {
+                ans++;
+                cnt++;
+            }
+        }
+        return ans;
+    }
 }
 
