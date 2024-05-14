@@ -978,5 +978,21 @@ public class Solution {
         }
         return fresh > 0 ? -1 : Math.max(0, ans);
     }
+
+    // 完成所有任务需要的最少轮数
+    public int minimumRounds(int[] tasks) {
+        Map<Integer, Integer> cnt = new HashMap<>();
+        for (int t : tasks) {
+            cnt.merge(t, 1, Integer::sum);
+        }
+        int ans = 0;
+        for (int va : cnt.values()) {
+            if (va == 1) {
+                return -1;
+            }
+            ans += (va + 2) / 3;
+        }
+        return ans;
+    }
 }
 
