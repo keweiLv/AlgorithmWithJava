@@ -994,5 +994,41 @@ public class Solution {
         }
         return ans;
     }
+
+    // 完成所有任务的最少时间
+    public int findMinimumTime(int[][] tasks) {
+        Arrays.sort(tasks, (a, b) -> a[1] - b[1]);
+        int ans = 0;
+        int max = tasks[tasks.length - 1][1];
+        boolean[] run = new boolean[max + 1];
+        for (int[] t : tasks) {
+            int start = t[0];
+            int end = t[1];
+            int d = t[2];
+            for (int i = start; i <= end; i++) {
+                if (run[i]) {
+                    d--;
+                }
+            }
+            for (int i = end; d > 0; i--) {
+                if (!run[i]) {
+                    run[i] = true;
+                    d--;
+                    ans++;
+                }
+            }
+        }
+        return ans;
+    }
+
+    // 最大子数组之和
+    public int maxSubArray(int[] nums) {
+        int pre = 0, ans = nums[0];
+        for (int num : nums) {
+            pre = Math.max(pre + num, num);
+            ans = Math.max(ans, pre);
+        }
+        return ans;
+    }
 }
 
