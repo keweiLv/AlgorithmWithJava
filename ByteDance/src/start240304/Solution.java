@@ -1061,5 +1061,26 @@ public class Solution {
         }
         return m > s - m + 1 ? (s - m) * 2 + 1 : s;
     }
+
+    // 找出输掉零场或一场比赛的玩家
+    public List<List<Integer>> findWinners(int[][] matches) {
+        Map<Integer, Integer> losscnt = new HashMap<>();
+        for (int[] m : matches) {
+            if (!losscnt.containsKey(m[0])) {
+                losscnt.put(m[0], 0);
+            }
+            losscnt.merge(m[1], 1, Integer::sum);
+        }
+        List<List<Integer>> ans = List.of(new ArrayList<>(), new ArrayList<>());
+        for (Map.Entry<Integer, Integer> e : losscnt.entrySet()) {
+            int cnt = e.getValue();
+            if (cnt < 2) {
+                ans.get(cnt).add(e.getKey());
+            }
+        }
+        Collections.sort(ans.get(0));
+        Collections.sort(ans.get(1));
+        return ans;
+    }
 }
 
