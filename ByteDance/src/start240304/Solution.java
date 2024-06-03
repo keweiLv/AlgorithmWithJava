@@ -1082,5 +1082,16 @@ public class Solution {
         Collections.sort(ans.get(1));
         return ans;
     }
+
+    // 分糖果二
+    public int[] distributeCandies(int candies, int num_people) {
+        int n = num_people;
+        int[] ans = new int[n];
+        for (int i = 1; candies > 0; i++) {
+            ans[(i-1) % n] += Math.min(i,candies);
+            candies -= i;
+        }
+        return ans;
+    }
 }
 
