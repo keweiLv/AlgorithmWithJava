@@ -1093,5 +1093,10 @@ public class Solution {
         }
         return ans;
     }
+
+    // 取整购买后的账户余额
+    public int accountBalanceAfterPurchase(int purchaseAmount) {
+        return 100 - (purchaseAmount + 5) / 10 * 10;
+    }
 }
 
