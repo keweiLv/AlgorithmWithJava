@@ -1098,5 +1098,27 @@ public class Solution {
     public int accountBalanceAfterPurchase(int purchaseAmount) {
         return 100 - (purchaseAmount + 5) / 10 * 10;
     }
-}
 
+    // 子序列最大优雅度
+    public long findMaximumElegance(int[][] items, int k) {
+        Arrays.sort(items, (a, b) -> b[0] - a[0]);
+        long ans = 0;
+        long totalProfit = 0;
+        Set<Integer> vis = new HashSet<>();
+        Deque<Integer> deque = new ArrayDeque<>();
+        for (int i = 0; i < items.length; i++) {
+            int profit = items[i][0];
+            int category = items[i][1];
+            if (i < k) {
+                totalProfit += profit;
+                if (!vis.add(category)) {
+                    deque.push(profit);
+                }
+            } else if (!deque.isEmpty() && vis.add(category)) {
+                totalProfit += profit - deque.pop();
+            }
+            ans = Math.max(ans, totalProfit + (long) vis.size() * vis.size());
+        }
+        return ans;
+    }
+}
