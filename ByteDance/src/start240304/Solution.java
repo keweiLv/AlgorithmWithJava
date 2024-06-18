@@ -1088,7 +1088,7 @@ public class Solution {
         int n = num_people;
         int[] ans = new int[n];
         for (int i = 1; candies > 0; i++) {
-            ans[(i-1) % n] += Math.min(i,candies);
+            ans[(i - 1) % n] += Math.min(i, candies);
             candies -= i;
         }
         return ans;
@@ -1120,5 +1120,30 @@ public class Solution {
             ans = Math.max(ans, totalProfit + (long) vis.size() * vis.size());
         }
         return ans;
+    }
+
+    // 价格减免
+    public String discountPrices(String sentence, int discount) {
+        double d = 1 - discount / 100.0;
+        String[] a = sentence.split(" ");
+        for (int i = 0; i < a.length; i++) {
+            if (check(a[i])) {
+                a[i] = String.format("$%.2f", Long.parseLong(a[i].substring(1)) * d);
+            }
+        }
+        return String.join(" ", a);
+    }
+
+    private boolean check(String s) {
+        if (s.length() == 1 || s.charAt(0) != '$') {
+            return false;
+        }
+        char[] cs = s.toCharArray();
+        for (int i = 1; i < cs.length; i++) {
+            if (!Character.isDigit(cs[i])) {
+                return false;
+            }
+        }
+        return true;
     }
 }
