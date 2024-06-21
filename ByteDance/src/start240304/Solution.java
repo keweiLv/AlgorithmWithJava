@@ -1172,11 +1172,11 @@ public class Solution {
         int[] cnt = new int[10];
         for (int x : nums) {
             for (int y = 1; y < 10; y++) {
-                if (cnt[y] > 0 && gcd(y,x % 10) == 1){
+                if (cnt[y] > 0 && gcd(y, x % 10) == 1) {
                     ans += cnt[y];
                 }
             }
-            while (x >= 10){
+            while (x >= 10) {
                 x /= 10;
             }
             cnt[x]++;
@@ -1186,5 +1186,20 @@ public class Solution {
 
     private int gcd(int a, int b) {
         return b == 0 ? a : gcd(b, a % b);
+    }
+
+    // 气温变化趋势
+    public int temperatureTrend(int[] temperatureA, int[] temperatureB) {
+        int ans = 0;
+        int cnt = 0;
+        for (int i = 1; i < temperatureA.length; i++) {
+            if (Integer.compare(temperatureA[i],temperatureA[i-1]) == Integer.compare(temperatureB[i],temperatureB[i-1])) {
+                cnt++;
+            } else {
+                cnt = 0;
+            }
+            ans = Math.max(ans, cnt);
+        }
+        return ans;
     }
 }
