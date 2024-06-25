@@ -1193,7 +1193,7 @@ public class Solution {
         int ans = 0;
         int cnt = 0;
         for (int i = 1; i < temperatureA.length; i++) {
-            if (Integer.compare(temperatureA[i],temperatureA[i-1]) == Integer.compare(temperatureB[i],temperatureB[i-1])) {
+            if (Integer.compare(temperatureA[i], temperatureA[i - 1]) == Integer.compare(temperatureB[i], temperatureB[i - 1])) {
                 cnt++;
             } else {
                 cnt = 0;
@@ -1201,5 +1201,14 @@ public class Solution {
             ans = Math.max(ans, cnt);
         }
         return ans;
+    }
+
+    // 找出游戏的获胜者
+    public int findTheWinner(int n, int k) {
+        int ans = 0;
+        for (int i = 2; i <= n; i++) {
+            ans = (ans + k) % i;
+        }
+        return ans + 1;
     }
 }
