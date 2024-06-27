@@ -1226,4 +1226,20 @@ public class Solution {
         }
         return res;
     }
+
+    // 执行子串操作后的字典序最小字符串
+    public String smallestString(String s) {
+        char[] cs = s.toCharArray();
+        int n = cs.length;
+        for (int i = 0; i < n; i++) {
+            if (cs[i] > 'a') {
+                for (; i < n && cs[i] > 'a'; i++) {
+                    cs[i]--;
+                }
+                return new String(cs);
+            }
+        }
+        cs[n - 1] = 'z';
+        return new String(cs);
+    }
 }
