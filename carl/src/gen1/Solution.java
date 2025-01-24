@@ -34,4 +34,25 @@ public class Solution {
         }
         return slow;
     }
+
+    // 购买水果需要的最少金币
+    public int minimumCoins(int[] prices) {
+        int n = prices.length;
+        int[] memo = new int[(n + 1) / 2];
+        return minimumCoinsDfs(1, prices, memo);
+    }
+
+    private int minimumCoinsDfs(int i, int[] prices, int[] memo) {
+        if (i * 2 >= prices.length) {
+            return prices[i - 1];
+        }
+        if (memo[i] != 0) {
+            return memo[i];
+        }
+        int res = Integer.MAX_VALUE;
+        for (int j = i + 1; j <= i * 2 + 1; j++) {
+            res = Math.min(res, minimumCoinsDfs(j, prices, memo));
+        }
+        return memo[i] = res + prices[i - 1];
+    }
 }
