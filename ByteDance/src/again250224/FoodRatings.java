@@ -1,11 +1,11 @@
 package again250224;
 
+import javafx.util.Pair;
+
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeSet;
-
-import javafx.util.Pair;
 
 /**
  * 设计食物评分系统
